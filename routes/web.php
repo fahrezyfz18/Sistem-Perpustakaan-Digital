@@ -16,10 +16,18 @@ Route::prefix('admin')->group(function () {
     Route::get('/users', function () {
         return 'Admin Users';
     });
-Route::get('/listbuku/{kode}/{judul}', function($kode, $judul) {
+
+    Route::get('/listbuku/{kode}/{judul}', function($kode, $judul) {
     return view('list_buku', compact('kode', 'judul'));
 });
 });
 Route::get('/listbuku/{kode}/{judul}', [ListBukuController::class, 'tampilkan']);
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/contact', [HomeController::class, 'contact']);
+Route::get('/register', function () {
+    return view('auth.register');
+})->name('register');
+
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');

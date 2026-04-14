@@ -17,6 +17,9 @@ Route::prefix('admin')->group(function () {
         return 'Admin Users';
     });
 
+RRoute::get('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/login', [AuthController::class, 'loginProcess'])->name('login.process');
+
     Route::get('/listbuku/{kode}/{judul}', function($kode, $judul) {
     return view('list_buku', compact('kode', 'judul'));
 });

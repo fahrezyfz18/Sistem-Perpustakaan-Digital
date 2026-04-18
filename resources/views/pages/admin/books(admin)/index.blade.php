@@ -1,11 +1,16 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>List Buku</title>
-</head>
-<body>
-    <h1>List Buku</h1>
-    <p>Kode Buku: {{ $kode }}</p>
-    <p>Judul Buku: {{ $judul }}</p>
-</body>
-</html>
+<h2>Data Buku</h2>
+
+<table border="1" cellpadding="10">
+    <tr>
+        <th>Judul</th>
+        <th>Penulis</th>
+    </tr>
+
+    @foreach($data as $buku)
+    <tr>
+        <td>{{ $buku['judul'] }}</td>
+        <td>{{ $buku['penulis'] }}</td>
+    </tr>
+    @endforeach
+
+</table>

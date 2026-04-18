@@ -19,9 +19,21 @@ $pekerjaan = "Admin";
 return view('home', compact('nama', 'pekerjaan'));
 
 }
-public function contact()
-{
-return view('contact');
-}
+  // data untuk ditampilkan di home
+    public function getData()
+    {
+        return [
+            ['nama' => 'Total Buku', 'jumlah' => 120],
+            ['nama' => 'Buku Dipinjam', 'jumlah' => 35],
+            ['nama' => 'Anggota', 'jumlah' => 50]
+        ];
+    }
+
+    public function tampilkan()
+    {
+        $data = $this->getData();
+
+        return view('home', compact('data'));
+    }
 }
 

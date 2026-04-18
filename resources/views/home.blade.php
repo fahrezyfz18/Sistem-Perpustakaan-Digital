@@ -49,31 +49,31 @@
                 <div class="flex-shrink-0 w-64">
                     <a href="/" class="flex items-center">
                         <img src="{{ asset('images/LOGO_LS.jpg') }}" alt="LeafShelf Logo"
-                            class="h-12 w-auto object-contain">
+                            class="h-24 w-auto object-contain">
                     </a>
                 </div>
 
                 <!-- Menu -->
                 <div class="hidden md:flex flex-1 justify-center items-center space-x-10">
 
-                    <a href="#" class="text-[11px] font-black uppercase tracking-[0.2em]
+                    <a href="#" class="text-[13px] font-black uppercase tracking-[0.2em]
                           text-asparagus hover:text-kombu transition relative group">
                         Home
                         <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-asparagus rounded-full"></span>
                     </a>
 
-                    <a href="#koleksi" class="text-[11px] font-bold uppercase tracking-[0.2em]
+                    <a href="#koleksi" class="text-[13px] font-bold uppercase tracking-[0.2em]
                           text-slate-500 hover:text-asparagus transition">
                         Collections
                     </a>
 
-                    <a href="#about"
-                        class="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-500 hover:text-asparagus transition">
+                    <a href="#layanan"
+                        class="text-[13px] font-bold uppercase tracking-[0.2em] text-slate-500 hover:text-asparagus transition">
                         Services
                     </a>
 
-                    <a href="#layanan"
-                        class="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-500 hover:text-asparagus transition">
+                    <a href="#about"
+                        class="text-[13px] font-bold uppercase tracking-[0.2em] text-slate-500 hover:text-asparagus transition">
                         About Us
                     </a>
                 </div>
@@ -88,12 +88,12 @@
                             </a>
                         @else
                             <a href="{{ route('login') }}"
-                                class="text-[11px] font-bold uppercase tracking-widest text-kombu hover:text-asparagus transition">
+                                class="text-[13px] font-bold uppercase tracking-widest text-kombu hover:text-asparagus transition">
                                 Login
                             </a>
 
                             <a href="{{ route('register') }}"
-                                class="bg-olivine hover:bg-asparagus text-white px-7 py-2.5 rounded-full text-[11px] font-black uppercase tracking-tighter shadow-md transition-all transform hover:scale-105 active:scale-95">
+                                class="bg-olivine hover:bg-asparagus text-white px-8 py-3 rounded-full text-[13px] font-black uppercase tracking-tighter shadow-md transition-all transform hover:scale-105 active:scale-95">
                                 Register
                             </a>
                         @endauth
@@ -116,15 +116,15 @@
 
                 </div>
                 <h1 class="text-5xl md:text-7xl font-extrabold text-kombu leading-[1.1]">
-                    Selamat Datang di <span class="text-asparagus">LeafShelf</span>
+                    Welcome to <span class="text-asparagus">LeafShelf</span>
                 </h1>
 
                 <div class="relative pl-6">
                     <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-camel rounded-full"></div>
                     <p class="text-lg md:text-xl text-gray-600 leading-relaxed font-medium">
-                        "Tumbuhkan benih wawasan Anda bersama <span class="text-kombu font-bold">LeafShelf</span>. Kami
-                        menyediakan ruang membaca digital yang nyaman dan asri dengan ribuan literatur pilihan untuk
-                        menemani setiap langkah pertumbuhan diri Anda."
+                        Nurture your insights with <span class="text-kombu font-bold">LeafShelf</span>. Discover a
+                        serene digital library featuring thousands of handpicked titles to support your journey of
+                        personal growth.
                     </p>
                 </div>
 
@@ -137,7 +137,7 @@
             </div>
 
             <div class="relative flex justify-center">
-                <<div class="relative z-10">
+                <div class="relative z-10">
                     <img src="{{ asset('images/welcome.png') }}" alt="LeafShelf Digital Portal Illustration"
                         class="w-full max-w-lg mx-auto drop-shadow-[0_50px_50px_rgba(54,78,49,0.25)] rounded-[3rem] border-8 border-white p-4">
                     <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-camel/20 rounded-full blur-3xl"></div>
@@ -148,7 +148,7 @@
     <section id="layanan" class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 text-center">
             <h4 class="text-mustard font-bold uppercase tracking-[0.3em] text-xs mb-4">What We Offer</h4>
-            <h2 class="text-4xl font-black text-kombu mb-16 italic">Layanan Digital Unggulan</h2>
+            <h2 class="text-4xl font-black text-kombu mb-16 italic">Premium Digital Services</h2>
             <div class="grid md:grid-cols-3 gap-8">
                 <div class="p-8 border border-olivine/10 rounded-[2rem] hover:bg-olivine/5 transition-all group">
                     <div
@@ -156,7 +156,7 @@
                         <i class="fas fa-book-open text-olivine text-xl"></i>
                     </div>
                     <h4 class="font-bold text-lg mb-3">E-Book Access</h4>
-                    <p class="text-sm text-gray-500">Baca ribuan koleksi buku digital kapan saja.</p>
+                    <p class="text-sm text-gray-500">Access thousands of digital books anytime, anywhere.</p>
                 </div>
                 <div class="p-8 border border-olivine/10 rounded-[2rem] hover:bg-olivine/5 transition-all group">
                     <div
@@ -164,7 +164,7 @@
                         <i class="fas fa-history text-white text-xl"></i>
                     </div>
                     <h4 class="font-bold text-lg mb-3">Online Booking</h4>
-                    <p class="text-sm text-gray-500">Reservasi buku fisik tanpa perlu mengantre.</p>
+                    <p class="text-sm text-gray-500">Skip the line with easy physical book reservations.</p>
                 </div>
                 <div class="p-8 border border-olivine/10 rounded-[2rem] hover:bg-olivine/5 transition-all group">
                     <div
@@ -172,7 +172,7 @@
                         <i class="fas fa-search text-white text-xl"></i>
                     </div>
                     <h4 class="font-bold text-lg mb-3">Smart Search</h4>
-                    <p class="text-sm text-gray-500">Cari referensi ilmiah dengan algoritma cerdas.</p>
+                    <p class="text-sm text-gray-500">Find scholarly references with smart-search algorithms.</p>
                 </div>
     </section>
 
@@ -180,12 +180,12 @@
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between items-end mb-16">
                 <div>
-                    <h2 class="text-4xl font-black text-kombu">Koleksi <span class="text-asparagus">Terbaru</span></h2>
-                    <p class="text-gray-500 mt-2 italic">Rekomendasi bacaan untuk minggu ini.</p>
+                    <h2 class="text-4xl font-black text-kombu">New <span class="text-asparagus">Collection</span></h2>
+                    <p class="text-gray-500 mt-2 italic">Recommended reads for this week.</p>
                 </div>
                 <a href="#"
-                    class="bg-kombu text-white px-8 py-3 rounded-full font-bold text-sm shadow-lg hover:bg-asparagus transition">Jelajahi
-                    Semua</a>
+                    class="bg-kombu text-white px-8 py-3 rounded-full font-bold text-sm shadow-lg hover:bg-asparagus transition">Explore
+                    All</a>
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-10">
@@ -195,12 +195,12 @@
                             class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
                         <div
                             class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-kombu to-transparent translate-y-full group-hover:translate-y-0 transition duration-500">
-                            <button class="w-full py-3 bg-white text-kombu font-bold rounded-xl text-sm shadow-xl">Baca
-                                Sekarang</button>
+                            <button class="w-full py-3 bg-white text-kombu font-bold rounded-xl text-sm shadow-xl">Read
+                                Now</button>
                         </div>
                     </div>
                     <h3 class="font-bold text-kombu text-lg">Seni Kehidupan Hijau</h3>
-                    <p class="text-mustard text-xs font-bold uppercase tracking-widest mt-1">Sains & Alam</p>
+                    <p class="text-mustard text-xs font-bold uppercase tracking-widest mt-1">Science & Nature</p>
                 </div>
                 <div class="group">
                     <div class="relative overflow-hidden rounded-[2rem] aspect-[3/4] shadow-xl mb-6">
@@ -208,12 +208,12 @@
                             class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
                         <div
                             class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-kombu to-transparent translate-y-full group-hover:translate-y-0 transition duration-500">
-                            <button class="w-full py-3 bg-white text-kombu font-bold rounded-xl text-sm shadow-xl">Baca
-                                Sekarang</button>
+                            <button class="w-full py-3 bg-white text-kombu font-bold rounded-xl text-sm shadow-xl">Read
+                                Now</button>
                         </div>
                     </div>
                     <h3 class="font-bold text-kombu text-lg">Sejarah Nusantara</h3>
-                    <p class="text-mustard text-xs font-bold uppercase tracking-widest mt-1">Sejarah</p>
+                    <p class="text-mustard text-xs font-bold uppercase tracking-widest mt-1">History</p>
                 </div>
                 <div class="group">
                     <div class="relative overflow-hidden rounded-[2rem] aspect-[3/4] shadow-xl mb-6">
@@ -221,12 +221,12 @@
                             class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
                         <div
                             class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-kombu to-transparent translate-y-full group-hover:translate-y-0 transition duration-500">
-                            <button class="w-full py-3 bg-white text-kombu font-bold rounded-xl text-sm shadow-xl">Baca
-                                Sekarang</button>
+                            <button class="w-full py-3 bg-white text-kombu font-bold rounded-xl text-sm shadow-xl">Read
+                                Now</button>
                         </div>
                     </div>
                     <h3 class="font-bold text-kombu text-lg">Logika Pemrograman</h3>
-                    <p class="text-mustard text-xs font-bold uppercase tracking-widest mt-1">Teknologi</p>
+                    <p class="text-mustard text-xs font-bold uppercase tracking-widest mt-1">Technology</p>
                 </div>
                 <div class="group">
                     <div class="relative overflow-hidden rounded-[2rem] aspect-[3/4] shadow-xl mb-6">
@@ -234,12 +234,12 @@
                             class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
                         <div
                             class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-kombu to-transparent translate-y-full group-hover:translate-y-0 transition duration-500">
-                            <button class="w-full py-3 bg-white text-kombu font-bold rounded-xl text-sm shadow-xl">Baca
-                                Sekarang</button>
+                            <button class="w-full py-3 bg-white text-kombu font-bold rounded-xl text-sm shadow-xl">Read
+                                Now</button>
                         </div>
                     </div>
                     <h3 class="font-bold text-kombu text-lg">Masa Depan AI</h3>
-                    <p class="text-mustard text-xs font-bold uppercase tracking-widest mt-1">Inovasi</p>
+                    <p class="text-mustard text-xs font-bold uppercase tracking-widest mt-1">Innovation</p>
                 </div>
             </div>
         </div>
@@ -301,7 +301,7 @@
                     </div>
                 </div>
                 <p class="text-olivine/60 text-sm leading-relaxed">
-                    Membangun jembatan literasi untuk masa depan siswa yang lebih cerah dan digital.
+                    Building a digital literacy bridge for a brighter future. Turn a New Leaf!
                 </p>
             </div>
             <div class="space-y-6 text-center">
@@ -321,12 +321,13 @@
                 <div class="flex justify-center md:justify-end gap-6 text-xl pt-4">
                     <i class="fab fa-instagram hover:text-white cursor-pointer transition"></i>
                     <i class="fab fa-facebook hover:text-white cursor-pointer transition"></i>
+                    <i class="fab fa-whatsapp hover:text-white cursor-pointer transition"></i>
                 </div>
             </div>
         </div>
         <div class="max-w-7xl mx-auto px-4 mt-12 text-center">
             <p class="text-[10px] text-olivine/30 uppercase tracking-[0.5em] font-black">
-                &copy; 2024 Kelompok PBL Tim 3 Anggota. Semua Hak Dilindungi.
+                &copy; 2026 PBL IF 2B-3 MALAM. All rights reserved.
             </p>
         </div>
     </footer>

@@ -1,36 +1,20 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
 
-Route::get('/welcome', function () {
+Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/user/{id}', function ($id) {
-    return 'User dengan ID' . $id;
-});
-Route::prefix('admin')->group(function () {
-    Route::get('/dashboard', function () {
-        return 'Admin Dashboard';
-    });
-    Route::get('/users', function () {
-        return 'Admin Users';
-    });
 
-RRoute::get('/login', [AuthController::class, 'login'])->name('login');
-Route::post('/login', [AuthController::class, 'loginProcess'])->name('login.process');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-    Route::get('/listbuku/{kode}/{judul}', function($kode, $judul) {
-    return view('list_buku', compact('kode', 'judul'));
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-});
-Route::get('/listbuku/{kode}/{judul}', [ListBukuController::class, 'tampilkan']);
-Route::get('/', [HomeController::class, 'index']);
-Route::get('/contact', [HomeController::class, 'contact']);
-Route::get('/register', function () {
-    return view('auth.register');
-})->name('register');
 
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
+require __DIR__.'/auth.php';

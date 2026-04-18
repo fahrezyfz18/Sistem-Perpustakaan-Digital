@@ -23,3 +23,5 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/admin/buku', [BookController::class, 'tampilkan']);
+require __DIR__.'/auth.php';
+Route::get('/daftar-buku', [BookController::class, 'index'])->name('books.index');

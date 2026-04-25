@@ -14,6 +14,19 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+
+            //Tambahan Design Sistem
+            colors: {
+                primary: '#364E31',
+                secondary: '#756633',
+                accent: '#4a6345',
+                background: '#F5F5F5',
+
+                //Opsional (tambahan)
+                olivine: '#9AB283',
+                asparagus: '#8FA96D',
+                camel: '#BC9E5F',
+            }
         },
     },
 

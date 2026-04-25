@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap');
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    scroll-behavior: smooth;
+}
+
+.hero-bg {
+    background: radial-gradient(circle at top right, rgba(154, 178, 131, 0.15), transparent),
+        radial-gradient(circle at bottom left, rgba(188, 158, 95, 0.1), transparent);
+}

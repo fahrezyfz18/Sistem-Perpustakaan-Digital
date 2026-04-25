@@ -34,3 +34,26 @@
         </div>
     </body>
 </html>
+
+
+<body class="bg-background text-primary">
+
+<div class="flex">
+
+    {{-- SIDEBAR --}}
+    @include('components.sidebar')
+
+    <div class="flex-1">
+
+        {{-- NAVBAR DASHBOARD --}}
+        @include('components.navbar')
+
+        <main class="p-6">
+            @yield('content')
+        </main>
+
+    </div>
+
+</div>
+
+</body>

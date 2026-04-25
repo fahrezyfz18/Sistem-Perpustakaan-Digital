@@ -30,24 +30,25 @@
         </main>
     @endif
 
-    {{-- 🔥 AUTH (LOGIN / REGISTER dari Breeze) --}}
-    @isset($slot)
-        <div class="min-h-screen flex flex-col justify-center items-center px-4">
+   {{-- AUTH --}}
+@isset($slot)
+<div class="min-h-screen flex items-center justify-center bg-[#dcdcc8] px-4">
 
-            {{-- LOGO --}}
-            <div class="mb-6">
-                <a href="/">
-                    <img src="{{ asset('images/LOGO_LS.jpg') }}" class="w-20 h-20 object-contain">
-                </a>
-            </div>
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
 
-            {{-- CARD FORM --}}
-            <div class="w-full sm:max-w-md bg-white shadow-lg rounded-xl p-6">
-                {{ $slot }}
-            </div>
-
+        {{-- LOGO --}}
+        <div class="text-center mb-4">
+            <img src="{{ asset('images/LOGO_LS.jpg') }}" class="w-70 mx-auto">
+            <p class="text-base text-secondary italic mt-2 leading-relaxed">
+                "Tumbuhkan minat baca di ruang teduh digital."
+            </p>
         </div>
-    @endisset
+
+        {{ $slot }}
+
+    </div>
+</div>
+@endisset
 
     {{-- FOOTER --}}
     @include('components.footer')

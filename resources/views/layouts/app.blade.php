@@ -35,25 +35,39 @@
     </body>
 </html>
 
+<body class="font-sans antialiased">
+    <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
 
-<body class="bg-background text-primary">
+        @include('layouts.navigation')
 
-<div class="flex">
+        <div class="flex">
 
-    {{-- SIDEBAR --}}
-    @include('components.sidebar')
+            <!-- SIDEBAR -->
+            @if(auth()->user()->role === 'admin')
+                <x-sidebar-admin />
+            @else
+                <x-sidebar-user />
+            @endif
 
-    <div class="flex-1">
+            <!-- MAIN CONTENT -->
+            <div class="flex-1 ml-64">
 
-        {{-- NAVBAR DASHBOARD --}}
-        @include('components.navbar')
+                <!-- Page Heading -->
+                @isset($header)
+                    <header class="bg-white dark:bg-gray-800 shadow">
+                        <div class="max-w-7xl mx-auto py-6 px-4">
+                            {{ $header }}
+                        </div>
+                    </header>
+                @endisset
 
-        <main class="p-6">
-            @yield('content')
-        </main>
+                <!-- Page Content -->
+                <main>
+                    {{ $slot }}
+                </main>
+
+            </div>
+        </div>
 
     </div>
-
-</div>
-
 </body>

@@ -1,27 +1,62 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PeminjamanController;
+use App\Http\Controllers\PengembalianController;
+use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\AnggotaController;
 
-Route::get('/', function () {
-    return view('home');
-});
+
+// PUBLIC
+Route::get('/', fn() => view('home'));
+
+
+// AUTH
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
+// ADMIN
+Route::middleware(['auth','isAdmin'])->prefix('admin')->name('admin.')->group(function () {
+
+    Route::get('/dashboard', fn() => view('admin.dashboard'))->name('dashboard');
+
+    Route::get('/buku', [BookController::class, 'tampilkan'])->name('buku.index');
+
+    Route::resource('/anggota', AnggotaController::class);
+
+    Route::get('/pengembalian', [PengembalianController::class, 'index'])->name('pengembalian.index');
+
+    Route::get('/laporan', [LaporanController::class, 'peminjaman'])->name('laporan.peminjaman');
+});
+
+
+// USER
+Route::middleware(['auth','isUser'])->prefix('user')->name('user.')->group(function () {
+
+    Route::get('/dashboard', fn() => view('user.dashboard'))->name('dashboard');
+});
+// FITUR USER
+Route::middleware(['auth','isUser'])->group(function () {
+    Route::get('/books', [BookController::class, 'index'])->name('books.index');
+    Route::get('/books/filter', [BookController::class, 'filter'])->name('books.filter');
+
+    Route::get('/borrow', [PeminjamanController::class, 'index'])->name('borrow.index');
+    Route::get('/borrow/status', [PeminjamanController::class, 'status'])->name('borrow.status');
+});
+
+
+// PROFILE
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/admin/buku', [BookController::class, 'tampilkan']);
+
 require __DIR__.'/auth.php';
-Route::get('/daftar-buku', [BookController::class, 'index'])->name('books.index');

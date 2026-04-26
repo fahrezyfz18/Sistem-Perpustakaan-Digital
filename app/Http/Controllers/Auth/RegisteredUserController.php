@@ -28,6 +28,7 @@ class RegisteredUserController extends Controller
      *
      * @throws ValidationException
      */
+<<<<<<< HEAD
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
@@ -46,11 +47,31 @@ class RegisteredUserController extends Controller
             'alamat' => $request->alamat,
             'role' => 'user', 
         ]);
+=======
+   public function store(Request $request): RedirectResponse
+{
+    $request->validate([
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+        'password' => ['required', 'confirmed', Rules\Password::defaults()],
+    ]);
 
-        event(new Registered($user));
+    $user = User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+        'role' => 'user', //  WAJIB TAMBAH INI
+    ]);
+>>>>>>> ce46655c79ff61edd5ed3d6459051e9dd1f54606
 
-        Auth::login($user);
+    event(new Registered($user));
 
-        return redirect(route('dashboard', absolute: false));
+    Auth::login($user);
+
+    //  REDIRECT SESUAI ROLE
+    if ($user->role === 'admin') {
+        return redirect()->route('admin.dashboard');
+    } else {
+        return redirect()->route('user.dashboard');
     }
 }

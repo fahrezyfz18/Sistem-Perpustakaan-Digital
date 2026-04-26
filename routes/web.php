@@ -8,7 +8,7 @@ use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\PengembalianController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\AnggotaController;
-
+use App\Http\Controllers\DashboardController;
 
 // PUBLIC
 Route::get('/', fn() => view('home'));
@@ -24,8 +24,8 @@ Route::post('/register', [AuthController::class, 'register']);
 // ADMIN
 Route::middleware(['auth','isAdmin'])->prefix('admin')->name('admin.')->group(function () {
 
-    Route::get('/dashboard', fn() => view('admin.dashboard'))->name('dashboard');
-
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    
     Route::get('/buku', [BookController::class, 'tampilkan'])->name('buku.index');
 
     Route::resource('/anggota', AnggotaController::class);

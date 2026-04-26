@@ -4,9 +4,9 @@
         <div class="flex items-center h-20">
 
             <!-- Logo -->
-            <div class="flex-shrink-0 w-64">
+            <div class="flex-shrink-0 w-60">
                 <a href="/" class="flex items-center">
-                    <img src="{{ asset('images/LOGO_LS.jpg') }}" alt="LeafShelf Logo"
+                    <img src="{{ asset('images/LOGO_LS.png') }}" alt="LeafShelf Logo"
                         class="h-24 w-auto object-contain">
                 </a>
             </div>
@@ -20,7 +20,7 @@
                     {{ request()->is('/') ? 'text-asparagus' : 'text-slate-500 hover:text-asparagus' }}
                     transition relative group">
 
-                    Home
+                    Beranda
 
                     <span class="absolute -bottom-1 left-0 w-full h-0.5 rounded-full
                         {{ request()->is('/') ? 'bg-asparagus' : 'bg-transparent group-hover:bg-asparagus' }}">

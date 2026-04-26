@@ -7,22 +7,19 @@ export default {
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
+        './node_modules/flowbite/**/*.js',
     ],
 
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Plus Jakarta Sans', 'Figtree', ...defaultTheme.fontFamily.sans],
             },
-
-            //Tambahan Design Sistem
             colors: {
-                primary: '#364E31',
-                secondary: '#756633',
+                primary: '#364E31',   // Kombu
+                secondary: '#756633', // Mustard
                 accent: '#4a6345',
                 background: '#F5F5F5',
-
-                //Opsional (tambahan)
                 olivine: '#9AB283',
                 asparagus: '#8FA96D',
                 camel: '#BC9E5F',
@@ -30,5 +27,8 @@ export default {
         },
     },
 
-    plugins: [forms],
+    plugins: [
+        forms,
+        require('flowbite/plugin')
+    ],
 };

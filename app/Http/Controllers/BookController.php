@@ -19,12 +19,13 @@ class BookController extends Controller
     // fungsi tampilkan ke view
     public function tampilkan()
     {
-        $data = $this->getData(); // Ambil data dari fungsi di atasnya
+        $data = $this->getData();
 
         return view('pages.admin.books(admin).index', compact('data'));
+    } // ⬅️ INI YANG TADI KURANG
+
     public function index()
     {
-        // Simulasi data dari database sesuai gambar
         $books = [
             ['judul' => 'Rahvayana - Aku Lala Padamu', 'penulis' => 'Sujiwo Tejo'],
             ['judul' => 'Dermaga Sastra Indonesia', 'penulis' => 'Sujiwo Tejo'],

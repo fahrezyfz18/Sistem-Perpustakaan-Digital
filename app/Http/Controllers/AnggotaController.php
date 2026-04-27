@@ -56,3 +56,10 @@ class AnggotaController extends Controller
             ->with('success', 'Data berhasil dihapus');
     }
 }
+
+$request->validate([
+    'nama' => 'required',
+    'email' => 'required|email',
+]);
+
+$anggotas = Anggota::where('nama', 'like', '%'.$request->search.'%')->get();

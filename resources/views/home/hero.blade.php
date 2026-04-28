@@ -3,18 +3,16 @@
         <div class="space-y-8 animate-fade-in">
             <div class="inline-flex items-center gap-2 bg-olivine/10 px-4 py-2 rounded-full border border-olivine/20">
                 <span class="w-2 h-2 bg-asparagus rounded-full animate-ping"></span>
-                <span class="text-xs font-bold text-asparagus uppercase tracking-widest">Digital Library Portal</span>
+                <span class="text-xs font-bold text-asparagus uppercase tracking-widest">Portal Perpustakaan   Digital</span>
             </div>
             <h1 class="text-5xl md:text-7xl font-extrabold text-kombu leading-[1.1]">
-                Welcome to <span class="text-asparagus">LeafShelf</span>
+                Selamat datang di <span class="text-asparagus">LeafShelf</span>
             </h1>
 
             <div class="relative pl-6">
                 <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-camel rounded-full"></div>
                 <p class="text-lg md:text-xl text-gray-600 leading-relaxed font-medium">
-                    Nurture your insights with <span class="text-kombu font-bold">LeafShelf</span>. Discover a
-                    serene digital library featuring thousands of handpicked titles to support your journey of
-                    personal growth.
+                    Kembangkan wawasanmu bersama <span class="text-kombu font-bold">LeafShelf</span>. Temukan perpustakaan digital yang tenang dengan ribuan judul pilihan untuk mendukung perjalanan pengembangan dirimu.
                 </p>
             </div>
 

@@ -1,4 +1,4 @@
-<footer class="bg-primary text-white pt-20 pb-6 mt-3 shadow-inner">
+<footer class="bg-primary text-white pt-20 pb-6 mt-0 shadow-inner">
     <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-3 gap-8 border-b border-white/5 pb-8">
         <div class="space-y-6 text-center md:text-left">
             <div class="flex items-center justify-center md:justify-start gap-2">
@@ -16,9 +16,9 @@
         <div class="space-y-6 text-center">
             <h4 class="text-camel font-bold tracking-widest uppercase text-sm">Quick Links</h4>
             <div class="flex flex-col gap-4 text-sm text-olivine/70 font-semibold">
-                <a href="#" class="hover:text-white transition">Collections</a>
-                <a href="#" class="hover:text-white transition">About Us</a>
-                <a href="#" class="hover:text-white transition">Services</a>
+                <a href="#" class="hover:text-white transition">Koleksi</a>
+                <a href="#" class="hover:text-white transition">Tentang Kami</a>
+                <a href="#" class="hover:text-white transition">Layanan</a>
             </div>
         </div>
         <div class="space-y-6 text-center md:text-right">

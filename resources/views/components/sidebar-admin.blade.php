@@ -44,7 +44,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v6h6M20 20v-6h-6M5 19a9 9 0 0114-14"/>
             </svg>
-            Pengembalian Buku
+            data Pengembalian
         </a>
 
         <!-- Laporan -->

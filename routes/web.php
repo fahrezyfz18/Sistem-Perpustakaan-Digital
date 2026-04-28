@@ -81,3 +81,4 @@ Route::middleware('auth')
 });
 
 require __DIR__.'/auth.php';
+Route::resource('anggota', AnggotaController::class);

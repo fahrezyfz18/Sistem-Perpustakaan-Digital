@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\BookController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\PeminjamanController;
@@ -10,9 +9,10 @@ use App\Http\Controllers\PengembalianController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\DashboardController; 
+use App\Http\Controllers\Admin\BookController;
 
 // PUBLIC
-Route::get('/', fn() => view('home'));
+Route::get('/', fn() => view('home'))->name('home');
 
 // AUTH
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -37,6 +37,10 @@ Route::middleware(['auth','isAdmin'])
     ->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/', function () {
+    return view('home');
+})->name('home');
 
     Route::get('/buku', [BookController::class, 'tampilkan'])->name('buku.index');
 
@@ -77,4 +81,8 @@ Route::middleware('auth')
 });
 
 require __DIR__.'/auth.php';
+
+Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
+    Route::resource('buku', BookController::class);
+});
 Route::resource('anggota', AnggotaController::class);

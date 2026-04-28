@@ -20,12 +20,25 @@ export default {
                 secondary: '#756633', // Mustard
                 accent: '#4a6345',
                 background: '#F5F5F5',
+                kombu: '#364E31',
+                mustard: '#756633',
                 olivine: '#9AB283',
                 asparagus: '#8FA96D',
                 camel: '#BC9E5F',
             }
         },
     },
+
+    safelist: [
+        'bg-olivine',
+        'bg-asparagus',
+        'bg-kombu',
+        'bg-mustard',
+        'text-olivine',
+        'text-asparagus',
+        'text-kombu',
+        'text-mustard',
+    ],
 
     plugins: [
         forms,

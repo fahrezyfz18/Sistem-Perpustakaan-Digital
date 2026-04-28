@@ -38,10 +38,6 @@ Route::middleware(['auth','isAdmin'])
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('/', function () {
-    return view('home');
-})->name('home');
-
     Route::get('/buku', [BookController::class, 'tampilkan'])->name('buku.index');
 
     Route::resource('/anggota', AnggotaController::class);
@@ -81,4 +77,3 @@ Route::middleware('auth')
 });
 
 require __DIR__.'/auth.php';
-Route::resource('anggota', AnggotaController::class);

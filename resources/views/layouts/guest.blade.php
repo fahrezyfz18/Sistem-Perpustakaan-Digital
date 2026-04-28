@@ -26,8 +26,7 @@
     </style>
 </head>
 
-<body class="bg-slate-50 text-kombu">
-    <body class="bg-asparagus/30"></body>
+<body class="bg-asparagus/30 text-kombu">
 
     {{-- Navbar --}}
     @include('components.navbar-guest')

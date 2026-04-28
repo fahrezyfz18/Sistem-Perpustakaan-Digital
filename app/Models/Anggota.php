@@ -28,7 +28,16 @@ class Anggota extends Model
         parent::boot();
 
         static::creating(function ($anggota) {
-            $anggota->kode_anggota = 'AGT-' . date('Ymd') . rand(100,999);
+            $anggota->kode_anggota = 'AGT-' . date('Ymd') . rand(100, 999);
         });
+
+        static::creating(function ($anggota) {
+            do {
+                $kode = 'AGT-' . date('Ymd') . rand(100, 999);
+            } while (Anggota::where('kode_anggota', $kode)->exists());
+
+            $anggota->kode_anggota = $kode;
+        });
+
     }
 }

@@ -1,25 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guest</title>
-    @vite(['resources/css/app.css'])
-</head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
 
-    <div class="w-full max-w-md bg-white p-6 rounded shadow">
-        {{ $slot }}
-    </div>
     <title>LeafShelf</title>
 
-    @vite(['resources/css/app.css','resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
     <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap"
+        rel="stylesheet">
 
     <style>
         body {
@@ -29,22 +24,23 @@
 
         .hero-bg {
             background: radial-gradient(circle at top right, rgba(154, 178, 131, 0.15), transparent),
-                        radial-gradient(circle at bottom left, rgba(188, 158, 95, 0.1), transparent);
+                radial-gradient(circle at bottom left, rgba(188, 158, 95, 0.1), transparent);
         }
     </style>
-</head>
+    </head>
 
-<body class="bg-asparagus/30 text-kombu">
+    <body class="bg-asparagus/30 text-kombu">
 
-    {{-- Navbar --}}
-    @include('components.navbar-guest')
+        {{-- Navbar --}}
+        @include('components.navbar-guest')
 
-    {{-- Content (UNTUK SEMUA HALAMAN) --}}
-    {{ $slot }}
+        {{-- Content --}}
+        {{ $slot }}
 
-    {{-- Footer --}}
-    @include('components.footer')
+        {{-- Footer --}}
+        @include('components.footer')
 
 
-</body>
+    </body>
+
 </html>

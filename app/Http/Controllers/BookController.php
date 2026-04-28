@@ -26,7 +26,7 @@ class BookController extends Controller
         $data = $this->getData();
 
         return view('pages.admin.books(admin).index', compact('data'));
-    } // ⬅️ INI YANG TADI KURANG
+    } 
 
     public function index()
     {

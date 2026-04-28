@@ -1,8 +1,8 @@
 <aside class="w-64 h-screen bg-primary text-white fixed shadow-xl font-sans">
     
     <!-- Logo / Title -->
-    <div class="p-6 text-2xl font-semibold border-b border-accent flex items-center gap-2">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-olivine" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+<!-- Logo / Title -->
+<div class="h-16 px-6 flex items-center text-2xl font-semibold border-b border-accent gap-2">        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-olivine" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6l-2-2m0 0L8 6m2-2v6m0 0l2 2m-2-2l-2 2m6 4H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/>
         </svg>
         Admin Panel

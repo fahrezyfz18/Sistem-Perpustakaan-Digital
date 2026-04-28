@@ -86,4 +86,3 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::resource('buku', BookController::class);
 });
 Route::resource('anggota', AnggotaController::class);
->>>>>>> cf375fd241944f9f8dde2903ca302279d658332e

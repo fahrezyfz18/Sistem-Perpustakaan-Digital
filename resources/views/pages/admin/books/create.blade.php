@@ -10,9 +10,15 @@
         @csrf
 
         <input type="text" name="judul" placeholder="Judul"
-            class="w-full border rounded-lg p-2 focus:ring-secondary">
+            class="w-full border rounded-lg p-2">
+
+        <input type="text" name="isbn" placeholder="ISBN"
+            class="w-full border rounded-lg p-2">
 
         <input type="text" name="penulis" placeholder="Penulis"
+            class="w-full border rounded-lg p-2">
+
+        <input type="text" name="penerbit" placeholder="Penerbit"
             class="w-full border rounded-lg p-2">
 
         <input type="text" name="kategori" placeholder="Kategori"

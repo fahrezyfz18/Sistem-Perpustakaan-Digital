@@ -49,13 +49,7 @@ class BookController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'judul' => 'required',
-            'isbn' => 'nullable',
-            'pengarang' => 'required',
-            'penerbit' => 'required',
-            'kategori' => 'required',
-            'tahun' => 'required|numeric',
-            'stok' => 'required|numeric',
+            4
         ]);
 
         Book::create($request->all());

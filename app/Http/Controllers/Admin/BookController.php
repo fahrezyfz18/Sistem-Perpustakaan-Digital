@@ -24,7 +24,7 @@ class BookController extends Controller
         $request->validate([
             'judul' => 'required',
             'isbn' => 'nullable',
-            'pengarang' => 'required',
+            'penulis' => 'required',
             'penerbit' => 'required',
             'kategori' => 'required',
             'tahun' => 'required|numeric',
@@ -47,15 +47,17 @@ class BookController extends Controller
         return view('pages.admin.books.edit', compact('buku'));
     }
 
-    public function update(Request $request, Book $buku)
-    {
-        $request->validate([
-            'judul' => 'required',
-            'penulis' => 'required',
-            'kategori' => 'required',
-            'tahun' => 'required|numeric',
-            'stok' => 'required|numeric'
-        ]);
+public function update(Request $request, Book $buku)
+{
+$request->validate([
+    'judul' => 'required',
+    'isbn' => 'nullable',
+    'penulis' => 'required',
+    'penerbit' => 'required',
+    'kategori' => 'required',
+    'tahun' => 'required|numeric',
+    'stok' => 'required|numeric',
+]);
 
         $buku->update($request->all());
 

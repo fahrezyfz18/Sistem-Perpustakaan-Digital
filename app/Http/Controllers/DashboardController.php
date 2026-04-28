@@ -26,7 +26,7 @@ class DashboardController extends Controller
             ]
         ];
 
-        return view('admin.dashboard', compact('stats','peminjamanTerbaru'));
+return view('pages.admin.dashboard', compact('stats','peminjamanTerbaru'));
     }
 
     public function userDashboard()

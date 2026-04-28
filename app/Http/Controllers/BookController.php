@@ -25,7 +25,7 @@ class BookController extends Controller
     {
         $data = $this->getData();
 
-        return view('pages.admin.books(admin).index', compact('data'));
+        return view('pages.admin.books.index', compact('data'));
     } 
 
     public function index()

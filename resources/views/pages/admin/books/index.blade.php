@@ -1,28 +1,34 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="ml-64 p-6 bg-background min-h-screen">
 
-    <!-- Header -->
+<!-- WRAPPER (TANPA ml-64 !!!) -->
+<div class="p-6 bg-background min-h-screen">
+
+    <!-- HEADER -->
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-semibold text-primary">Kelola Data Buku</h1>
+        <h1 class="text-2xl font-semibold text-primary">
+            Kelola Data Buku
+        </h1>
+
         <a href="{{ route('admin.buku.create') }}"
            class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-camel transition">
             + Tambah Buku
         </a>
     </div>
 
-    <!-- Notifikasi -->
+    <!-- NOTIFIKASI -->
     @if(session('success'))
         <div class="bg-olivine text-white p-3 rounded mb-4">
             {{ session('success') }}
         </div>
     @endif
 
-    <!-- Table -->
+    <!-- TABLE CARD -->
     <div class="bg-white shadow rounded-lg overflow-hidden">
+
         <table class="w-full text-sm text-left">
-            
+
             <!-- HEAD -->
             <thead class="bg-primary text-white">
                 <tr>
@@ -96,11 +102,13 @@
 
         </table>
 
-        <!-- Pagination -->
+        <!-- PAGINATION -->
         <div class="p-4">
             {{ $books->links() }}
         </div>
+
     </div>
 
 </div>
+
 @endsection

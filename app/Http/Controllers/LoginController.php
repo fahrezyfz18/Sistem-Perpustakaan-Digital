@@ -12,7 +12,17 @@ public function loginProcess(Request $request)
     $request->validate([
         'email' => 'required|email',
         'password' => 'required|min:6'
+        ], [
+    'email.required' => 'Email wajib diisi',
+    'email.email' => 'Format email tidak valid',
+    'password.required' => 'Password wajib diisi',
+    'password.min' => 'Password minimal 6 karakter'
     ]);
+
+     // LOGIN
+    if (Auth::attempt($request->only('email', 'password'))) {
+        return redirect()->intended('/dashboard');
+    }
 
     // CEK LOGIN
     if (Auth::attempt($request->only('email', 'password'))) {

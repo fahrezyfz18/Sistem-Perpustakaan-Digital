@@ -12,7 +12,7 @@ use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\DashboardController; 
 
 // PUBLIC
-Route::get('/', fn() => view('home'));
+Route::get('/', fn() => view('home'))->name('home');
 
 // AUTH
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -37,6 +37,10 @@ Route::middleware(['auth','isAdmin'])
     ->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/', function () {
+    return view('home');
+})->name('home');
 
     Route::get('/buku', [BookController::class, 'tampilkan'])->name('buku.index');
 

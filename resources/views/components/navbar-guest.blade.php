@@ -1,29 +1,29 @@
 <nav class="bg-white sticky top-0 z-50 border-b border-gray-100 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        <div class="flex items-center h-20">
+        <div class="flex items-center h-20 justify-between">
 
             <!-- Logo -->
-            <div class="flex-shrink-0 w-60">
+            <div class="flex items-center">
                 <a href="/" class="flex items-center">
-                    <img src="{{ asset('images/LOGO_LS.png') }}" alt="LeafShelf Logo"
-                        class="h-24 w-auto object-contain">
+                    <img src="{{ asset('images/LOGO_LS_TRANSPARAN.png') }}" alt="LeafShelf Logo"
+                        class="h-16 w-auto object-contain">
                 </a>
             </div>
 
             <!-- Menu -->
-            <div class="hidden md:flex flex-1 justify-center items-center space-x-10">
+            <div class="hidden md:flex flex-1 justify-center items-center space-x-6">
 
                 <!-- HOME -->
-                <a href="/"
+                <a href="{{ route('home') }}"
                     class="text-[13px] font-black uppercase tracking-[0.2em]
-                    {{ request()->is('/') ? 'text-asparagus' : 'text-slate-500 hover:text-asparagus' }}
+                    {{ request()->routeIs('home') ? 'text-asparagus' : 'text-slate-500' }}
                     transition relative group">
 
                     Beranda
 
                     <span class="absolute -bottom-1 left-0 w-full h-0.5 rounded-full
-                        {{ request()->is('/') ? 'bg-asparagus' : 'bg-transparent group-hover:bg-asparagus' }}">
+                      {{ request()->routeIs('home') ? 'bg-asparagus' : 'bg-transparent group-hover:bg-asparagus' }}">
                     </span>
                 </a>
 

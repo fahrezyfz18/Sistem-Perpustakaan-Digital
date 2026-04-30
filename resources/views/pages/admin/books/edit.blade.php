@@ -10,9 +10,17 @@
     @method('PUT')
 
     <input type="text" name="judul" value="{{ $buku->judul }}" class="w-full border p-2 rounded">
+
+    <input type="text" name="isbn" value="{{ $buku->isbn }}" class="w-full border p-2 rounded">
+
     <input type="text" name="penulis" value="{{ $buku->penulis }}" class="w-full border p-2 rounded">
+
+    <input type="text" name="penerbit" value="{{ $buku->penerbit }}" class="w-full border p-2 rounded">
+
     <input type="text" name="kategori" value="{{ $buku->kategori }}" class="w-full border p-2 rounded">
+
     <input type="number" name="tahun" value="{{ $buku->tahun }}" class="w-full border p-2 rounded">
+
     <input type="number" name="stok" value="{{ $buku->stok }}" class="w-full border p-2 rounded">
 
     <button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-camel">

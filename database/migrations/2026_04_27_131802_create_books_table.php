@@ -8,14 +8,14 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     */
+     */cre
    public function up(): void
 {
     Schema::create('books', function (Blueprint $table) {
         $table->id();
         $table->string('judul');
         $table->string('isbn')->nullable();
-        $table->string('pengarang');
+        $table->string('penulis');
         $table->string('penerbit');
         $table->year('tahun');
         $table->string('kategori');

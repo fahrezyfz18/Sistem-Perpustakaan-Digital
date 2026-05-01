@@ -4,15 +4,28 @@
     <title>Admin</title>
     @vite('resources/css/app.css')
 </head>
-<body class="flex">
 
-    {{-- Sidebar --}}
+<body class="bg-gray-100">
+
+<div class="flex">
+
+    <!-- SIDEBAR -->
     @include('components.sidebar-admin')
 
-    {{-- Content --}}
-    <div class="ml-64 p-6 w-full">
-        @yield('content')
+    <!-- MAIN -->
+    <div class="flex-1 ml-64">
+
+        <!-- NAVBAR -->
+        @include('layouts.navigation')
+
+        <!-- CONTENT -->
+        <main class="p-6">
+            @yield('content')
+        </main>
+
     </div>
+
+</div>
 
 </body>
 </html>

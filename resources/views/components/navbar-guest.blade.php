@@ -15,35 +15,27 @@
             <div class="hidden md:flex flex-1 justify-center items-center space-x-6">
 
                 <!-- HOME -->
-                <a href="{{ route('home') }}"
-                    class="text-[13px] font-black uppercase tracking-[0.2em]
+                <a href="{{ route('home') }}" class="text-[13px] font-black uppercase tracking-[0.2em]
                     {{ request()->routeIs('home') ? 'text-asparagus' : 'text-slate-500' }}
                     transition relative group">
 
                     Beranda
-
-                    <span class="absolute -bottom-1 left-0 w-full h-0.5 rounded-full
-                      {{ request()->routeIs('home') ? 'bg-asparagus' : 'bg-transparent group-hover:bg-asparagus' }}">
-                    </span>
                 </a>
 
                 <!-- COLLECTION -->
-                <a href="#koleksi"
-                    class="text-[13px] font-bold uppercase tracking-[0.2em]
+                <a href="#koleksi" class="text-[13px] font-bold uppercase tracking-[0.2em]
                     text-slate-500 hover:text-asparagus transition">
                     Koleksi
                 </a>
 
                 <!-- SERVICES -->
-                <a href="#layanan"
-                    class="text-[13px] font-bold uppercase tracking-[0.2em]
+                <a href="#layanan" class="text-[13px] font-bold uppercase tracking-[0.2em]
                     text-slate-500 hover:text-asparagus transition">
                     Layanan
                 </a>
 
                 <!-- ABOUT -->
-                <a href="#about"
-                    class="text-[13px] font-bold uppercase tracking-[0.2em]
+                <a href="#about" class="text-[13px] font-bold uppercase tracking-[0.2em]
                     text-slate-500 hover:text-asparagus transition">
                     Tentang Kami
                 </a>

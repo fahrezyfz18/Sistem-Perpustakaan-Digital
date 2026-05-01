@@ -25,8 +25,8 @@ class BookController extends Controller
     {
         $data = $this->getData();
 
-        return view('pages.admin.books(admin).index', compact('data'));
-    } // ⬅️ INI YANG TADI KURANG
+        return view('pages.admin.books.index', compact('data'));
+    } 
 
     public function index()
     {
@@ -49,13 +49,7 @@ class BookController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'judul' => 'required',
-            'isbn' => 'nullable',
-            'pengarang' => 'required',
-            'penerbit' => 'required',
-            'kategori' => 'required',
-            'tahun' => 'required|numeric',
-            'stok' => 'required|numeric',
+            4
         ]);
 
         Book::create($request->all());

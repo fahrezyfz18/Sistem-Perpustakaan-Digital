@@ -6,7 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\PengembalianController;
-use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\Admin\LaporanController;
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\DashboardController; 
 use App\Http\Controllers\Admin\BookController;
@@ -30,7 +30,9 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 
+// =====================
 // ADMIN
+// =====================
 Route::middleware(['auth','isAdmin'])
     ->prefix('admin')
     ->name('admin.')
@@ -38,28 +40,26 @@ Route::middleware(['auth','isAdmin'])
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('/', function () {
-    return view('home');
-})->name('home');
-
-    Route::get('/buku', [BookController::class, 'tampilkan'])->name('buku.index');
+    Route::resource('/buku', BookController::class);
 
     Route::resource('/anggota', AnggotaController::class);
 
     Route::get('/pengembalian', [PengembalianController::class, 'index'])->name('pengembalian.index');
 
-    Route::get('/laporan', [LaporanController::class, 'peminjaman'])->name('laporan.peminjaman');
+    Route::get('/laporan-peminjaman', [LaporanController::class, 'index'])
+        ->name('laporan.peminjaman');
 });
 
 
-// USER (SATU GROUP SAJA)
+// =====================
+// USER
+// =====================
 Route::middleware(['auth','isUser'])
     ->prefix('user')
     ->name('user.')
     ->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'userDashboard'])->name('dashboard');
-
 
     Route::get('/books', [BookController::class, 'index'])->name('books.index');
     Route::get('/books/filter', [BookController::class, 'filter'])->name('books.filter');
@@ -69,7 +69,9 @@ Route::middleware(['auth','isUser'])
 });
 
 
+// =====================
 // PROFILE
+// =====================
 Route::middleware('auth')
     ->prefix('profile')
     ->name('profile.')
@@ -81,8 +83,3 @@ Route::middleware('auth')
 });
 
 require __DIR__.'/auth.php';
-
-Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
-    Route::resource('buku', BookController::class);
-});
-Route::resource('anggota', AnggotaController::class);

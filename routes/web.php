@@ -41,13 +41,22 @@ Route::middleware(['auth','isAdmin'])
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('/buku', BookController::class);
-
     Route::resource('/anggota', AnggotaController::class);
 
-    Route::get('/pengembalian', [PengembalianController::class, 'index'])->name('pengembalian.index');
+    //TRANSAKSI (gabungan peminjaman + pengembalian)
+    Route::get('/transaksi', [LaporanController::class, 'index'])
+        ->name('transaksi.index');
 
+    Route::get('/transaksi/{id}', [LaporanController::class, 'show'])
+        ->name('transaksi.detail');
+
+    //LAPORAN
     Route::get('/laporan-peminjaman', [LaporanController::class, 'index'])
         ->name('laporan.peminjaman');
+
+    //DETAIL
+    Route::get('/laporan/{id}', [LaporanController::class, 'show'])
+        ->name('laporan.detail');
 });
 
 

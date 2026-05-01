@@ -57,15 +57,15 @@ Route::middleware(['auth', 'isAdmin'])
 
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-        Route::resource('/buku', BookController::class);
+    Route::resource('/buku', BookController::class);
 
-        Route::resource('/anggota', AnggotaController::class);
+    Route::resource('/anggota', AnggotaController::class);
 
-        Route::get('/pengembalian', [PengembalianController::class, 'index'])->name('pengembalian.index');
+    Route::get('/pengembalian', [PengembalianController::class, 'index'])->name('pengembalian.index');
 
-        Route::get('/laporan-peminjaman', [LaporanController::class, 'index'])
-            ->name('laporan.peminjaman');
-    });
+    Route::get('/laporan-peminjaman', [LaporanController::class, 'index'])
+        ->name('laporan.peminjaman');
+});
 
 
 // =====================

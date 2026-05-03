@@ -4,43 +4,66 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Peminjaman;
+use Carbon\Carbon;
 
 class LaporanController extends Controller
 {
     public function index(Request $request)
     {
-        // dummy data (nanti bisa dari database)
-        $data = collect([
-            [
-                'nama' => 'Andi Pratama',
-                'judul' => 'Bumi',
-                'tgl_pinjam' => '2023-10-15',
-                'tgl_kembali' => '2023-10-29',
-                'status' => 'dipinjam'
-            ],
-            [
-                'nama' => 'Citra Amelia',
-                'judul' => 'Laskar Pelangi',
-                'tgl_pinjam' => '2023-10-01',
-                'tgl_kembali' => '2023-10-15',
-                'status' => 'kembali'
-            ],
-            [
-                'nama' => 'Bayu Saputra',
-                'judul' => 'Laskar Pelangi',
-                'tgl_pinjam' => '2023-09-20',
-                'tgl_kembali' => '2023-10-04',
-                'status' => 'terlambat'
-            ],
-        ]);
+        $query = Peminjaman::query();
 
-        // search
+        // 🔍 SEARCH
         if ($request->search) {
-            $data = $data->filter(function ($item) use ($request) {
-                return str_contains(strtolower($item['nama']), strtolower($request->search));
-            });
+            $query->where('nama', 'like', '%' . $request->search . '%');
         }
 
-        return view('pages.admin.laporan.index', compact('data'));
+        // 📄 PAGINATION
+        $data = $query->latest()->paginate(8);
+
+        // 🔥 HITUNG DENDA + STATUS OTOMATIS
+        foreach ($data as $item) {
+
+            $tglKembali = Carbon::parse($item->tgl_kembali);
+
+            // ✅ FIX: pakai >= (biar hari yang sama tetap kena)
+            if ($item->status != 'kembali' && now()->greaterThanOrEqualTo($tglKembali)) {
+
+                $hariTelat = now()->diffInDays($tglKembali);
+
+                // set status otomatis
+                $item->status = 'terlambat';
+
+                // 💰 DENDA
+                $item->denda = $hariTelat * 1000;
+
+            } else {
+                $item->denda = 0;
+            }
+        }
+
+        return view('pages.admin.Transaksi.index', compact('data'));
+    }
+
+    // 🔥 DETAIL
+    public function show($id)
+    {
+        $data = Peminjaman::findOrFail($id);
+
+        $tglKembali = Carbon::parse($data->tgl_kembali);
+
+        // ✅ FIX: sama dengan index (WAJIB konsisten)
+        if ($data->status != 'kembali' && now()->greaterThanOrEqualTo($tglKembali)) {
+
+            $hariTelat = now()->diffInDays($tglKembali);
+
+            $data->status = 'terlambat';
+            $data->denda = $hariTelat * 1000;
+
+        } else {
+            $data->denda = 0;
+        }
+
+        return view('pages.admin.Transaksi.detail', compact('data'));
     }
 }

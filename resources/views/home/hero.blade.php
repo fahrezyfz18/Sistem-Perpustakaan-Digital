@@ -6,7 +6,7 @@
                 <span class="text-xs font-bold text-asparagus uppercase tracking-widest">Portal Perpustakaan   Digital</span>
             </div>
             <h1 class="text-5xl md:text-7xl font-extrabold text-kombu leading-[1.1]">
-                Selamat datang di <span class="text-asparagus">LeafShelf</span>
+                Selamat Datang di <span class="text-asparagus">LeafShelf</span>
             </h1>
 
             <div class="relative pl-6">

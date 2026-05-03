@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\LaporanController;
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\BookController;
+use App\Http\Controllers\Admin\TransaksiController;
 
 // PUBLIC
 Route::get('/', fn() => view('home'))->name('home');
@@ -57,15 +58,22 @@ Route::middleware(['auth', 'isAdmin'])
 
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::resource('/buku', BookController::class);
+        Route::resource('/buku', BookController::class);
 
-    Route::resource('/anggota', AnggotaController::class);
+        Route::resource('/anggota', AnggotaController::class);
 
-    Route::get('/pengembalian', [PengembalianController::class, 'index'])->name('pengembalian.index');
+        Route::resource('/transaksi', TransaksiController::class);
 
-    Route::get('/laporan-peminjaman', [LaporanController::class, 'index'])
-        ->name('laporan.peminjaman');
-});
+        Route::get('/pengembalian', [PengembalianController::class, 'index'])->name('pengembalian.index');
+
+        // ✅ LAPORAN
+        Route::get('/laporan-peminjaman', [LaporanController::class, 'index'])
+            ->name('laporan.peminjaman');
+
+        // 🔥 TAMBAHAN EXPORT (INI YANG KAMU BUTUH)
+        Route::get('/laporan/export', [LaporanController::class, 'export'])
+            ->name('laporan.export');
+    });
 
 
 // =====================
@@ -98,5 +106,13 @@ Route::middleware('auth')
         Route::patch('/', [ProfileController::class, 'update'])->name('update');
         Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
     });
+
+// 🔥 TEST PDF (TAMBAHAN)    
+use App\Models\Peminjaman;
+
+Route::get('/test-pdf', function () {
+    $data = Peminjaman::all();
+    return view('pages.admin.laporan.pdf', compact('data'));
+});
 
 require __DIR__ . '/auth.php';

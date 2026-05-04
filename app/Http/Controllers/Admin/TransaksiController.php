@@ -13,18 +13,8 @@ class TransaksiController extends Controller
     {
         $data = Peminjaman::paginate(10);
 
-        $dendaPerHari = 2000;
-
         foreach ($data as $item) {
-            $today = Carbon::now()->startOfDay();
-            $tgl_kembali = Carbon::parse($item->tgl_kembali)->startOfDay();
-
-            if ($today->gt($tgl_kembali) && $item->status != 'kembali') {
-                $selisih = $tgl_kembali->diffInDays($today);
-                $item->denda = $selisih * $dendaPerHari;
-            } else {
-                $item->denda = 0;
-            }
+            $item->denda = $this->hitungDenda($item);
         }
 
         return view('pages.admin.transaksi.index', compact('data'));
@@ -34,18 +24,22 @@ class TransaksiController extends Controller
     {
         $data = Peminjaman::findOrFail($id);
 
+        $data->denda = $this->hitungDenda($data);
+
+        return view('pages.admin.transaksi.detail', compact('data'));
+    }
+
+    private function hitungDenda($item)
+    {
         $dendaPerHari = 2000;
 
         $today = Carbon::now()->startOfDay();
-        $tgl_kembali = Carbon::parse($data->tgl_kembali)->startOfDay();
+        $kembali = Carbon::parse($item->tgl_kembali)->startOfDay();
 
-        if ($today->gt($tgl_kembali) && $data->status != 'kembali') {
-            $selisih = $tgl_kembali->diffInDays($today);
-            $data->denda = $selisih * $dendaPerHari;
-        } else {
-            $data->denda = 0;
+        if ($today->gt($kembali) && $item->status != 'kembali') {
+            return $kembali->diffInDays($today) * $dendaPerHari;
         }
 
-        return view('pages.admin.transaksi.detail', compact('data'));
+        return 0;
     }
 }

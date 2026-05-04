@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+class SettingController extends Controller
+{
+    public function index()
+    {
+        return view('pages.admin.settings.index');
+    }
+
+    public function edit()
+    {
+        return view('pages.admin.settings.edit');
+    }
+}

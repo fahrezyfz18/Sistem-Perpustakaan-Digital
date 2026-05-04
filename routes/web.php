@@ -1,31 +1,32 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\PeminjamanController;
-use App\Http\Controllers\PengembalianController;
-use App\Http\Controllers\Admin\LaporanController;
-use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\BookController;
 use App\Http\Controllers\Admin\TransaksiController;
+use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\LaporanController;
+use App\Http\Controllers\Admin\AnggotaController;
+use App\Http\Controllers\PeminjamanController;
+use App\Http\Controllers\PengembalianController;
+use App\Models\Peminjaman;
 
+// =====================
 // PUBLIC
+// =====================
 Route::get('/', fn() => view('home'))->name('home');
+
 
 // =====================
 // AUTH
 // =====================
-
-// LOGIN
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
-// REGISTER
 Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
 Route::post('/register', [RegisteredUserController::class, 'store']);
 
@@ -39,63 +40,84 @@ Route::get('/dashboard', function () {
         return redirect()->route('login');
     }
 
-    if (auth()->user()->role === 'admin') {
-        return redirect()->route('admin.dashboard');
-    }
-
-    return redirect()->route('user.dashboard');
+    return auth()->user()->role === 'admin'
+        ? redirect()->route('admin.dashboard')
+        : redirect()->route('user.dashboard');
 
 })->middleware(['auth'])->name('dashboard');
 
 
 // =====================
-// ADMIN
+// ADMIN AREA
 // =====================
 Route::middleware(['auth', 'isAdmin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
 
+        // Dashboard
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+        // Master Data
         Route::resource('/buku', BookController::class);
-
         Route::resource('/anggota', AnggotaController::class);
-
         Route::resource('/transaksi', TransaksiController::class);
 
-        Route::get('/pengembalian', [PengembalianController::class, 'index'])->name('pengembalian.index');
+        // Pengembalian
+        Route::get('/pengembalian', [PengembalianController::class, 'index'])
+            ->name('pengembalian.index');
 
-        // ✅ LAPORAN
+        // Laporan
         Route::get('/laporan-peminjaman', [LaporanController::class, 'index'])
             ->name('laporan.peminjaman');
 
-        // 🔥 TAMBAHAN EXPORT (INI YANG KAMU BUTUH)
         Route::get('/laporan/export', [LaporanController::class, 'export'])
             ->name('laporan.export');
+
+        // Profile
+        Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+        Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+        // Settings
+        Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+        Route::get('/settings/edit', [SettingController::class, 'edit'])->name('settings.edit');
+
+        // TEST PDF (debug)
+        Route::get('/test-pdf', function () {
+            $data = Peminjaman::all();
+            return view('pages.admin.laporan.pdf', compact('data'));
+        });
     });
 
 
 // =====================
-// USER
+// USER AREA
 // =====================
 Route::middleware(['auth', 'isUser'])
     ->prefix('user')
     ->name('user.')
     ->group(function () {
 
-        Route::get('/dashboard', [DashboardController::class, 'userDashboard'])->name('dashboard');
+        Route::get('/dashboard', [DashboardController::class, 'userDashboard'])
+            ->name('dashboard');
 
-        Route::get('/books', [BookController::class, 'index'])->name('books.index');
-        Route::get('/books/filter', [BookController::class, 'filter'])->name('books.filter');
+        Route::get('/books', [BookController::class, 'index'])
+            ->name('books.index');
 
-        Route::get('/borrow', [PeminjamanController::class, 'index'])->name('borrow.index');
-        Route::get('/borrow/status', [PeminjamanController::class, 'status'])->name('borrow.status');
+        Route::get('/books/filter', [BookController::class, 'filter'])
+            ->name('books.filter');
+
+        Route::get('/borrow', [PeminjamanController::class, 'index'])
+            ->name('borrow.index');
+
+        Route::get('/borrow/status', [PeminjamanController::class, 'status'])
+            ->name('borrow.status');
     });
 
 
 // =====================
-// PROFILE
+// PROFILE USER GLOBAL
 // =====================
 Route::middleware('auth')
     ->prefix('profile')
@@ -106,13 +128,3 @@ Route::middleware('auth')
         Route::patch('/', [ProfileController::class, 'update'])->name('update');
         Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
     });
-
-// 🔥 TEST PDF (TAMBAHAN)    
-use App\Models\Peminjaman;
-
-Route::get('/test-pdf', function () {
-    $data = Peminjaman::all();
-    return view('pages.admin.laporan.pdf', compact('data'));
-});
-
-require __DIR__ . '/auth.php';

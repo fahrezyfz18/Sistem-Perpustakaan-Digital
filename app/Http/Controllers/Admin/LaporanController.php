@@ -5,8 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Peminjaman;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class LaporanController extends Controller
 {
@@ -14,23 +15,20 @@ class LaporanController extends Controller
     {
         $query = Peminjaman::query();
 
-        // 🔍 SEARCH
         if ($request->search) {
             $query->where('nama', 'like', '%' . $request->search . '%');
         }
 
-        // 📄 PAGINATION
         $data = $query->latest()->paginate(8);
 
-        // 🔥 HITUNG DENDA
         $dendaPerHari = 2000;
 
         foreach ($data as $item) {
             $today = Carbon::now()->startOfDay();
-            $tgl_kembali = Carbon::parse($item->tgl_kembali)->startOfDay();
+            $kembali = Carbon::parse($item->tgl_kembali)->startOfDay();
 
-            if ($today->gt($tgl_kembali) && $item->status != 'kembali') {
-                $selisih = $tgl_kembali->diffInDays($today);
+            if ($today->gt($kembali) && $item->status != 'kembali') {
+                $selisih = $kembali->diffInDays($today);
                 $item->status = 'terlambat';
                 $item->denda = $selisih * $dendaPerHari;
             } else {
@@ -38,12 +36,8 @@ class LaporanController extends Controller
             }
         }
 
-        // 📊 GRAFIK (FIX SQLITE)
         $grafik = DB::table('peminjaman')
-            ->select(
-                DB::raw("MONTH(tgl_pinjam) as bulan"),
-                DB::raw('COUNT(*) as total')
-            )
+            ->select(DB::raw("MONTH(tgl_pinjam) as bulan"), DB::raw("COUNT(*) as total"))
             ->groupBy('bulan')
             ->orderBy('bulan')
             ->pluck('total', 'bulan');
@@ -52,11 +46,10 @@ class LaporanController extends Controller
         $values = [];
 
         foreach ($grafik as $bulan => $total) {
-            $labels[] = Carbon::create()->month((int) $bulan)->format('M');
+            $labels[] = Carbon::create()->month($bulan)->format('M');
             $values[] = $total;
         }
 
-        // 📊 CARD DATA
         $peminjamanBulanIni = Peminjaman::whereMonth('tgl_pinjam', now()->month)->count();
         $pengembalianBulanIni = Peminjaman::where('status', 'kembali')
             ->whereMonth('tgl_kembali', now()->month)->count();
@@ -76,8 +69,7 @@ class LaporanController extends Controller
         ));
     }
 
-    // 🔥 EXPORT CSV
-    public function export()
+    public function exportCsv()
     {
         $data = Peminjaman::all();
 
@@ -89,28 +81,20 @@ class LaporanController extends Controller
         ];
 
         $callback = function () use ($data) {
-
             $file = fopen('php://output', 'w');
 
-            // HEADER CSV
             fputcsv($file, [
-                'Nama',
-                'Judul Buku',
-                'Tanggal Pinjam',
-                'Tanggal Kembali',
-                'Status',
-                'Denda'
+                'Nama', 'Judul Buku', 'Tanggal Pinjam', 'Tanggal Kembali', 'Status', 'Denda'
             ]);
 
             $dendaPerHari = 2000;
 
             foreach ($data as $item) {
-
                 $today = Carbon::now()->startOfDay();
-                $tgl_kembali = Carbon::parse($item->tgl_kembali)->startOfDay();
+                $kembali = Carbon::parse($item->tgl_kembali)->startOfDay();
 
-                if ($today->gt($tgl_kembali) && $item->status != 'kembali') {
-                    $selisih = $tgl_kembali->diffInDays($today);
+                if ($today->gt($kembali) && $item->status != 'kembali') {
+                    $selisih = $kembali->diffInDays($today);
                     $denda = $selisih * $dendaPerHari;
                     $status = 'terlambat';
                 } else {
@@ -134,18 +118,15 @@ class LaporanController extends Controller
         return response()->stream($callback, 200, $headers);
     }
 
-        // 🔥 EXPORT PDF (INI YANG BARU)
-    if ($type == 'pdf') {
+    public function exportPdf()
+    {
+        $data = Peminjaman::all();
 
         $pdf = Pdf::loadView('pages.admin.laporan.pdf', compact('data'));
 
         return $pdf->download('laporan_peminjaman.pdf');
     }
 
-    return back();
-}
-
-    // 🔍 DETAIL
     public function show($id)
     {
         $data = Peminjaman::findOrFail($id);
@@ -153,10 +134,10 @@ class LaporanController extends Controller
         $dendaPerHari = 2000;
 
         $today = Carbon::now()->startOfDay();
-        $tgl_kembali = Carbon::parse($data->tgl_kembali)->startOfDay();
+        $kembali = Carbon::parse($data->tgl_kembali)->startOfDay();
 
-        if ($today->gt($tgl_kembali) && $data->status != 'kembali') {
-            $selisih = $tgl_kembali->diffInDays($today);
+        if ($today->gt($kembali) && $data->status != 'kembali') {
+            $selisih = $kembali->diffInDays($today);
             $data->status = 'terlambat';
             $data->denda = $selisih * $dendaPerHari;
         } else {

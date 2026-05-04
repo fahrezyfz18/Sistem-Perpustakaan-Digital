@@ -21,17 +21,17 @@ class BookController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'judul' => 'required',
-            'isbn' => 'nullable',
-            'penulis' => 'required',
-            'penerbit' => 'required',
-            'kategori' => 'required',
+        $validated = $request->validate([
+            'judul' => 'required|string',
+            'isbn' => 'nullable|string',
+            'penulis' => 'required|string',
+            'penerbit' => 'required|string',
+            'kategori' => 'required|string',
             'tahun' => 'required|numeric',
             'stok' => 'required|numeric',
         ]);
 
-        Book::create($request->all());
+        Book::create($validated);
 
         return redirect()->route('admin.buku.index')
             ->with('success', 'Buku berhasil ditambahkan');
@@ -47,19 +47,19 @@ class BookController extends Controller
         return view('pages.admin.books.edit', compact('buku'));
     }
 
-public function update(Request $request, Book $buku)
-{
-$request->validate([
-    'judul' => 'required',
-    'isbn' => 'nullable',
-    'penulis' => 'required',
-    'penerbit' => 'required',
-    'kategori' => 'required',
-    'tahun' => 'required|numeric',
-    'stok' => 'required|numeric',
-]);
+    public function update(Request $request, Book $buku)
+    {
+        $validated = $request->validate([
+            'judul' => 'required|string',
+            'isbn' => 'nullable|string',
+            'penulis' => 'required|string',
+            'penerbit' => 'required|string',
+            'kategori' => 'required|string',
+            'tahun' => 'required|numeric',
+            'stok' => 'required|numeric',
+        ]);
 
-        $buku->update($request->all());
+        $buku->update($validated);
 
         return redirect()->route('admin.buku.index')
             ->with('success', 'Buku berhasil diupdate');

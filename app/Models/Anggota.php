@@ -20,24 +20,17 @@ class Anggota extends Model
         'status',
     ];
 
-    /**
-     * Auto generate kode anggota
-     */
     protected static function boot()
     {
         parent::boot();
 
         static::creating(function ($anggota) {
-            $anggota->kode_anggota = 'AGT-' . date('Ymd') . rand(100, 999);
-        });
 
-        static::creating(function ($anggota) {
             do {
                 $kode = 'AGT-' . date('Ymd') . rand(100, 999);
-            } while (Anggota::where('kode_anggota', $kode)->exists());
+            } while (self::where('kode_anggota', $kode)->exists());
 
             $anggota->kode_anggota = $kode;
         });
-
     }
 }

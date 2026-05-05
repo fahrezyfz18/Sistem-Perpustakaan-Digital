@@ -7,10 +7,20 @@ use App\Models\Book;
 
 class BookController extends Controller
 {
+    // =========================
+    // INDEX (VERSI DATABASE)
+    // =========================
     public function index()
     {
+        // data dari database
         $books = Book::latest()->paginate(10);
-    // fungsi ambil data
+
+        return view('pages.admin.books.index', compact('books'));
+    }
+
+    // =========================
+    // DATA STATIC (VERSI LAMA / TEST)
+    // =========================
     public function getData()
     {
         return [
@@ -20,40 +30,38 @@ class BookController extends Controller
         ];
     }
 
-    // fungsi tampilkan ke view
+    // =========================
+    // TAMPILKAN DATA STATIC
+    // =========================
     public function tampilkan()
     {
         $data = $this->getData();
 
         return view('pages.admin.books.index', compact('data'));
-    } 
-
-    public function index()
-    {
-        $books = [
-            ['judul' => 'Rahvayana - Aku Lala Padamu', 'penulis' => 'Sujiwo Tejo'],
-            ['judul' => 'Dermaga Sastra Indonesia', 'penulis' => 'Sujiwo Tejo'],
-            ['judul' => 'Pemrograman & Database', 'penulis' => 'Sujiwo Tejo'],
-            ['judul' => 'Bumi', 'penulis' => 'Sujiwo Tejo'],
-        ];
-
-
-        return view('pages.admin.books.index', compact('books'));
     }
 
+    // =========================
+    // CREATE
+    // =========================
     public function create()
     {
         return view('pages.admin.books.create');
     }
 
+    // =========================
+    // STORE
+    // =========================
     public function store(Request $request)
     {
         $request->validate([
-            4
+            // contoh validasi (silakan sesuaikan dengan database)
+            'judul' => 'required|string|max:255',
+            'penulis' => 'required|string|max:255',
         ]);
 
         Book::create($request->all());
 
-        return redirect()->route('admin.buku.index');
+        return redirect()->route('admin.buku.index')
+            ->with('success', 'Buku berhasil ditambahkan');
     }
 }

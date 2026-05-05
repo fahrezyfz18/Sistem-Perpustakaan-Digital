@@ -1,8 +1,6 @@
 <?php
 
-
 return [
-
 
     /*
     |--------------------------------------------------------------------------
@@ -10,12 +8,11 @@ return [
     |--------------------------------------------------------------------------
     |
     | The following language lines are used during authentication for various
-    | messages that we need to display to the user. You are free to modify
-    | these language lines according to your application's requirements.
+    | messages that we need to display to the user.
     |
     */
 
-    'failed' => 'These credentials do not match     'failed' => 'Email atau password tidak sesuai.',
+    'failed' => 'Email atau password tidak sesuai.',
     'password' => 'Password yang dimasukkan salah.',
     'throttle' => 'Terlalu banyak percobaan login. Silakan coba lagi dalam :seconds detik.',
 

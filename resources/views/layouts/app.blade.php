@@ -18,31 +18,35 @@
 
 <body class="font-sans antialiased bg-background">
 
-<div x-data="{ sidebarOpen: false }" class="flex min-h-screen">
+    <div x-data="{ sidebarOpen: false }" class="flex min-h-screen">
 
-    <!-- SIDEBAR -->
-    @auth
-        @if(auth()->user()->role === 'admin')
-            @include('components.sidebar-admin')
-        @else
-            @include('components.sidebar-user')
-        @endif
-    @endauth
+        <!-- SIDEBAR -->
+        @auth
+            @if(auth()->user()->role === 'admin')
+                @include('components.sidebar-admin')
+            @else
+                @include('components.sidebar-user')
+            @endif
+        @endauth
 
-    <!-- MAIN -->
-    <div class="flex-1 md:ml-64 w-full">
+        <!-- OVERLAY -->
+        <div x-show="sidebarOpen" @click="sidebarOpen = false" class="fixed inset-0 bg-black/40 z-30 md:hidden"></div>
 
-        <!-- NAVBAR -->
-        @include('layouts.navigation')
+        <!-- MAIN -->
+        <div class="flex-1 md:ml-64 w-full">
 
-        <!-- CONTENT -->
-        <main class="p-4 md:p-6">
-            @yield('content')
-        </main>
+            <!-- NAVBAR -->
+            @include('layouts.navigation')
+
+            <!-- CONTENT -->
+            <main class="p-4 md:p-6">
+                @yield('content')
+            </main>
+
+        </div>
 
     </div>
 
-</div>
-
 </body>
+
 </html>

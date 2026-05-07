@@ -7,18 +7,14 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-public function index()
-{
-$data = [
-'nama' => 'LibraryHub',
-'pekerjaan' => 'Developer',
-];
-return view('home')->with($data);
-$nama = "Zie";
-$pekerjaan = "Admin";
-return view('home', compact('nama', 'pekerjaan'));
+    public function index()
+    {
+        $books = \App\Models\Book::latest()->take(8)->get();
 
+        return view('home', compact('books'));
+    }
 }
+
   // data untuk ditampilkan di home
     public function getData()
     {
@@ -35,5 +31,11 @@ return view('home', compact('nama', 'pekerjaan'));
 
         return view('home', compact('data'));
     }
-}
 
+public function index()
+{
+    $books = \App\Models\Book::latest()->take(8)->get();
+
+    return view('home', compact('books'));
+}
+}

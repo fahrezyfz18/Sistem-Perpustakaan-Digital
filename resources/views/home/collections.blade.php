@@ -3,7 +3,7 @@
      ========================================================= -->
 <section id="koleksi" class="py-24 bg-slate-50">
 
-    <div class="max-w-7xl mx-auto px-4">
+    <div class="container-page">
 
         <!-- =================================================
              SECTION HEADER
@@ -14,11 +14,11 @@
             <!-- TITLE -->
             <div>
                 <h2 class="text-4xl font-black text-kombu">
-                    New <span class="text-asparagus">Collection</span>
+                    Koleksi <span class="text-asparagus">Baru</span>
                 </h2>
 
                 <p class="mt-2 italic text-gray-500">
-                    Recommended reads for this week.
+                    Rekomendasi bacaan untuk minggu ini.
                 </p>
             </div>
 
@@ -29,7 +29,7 @@
                        bg-kombu rounded-full shadow-lg
                        transition duration-300
                        hover:bg-asparagus">
-                Explore All
+                Jelajahi semua
             </a>
         </div>
 
@@ -41,7 +41,7 @@
 
             <!-- =============================================
                  BOOK ITEM 1
-                 ============================================= -->
+                 aa============================================= -->
             <div class="group">
 
                 <!-- BOOK COVER -->
@@ -69,7 +69,7 @@
                                    text-sm font-bold
                                    text-kombu
                                    bg-white rounded-xl shadow-xl">
-                            Read Now
+                            Baca Sekarang
                         </button>
                     </div>
                 </div>
@@ -83,7 +83,7 @@
                 <p class="mt-1 text-xs font-bold
                            uppercase tracking-widest
                            text-mustard">
-                    Science & Nature
+                    Lingkungan
                 </p>
             </div>
 
@@ -118,7 +118,7 @@
                                    text-sm font-bold
                                    text-kombu
                                    bg-white rounded-xl shadow-xl">
-                            Read Now
+                            Baca sekarang
                         </button>
                     </div>
                 </div>
@@ -132,7 +132,7 @@
                 <p class="mt-1 text-xs font-bold
                            uppercase tracking-widest
                            text-mustard">
-                    Technology
+                    Teknologi
                 </p>
             </div>
 
@@ -167,7 +167,7 @@
                                    text-sm font-bold
                                    text-kombu
                                    bg-white rounded-xl shadow-xl">
-                            Read Now
+                            Baca Sekarang
                         </button>
                     </div>
                 </div>
@@ -181,7 +181,7 @@
                 <p class="mt-1 text-xs font-bold
                            uppercase tracking-widest
                            text-mustard">
-                    Self Development
+                    Pengembangan Diri
                 </p>
             </div>
 
@@ -216,7 +216,7 @@
                                    text-sm font-bold
                                    text-kombu
                                    bg-white rounded-xl shadow-xl">
-                            Read Now
+                            Baca Sekarang
                         </button>
                     </div>
                 </div>
@@ -230,7 +230,7 @@
                 <p class="mt-1 text-xs font-bold
                            uppercase tracking-widest
                            text-mustard">
-                    Education
+                    Pendidikan
                 </p>
             </div>
 

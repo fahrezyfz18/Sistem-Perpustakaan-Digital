@@ -35,9 +35,9 @@
             </h4>
 
             <nav class="flex flex-col gap-4 text-sm text-olivine/70 font-semibold">
-                <a href="#" class="hover:text-white transition">Koleksi</a>
-                <a href="#" class="hover:text-white transition">Tentang Kami</a>
-                <a href="#" class="hover:text-white transition">Layanan</a>
+                <a href="#koleksi" class="hover:text-white transition">Koleksi</a>
+                <a href="#about" class="hover:text-white transition">Tentang Kami</a>
+                <a href="#services" class="hover:text-white transition">Layanan</a>
             </nav>
         </div>
 

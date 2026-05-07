@@ -38,3 +38,41 @@
 .animate-float {
     animation: float 6s ease-in-out infinite;
 }
+
+@layer components {
+    .container-page {
+        @apply max-w-7xl mx-auto px-4;
+    }
+
+    .section {
+        @apply py-24;
+    }
+
+    .section-title {
+        @apply text-4xl font-black text-kombu;
+    }
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+@layer components {
+
+    .section-title {
+        @apply text-4xl font-black text-kombu italic;
+    }
+
+    .section-subtitle {
+        @apply text-sm uppercase tracking-widest text-mustard;
+    }
+
+    .btn-primary {
+        @apply bg-kombu text-white px-8 py-3 rounded-full
+               font-bold hover:bg-asparagus transition;
+    }
+
+    .card {
+        @apply rounded-[2rem] bg-white shadow-lg p-6;
+    }
+}

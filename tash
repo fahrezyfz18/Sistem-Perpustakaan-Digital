@@ -1,0 +1,40 @@
+[33m6765cba[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{0}: commit: update laporan pdf
+[33m56d39ac[m HEAD@{1}: pull: Fast-forward
+[33mdf78047[m HEAD@{2}: pull origin main: Fast-forward
+[33m14c72fa[m HEAD@{3}: commit: update fitur transaksi
+[33m3da2917[m HEAD@{4}: commit: buat laporan peminjaman
+[33m53506d3[m HEAD@{5}: commit: ubah struktur folder
+[33me625356[m HEAD@{6}: commit: update kelola buku
+[33m63407cb[m HEAD@{7}: pull origin main: Fast-forward
+[33maeaf160[m HEAD@{8}: reset: moving to HEAD
+[33maeaf160[m HEAD@{9}: commit: navbar update
+[33mb2b7a82[m HEAD@{10}: commit (merge): resolve merge conflict
+[33m8938c9a[m HEAD@{11}: checkout: moving from main to main
+[33m8938c9a[m HEAD@{12}: checkout: moving from 08af840b41291de1a8d8fa8b012053ee356aee4e to main
+[33m08af840[m[33m ([m[1;32mbackup-fitur[m[33m)[m HEAD@{13}: commit (merge): resolve merge conflict
+[33m9ee7c95[m HEAD@{14}: commit: fitur buku selesai
+[33mf0798c8[m HEAD@{15}: pull origin main --rebase (start): checkout f0798c8af739f989aab1701ccd9fc8836708cb88
+[33m8938c9a[m HEAD@{16}: rebase (finish): returning to refs/heads/main
+[33m8938c9a[m HEAD@{17}: rebase (finish): refs/heads/main onto f0798c8af739f989aab1701ccd9fc8836708cb88
+[33m8938c9a[m HEAD@{18}: checkout: moving from 8018cd62a835306dc4c5c5b354f98ce45e63f902 to main
+[33m8018cd6[m HEAD@{19}: commit: fitur buku update
+[33mf0798c8[m HEAD@{20}: pull origin main --rebase (start): checkout f0798c8af739f989aab1701ccd9fc8836708cb88
+[33m8938c9a[m HEAD@{21}: commit: update fitur buku
+[33mc7042da[m HEAD@{22}: pull: Fast-forward
+[33m0bd1608[m HEAD@{23}: Branch: renamed refs/heads/main to refs/heads/main
+[33m0bd1608[m HEAD@{25}: commit: dashboard update
+[33m3a7873e[m HEAD@{26}: commit (merge): fix merge conflict web.php
+[33mbf6e244[m HEAD@{27}: commit: update web.php lokal
+[33mce46655[m HEAD@{28}: commit: update project
+[33mb9824cf[m HEAD@{29}: commit: test contribution
+[33m07b1e6a[m HEAD@{30}: rebase (finish): returning to refs/heads/main
+[33m07b1e6a[m HEAD@{31}: rebase (continue): update fitur sistem perpustakaan
+[33me82a5bb[m HEAD@{32}: pull origin main --rebase (start): checkout e82a5bb75e5bfd58f8bf8325f517968204b7b7f9
+[33mcd26d71[m HEAD@{33}: rebase (abort): returning to refs/heads/main
+[33mfce5c25[m HEAD@{34}: commit (amend): tambah dashboard
+[33mf2fb060[m HEAD@{35}: commit: first commit
+[33me82a5bb[m HEAD@{36}: pull origin main: Fast-forward
+[33m9a9dc22[m HEAD@{37}: pull origin main --rebase (start): checkout 9a9dc2260d03601dec1e1a68a220ffc25c89098f
+[33mcd26d71[m HEAD@{38}: commit: update fitur sistem perpustakaan
+[33m154011d[m HEAD@{39}: pull: Fast-forward
+[33m9441fe8[m HEAD@{40}: clone: from https://github.com/fahrezyfz18/Sistem-Perpustakaan-Digital.git

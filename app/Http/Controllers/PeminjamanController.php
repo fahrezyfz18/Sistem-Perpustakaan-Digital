@@ -8,11 +8,11 @@ class PeminjamanController extends Controller
 {
     public function index()
     {
-        return "Halaman Peminjaman";
+        return view('pages.user.borrow.index');
     }
 
     public function status()
     {
-        return "Status Peminjaman";
+        return view('pages.user.borrow.status');
     }
 }

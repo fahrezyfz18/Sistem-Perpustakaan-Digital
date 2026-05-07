@@ -81,6 +81,8 @@ Route::middleware(['auth', 'isAdmin'])
 
         // Settings
         Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+        Route::post('/settings/update', [SettingController::class, 'update'])
+            ->name('settings.update');
         Route::get('/settings/edit', [SettingController::class, 'edit'])->name('settings.edit');
 
         // TEST PDF (debug)

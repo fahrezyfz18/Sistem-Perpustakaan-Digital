@@ -5,14 +5,24 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Peminjaman;
+use App\Models\Setting;
 use Carbon\Carbon;
 
 class TransaksiController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $data = Peminjaman::paginate(10);
+        $query = Peminjaman::query();
 
+        // SEARCH
+        if ($request->search) {
+            $query->where('nama', 'like', '%' . $request->search . '%');
+        }
+
+        // PAGINATION
+        $data = $query->paginate(8);
+
+        // HITUNG DENDA
         foreach ($data as $item) {
             $item->denda = $this->hitungDenda($item);
         }
@@ -31,7 +41,9 @@ class TransaksiController extends Controller
 
     private function hitungDenda($item)
     {
-        $dendaPerHari = 2000;
+        $setting = Setting::first();
+
+        $dendaPerHari = $setting->denda_per_hari ?? 2000;
 
         $today = Carbon::now()->startOfDay();
         $kembali = Carbon::parse($item->tgl_kembali)->startOfDay();

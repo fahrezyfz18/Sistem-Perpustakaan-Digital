@@ -1,58 +1,187 @@
-<header class="relative flex items-center min-h-[85vh] overflow-hidden hero-bg">
-    <div class="relative z-10 grid items-center max-w-7xl mx-auto px-4 gap-12 md:grid-cols-2 sm:px-6 lg:px-8">
+<!-- =========================================================
+     HERO SECTION
+========================================================= -->
+<header class="relative flex min-h-screen items-center overflow-hidden
+           bg-gradient-to-br
+           from-[#E6EDD8]
+           via-[#DEE8CF]
+           to-[#D2DFC1]">
 
-        <!-- LEFT CONTENT -->
-        <div class="space-y-8 animate-fade-in">
+    <!-- =====================================================
+         BACKGROUND GLOW
+    ====================================================== -->
 
-            <!-- BADGE -->
-            <div class="inline-flex items-center gap-2 px-4 py-2 border rounded-full bg-olivine/10 border-olivine/20">
-                <span class="w-2 h-2 bg-asparagus rounded-full animate-ping"></span>
-                <span class="text-xs font-bold tracking-widest uppercase text-asparagus">
+    <!-- LEFT LIGHT -->
+    <div class="absolute -left-[100px] -top-[100px]
+               h-[500px] w-[500px]
+               rounded-full
+               bg-white/20
+               blur-3xl"></div>
+
+    <!-- RIGHT GLOW -->
+    <div class="absolute -bottom-[120px] -right-[100px]
+               h-[600px] w-[600px]
+               rounded-full
+               bg-asparagus/20
+               blur-3xl"></div>
+
+    <!-- =====================================================
+         MAIN CONTAINER
+    ====================================================== -->
+    <div class="relative z-10
+               grid h-full w-full items-stretch
+               lg:grid-cols-[42%_58%]">
+
+        <!-- =================================================
+             LEFT CONTENT
+        ================================================== -->
+        <section class="flex flex-col justify-center
+                   space-y-6 md:space-y-8
+                   px-8 py-12
+                   md:px-10
+                   lg:pl-32 lg:pr-10 lg:py-20 lg:pb-48
+                   animate-fade-in">
+
+            <!-- =============================================
+                 BADGE
+            ============================================== -->
+            <div class="inline-flex w-fit items-center gap-2
+                       rounded-full
+                       border border-olivine/20
+                       bg-olivine/10
+                       px-4 py-2">
+
+                <!-- BADGE INDICATOR -->
+                <span class="h-2 w-2
+                           animate-ping
+                           rounded-full
+                           bg-asparagus"></span>
+
+                <!-- BADGE TEXT -->
+                <span class="text-[10px] font-bold uppercase tracking-widest
+                           text-asparagus md:text-xs">
                     Portal Perpustakaan Digital
                 </span>
             </div>
 
-            <!-- TITLE -->
-            <h1 class="text-5xl font-extrabold leading-[1.1] text-kombu md:text-7xl">
+            <!-- =============================================
+                 MAIN TITLE
+            ============================================== -->
+            <h1 class="max-w-xl
+                       text-5xl font-extrabold leading-tight tracking-tight
+                       text-kombu
+                       md:text-6xl
+                       lg:text-7xl">
                 Selamat Datang di
-                <span class="text-asparagus">LeafShelf</span>
+
+                <span class="text-asparagus">
+                    LeafShelf
+                </span>
             </h1>
 
-            <!-- DESCRIPTION -->
-            <div class="relative pl-6">
-                <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-camel rounded-full"></div>
+            <!-- =============================================
+                 MOBILE HERO IMAGE
+            ============================================== -->
+            <div class="block w-full py-2 lg:hidden">
 
-                <p class="text-lg font-medium leading-relaxed text-gray-600 md:text-xl">
+                <div class="relative mx-auto w-full max-w-[350px]">
+
+                    <img src="{{ asset('images/welcome.png') }}" alt="LeafShelf Mobile Illustration" loading="eager"
+                        decoding="async" class="h-auto w-full
+                               animate-float
+                               rounded-[2rem]
+                               object-contain
+                               mix-blend-multiply
+                               drop-shadow-xl">
+                </div>
+            </div>
+
+            <!-- =============================================
+                 DESCRIPTION
+            ============================================== -->
+            <div class="relative max-w-lg pl-6">
+
+                <!-- ACCENT LINE -->
+                <div class="absolute bottom-0 left-0 top-0
+                           w-1.5
+                           rounded-full
+                           bg-camel"></div>
+
+                <!-- DESCRIPTION TEXT -->
+                <p class="text-lg font-medium leading-relaxed
+                           text-gray-600
+                           md:text-xl">
                     Kembangkan wawasanmu bersama
-                    <span class="font-bold text-kombu">LeafShelf</span>.
-                    Temukan perpustakaan digital yang tenang dengan ribuan judul pilihan
-                    untuk mendukung perjalanan pengembangan dirimu.
+                    <span class="font-bold text-kombu">
+                        LeafShelf
+                    </span>.
+
+                    Temukan perpustakaan digital yang tenang
+                    dengan ribuan judul pilihan untuk mendukung
+                    perjalanan pengembangan dirimu.
                 </p>
             </div>
 
-            <!-- CTA -->
+            <!-- =============================================
+                 CALL TO ACTION
+            ============================================== -->
             <div class="flex flex-wrap gap-4">
-                <a href="#koleksi"
-                    class="flex items-center gap-3 px-10 py-4 font-bold text-white transition-all shadow-2xl rounded-xl bg-kombu shadow-kombu/30 hover:bg-asparagus hover:scale-105">
-                    Turn a New Leaf!
+
+                <!-- CTA BUTTON -->
+                <a href="#koleksi" aria-label="Lihat koleksi LeafShelf" class="flex items-center gap-3
+                           rounded-xl
+                           bg-kombu
+                           px-10 py-4
+                           font-bold text-white
+                           shadow-2xl shadow-kombu/30
+                           transition-all duration-300
+                           hover:scale-105
+                           hover:bg-asparagus
+                           active:scale-95">
+
+                    <span>
+                        Turn a New Leaf!
+                    </span>
+
+                    <!-- ICON -->
                     <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
+        </section>
 
-        </div>
+        <!-- =================================================
+             RIGHT IMAGE
+        ================================================== -->
+        <section class="relative hidden
+           min-h-screen
+           overflow-hidden
+           lg:flex
+           items-center
+           justify-end">
 
-        <!-- RIGHT IMAGE -->
-        <div class="relative flex justify-center">
-            <div class="relative z-10">
+            <!-- MAIN GLOW -->
+            <div class="absolute right-10
+                       h-[650px] w-[650px]
+                       rounded-full
+                       bg-white/20
+                       blur-3xl"></div>
 
-                <img src="{{ asset('images/welcome.png') }}" alt="LeafShelf Digital Library Illustration" class="w-full max-w-lg mx-auto border-8 border-white rounded-[3rem] p-4 
-                           drop-shadow-[0_40px_40px_rgba(54,78,49,0.25)]">
+            <!-- SECONDARY GLOW -->
+            <div class="absolute bottom-0 right-0
+                       h-[400px] w-[400px]
+                       rounded-full
+                       bg-asparagus/20
+                       blur-3xl"></div>
 
-                <!-- GLOW -->
-                <div class="absolute w-32 h-32 rounded-full -bottom-10 -right-10 bg-camel/20 blur-3xl"></div>
-
-            </div>
-        </div>
-
+            <!-- HERO IMAGE DESKTOP -->
+            <img src="{{ asset('images/welcome_transparan.png') }}" alt="LeafShelf Illustration" loading="eager"
+                decoding="async" class="absolute inset-0
+           h-full w-full
+           scale-110
+           object-cover
+           object-right
+           mix-blend-multiply
+           drop-shadow-[0_30px_60px_rgba(54,78,49,0.18)]">
+        </section>
     </div>
 </header>

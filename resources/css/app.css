@@ -17,6 +17,24 @@
 @layer utilities {
     .hero-bg {
         background: radial-gradient(circle at top right, rgba(154, 178, 131, 0.15), transparent),
-                    radial-gradient(circle at bottom left, rgba(188, 158, 95, 0.1), transparent);
+            radial-gradient(circle at bottom left, rgba(188, 158, 95, 0.1), transparent);
     }
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+.animate-float {
+    animation: float 6s ease-in-out infinite;
 }

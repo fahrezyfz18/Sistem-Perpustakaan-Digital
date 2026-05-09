@@ -2,13 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Book extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'judul',
         'isbn',
@@ -17,6 +14,7 @@ class Book extends Model
         'kategori',
         'tahun',
         'stok',
-        
+        'cover',
+        'deskripsi',
     ];
 }

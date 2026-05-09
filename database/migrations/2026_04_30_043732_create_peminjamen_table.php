@@ -11,15 +11,31 @@ return new class extends Migration
      */
     public function up(): void
     {
-Schema::create('peminjaman', function (Blueprint $table) {
-    $table->id();
-    $table->string('nama');
-    $table->string('judul');
-    $table->date('tgl_pinjam');
-    $table->date('tgl_kembali');
-    $table->string('status');
-    $table->timestamps();
-});
+        Schema::create('peminjaman', function (Blueprint $table) {
+
+            $table->id();
+
+            $table->foreignId('user_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->foreignId('book_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->date('tanggal_pinjam');
+
+            $table->date('tanggal_kembali')
+                ->nullable();
+
+            $table->enum('status', [
+                'dipinjam',
+                'dikembalikan'
+            ])->default('dipinjam');
+
+            $table->timestamps();
+
+        });
     }
 
     /**

@@ -1,132 +1,352 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| AUTH CONTROLLERS
+|--------------------------------------------------------------------------
+*/
+
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\Admin\ProfileController;
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN CONTROLLERS
+|--------------------------------------------------------------------------
+*/
+
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
 use App\Http\Controllers\Admin\BookController;
 use App\Http\Controllers\Admin\TransaksiController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\LaporanController;
 use App\Http\Controllers\Admin\AnggotaController;
+
+/*
+|--------------------------------------------------------------------------
+| USER CONTROLLERS
+|--------------------------------------------------------------------------
+*/
+
+use App\Http\Controllers\User\DashboardController as UserDashboardController;
+use App\Http\Controllers\User\BookController as UserBookController;
+use App\Http\Controllers\User\HistoryController;
+use App\Http\Controllers\User\MyBookController;
+use App\Http\Controllers\User\ProfileController as UserProfileController;
+
+/*
+|--------------------------------------------------------------------------
+| GENERAL CONTROLLERS
+|--------------------------------------------------------------------------
+*/
+
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\PengembalianController;
+
+/*
+|--------------------------------------------------------------------------
+| MODELS
+|--------------------------------------------------------------------------
+*/
+
 use App\Models\Peminjaman;
 
-// =====================
-// PUBLIC
-// =====================
-Route::get('/', fn() => view('home'))->name('home');
+
+/*
+|--------------------------------------------------------------------------
+| PUBLIC
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/', fn () => view('home'))
+    ->name('home');
 
 
-// =====================
-// AUTH
-// =====================
-Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
-Route::post('/login', [AuthenticatedSessionController::class, 'store']);
-Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+/*
+|--------------------------------------------------------------------------
+| AUTH
+|--------------------------------------------------------------------------
+*/
 
-Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
-Route::post('/register', [RegisteredUserController::class, 'store']);
+Route::get('/login',
+    [AuthenticatedSessionController::class, 'create'])
+    ->name('login');
+
+Route::post('/login',
+    [AuthenticatedSessionController::class, 'store']);
+
+Route::post('/logout',
+    [AuthenticatedSessionController::class, 'destroy'])
+    ->name('logout');
 
 
-// =====================
-// DASHBOARD REDIRECT
-// =====================
+Route::get('/register',
+    [RegisteredUserController::class, 'create'])
+    ->name('register');
+
+Route::post('/register',
+    [RegisteredUserController::class, 'store']);
+
+
+/*
+|--------------------------------------------------------------------------
+| DASHBOARD REDIRECT
+|--------------------------------------------------------------------------
+*/
+
 Route::get('/dashboard', function () {
 
     if (!auth()->check()) {
+
         return redirect()->route('login');
+
     }
 
     return auth()->user()->role === 'admin'
         ? redirect()->route('admin.dashboard')
         : redirect()->route('user.dashboard');
 
-})->middleware(['auth'])->name('dashboard');
+})
+->middleware(['auth'])
+->name('dashboard');
 
 
-// =====================
-// ADMIN AREA
-// =====================
+/*
+|--------------------------------------------------------------------------
+| ADMIN AREA
+|--------------------------------------------------------------------------
+*/
+
 Route::middleware(['auth', 'isAdmin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
 
-        // Dashboard
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        /*
+        |--------------------------------------------------------------------------
+        | DASHBOARD
+        |--------------------------------------------------------------------------
+        */
 
-        // Master Data
+        Route::get('/dashboard',
+            [AdminDashboardController::class, 'index'])
+            ->name('dashboard');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | MASTER DATA
+        |--------------------------------------------------------------------------
+        */
+
         Route::resource('/buku', BookController::class);
+
         Route::resource('/anggota', AnggotaController::class);
+
         Route::resource('/transaksi', TransaksiController::class);
 
-        // Pengembalian
-        Route::get('/pengembalian', [PengembalianController::class, 'index'])
+
+        /*
+        |--------------------------------------------------------------------------
+        | PENGEMBALIAN
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/pengembalian',
+            [PengembalianController::class, 'index'])
             ->name('pengembalian.index');
 
-        // Laporan
-        Route::get('/laporan-peminjaman', [LaporanController::class, 'index'])
+
+        /*
+        |--------------------------------------------------------------------------
+        | LAPORAN
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/laporan-peminjaman',
+            [LaporanController::class, 'index'])
             ->name('laporan.peminjaman');
 
-        Route::get('/laporan/export', [LaporanController::class, 'export'])
+        Route::get('/laporan/export',
+            [LaporanController::class, 'export'])
             ->name('laporan.export');
 
-        // Profile
-        Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
-        Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
-        // Settings
-        Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
-        Route::post('/settings/update', [SettingController::class, 'update'])
+        /*
+        |--------------------------------------------------------------------------
+        | PROFILE
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/profile',
+            [AdminProfileController::class, 'index'])
+            ->name('profile.index');
+
+        Route::get('/profile/edit',
+            [AdminProfileController::class, 'edit'])
+            ->name('profile.edit');
+
+        Route::patch('/profile',
+            [AdminProfileController::class, 'update'])
+            ->name('profile.update');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | SETTINGS
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/settings',
+            [SettingController::class, 'index'])
+            ->name('settings.index');
+
+        Route::get('/settings/edit',
+            [SettingController::class, 'edit'])
+            ->name('settings.edit');
+
+        Route::post('/settings/update',
+            [SettingController::class, 'update'])
             ->name('settings.update');
-        Route::get('/settings/edit', [SettingController::class, 'edit'])->name('settings.edit');
 
-        // TEST PDF (debug)
+
+        /*
+        |--------------------------------------------------------------------------
+        | TEST PDF
+        |--------------------------------------------------------------------------
+        */
+
         Route::get('/test-pdf', function () {
+
             $data = Peminjaman::all();
-            return view('pages.admin.laporan.pdf', compact('data'));
+
+            return view('pages.admin.laporan.pdf',
+                compact('data'));
+
         });
+
     });
 
 
-// =====================
-// USER AREA
-// =====================
+/*
+|--------------------------------------------------------------------------
+| USER AREA
+|--------------------------------------------------------------------------
+*/
+
 Route::middleware(['auth', 'isUser'])
     ->prefix('user')
     ->name('user.')
     ->group(function () {
 
-        Route::get('/dashboard', [DashboardController::class, 'userDashboard'])
+        /*
+        |--------------------------------------------------------------------------
+        | DASHBOARD
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/dashboard',
+            [UserDashboardController::class, 'index'])
             ->name('dashboard');
 
-        Route::get('/books', [BookController::class, 'index'])
+
+        /*
+        |--------------------------------------------------------------------------
+        | BOOKS
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/books',
+            [UserBookController::class, 'index'])
             ->name('books.index');
 
-        Route::get('/books/filter', [BookController::class, 'filter'])
+        Route::get('/books/{book}',
+            [UserBookController::class, 'show'])
+            ->name('books.show');
+
+        Route::get('/books/filter',
+            [UserBookController::class, 'filter'])
             ->name('books.filter');
 
-        Route::get('/borrow', [PeminjamanController::class, 'index'])
-            ->name('borrow.index');
 
-        Route::get('/borrow/status', [PeminjamanController::class, 'status'])
+        /*
+        |--------------------------------------------------------------------------
+        | HISTORY
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/history',
+            [HistoryController::class, 'index'])
+            ->name('history.index');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | MY BOOKS
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/my-books',
+            [MyBookController::class, 'index'])
+            ->name('my-books.index');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | BORROW BOOK
+        |--------------------------------------------------------------------------
+        */
+
+        Route::post('/borrow/{book}',
+            [PeminjamanController::class, 'store'])
+            ->name('borrow.store');
+
+        Route::get('/borrow/status',
+            [PeminjamanController::class, 'status'])
             ->name('borrow.status');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | USER PROFILE
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/profile',
+            [UserProfileController::class, 'edit'])
+            ->name('profile.edit');
+
+        Route::patch('/profile',
+            [UserProfileController::class, 'update'])
+            ->name('profile.update');
+
     });
 
 
-// =====================
-// PROFILE USER GLOBAL
-// =====================
+/*
+|--------------------------------------------------------------------------
+| GLOBAL PROFILE
+|--------------------------------------------------------------------------
+*/
+
 Route::middleware('auth')
     ->prefix('profile')
     ->name('profile.')
     ->group(function () {
 
-        Route::get('/', [ProfileController::class, 'edit'])->name('edit');
-        Route::patch('/', [ProfileController::class, 'update'])->name('update');
-        Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
+        Route::get('/',
+            [UserProfileController::class, 'edit'])
+            ->name('edit');
+
+        Route::patch('/',
+            [UserProfileController::class, 'update'])
+            ->name('update');
+
+        Route::delete('/',
+            [UserProfileController::class, 'destroy'])
+            ->name('destroy');
+
     });

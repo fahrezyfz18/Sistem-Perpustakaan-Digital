@@ -2,67 +2,76 @@
 
 @section('content')
 
-<div class="flex justify-between mb-4">
-    <h2 class="text-2xl font-bold text-kombu">Kelola Data Buku</h2>
+<div class="p-6 bg-background min-h-screen">
 
-    <a href="{{ route('admin.buku.create') }}"
-       class="bg-mustard text-white px-4 py-2 rounded">
-       + Tambah Buku
-    </a>
-</div>
+    <!-- HEADER -->
+    <div class="mb-6">
 
-@if(session('success'))
-<div class="bg-olive text-white p-3 rounded mb-3">
-    {{ session('success') }}
-</div>
-@endif
+        <h1 class="text-2xl font-semibold text-kombu">
+            Buku Saya
+        </h1>
 
-<div class="bg-white shadow rounded">
-<table class="w-full">
+        <p class="text-sm text-gray-500 mt-1">
+            Buku yang sedang Anda pinjam
+        </p>
 
-    <thead class="bg-asparagus text-white">
-        <tr>
-            <th class="p-2">Judul</th>
-            <th>Penulis</th>
-            <th>Penerbit</th>
-            <th>Tahun</th>
-            <th>Kategori</th>
-            <th>Aksi</th>
-        </tr>
-    </thead>
+    </div>
 
-    <tbody>
-        @foreach($books as $book)
-        <tr class="border-b">
-            <td class="p-2">{{ $book->judul }}</td>
-            <td>{{ $book->penulis }}</td>
-            <td>{{ $book->penerbit }}</td>
-            <td>{{ $book->tahun }}</td>
-            <td>
-                <span class="bg-camel text-white px-2 py-1 rounded">
-                    {{ $book->kategori }}
-                </span>
-            </td>
+    <!-- BOOK GRID -->
+    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
 
-            <td class="flex gap-2 p-2">
-                <a href="{{ route('admin.buku.edit', $book->id) }}"
-                   class="bg-asparagus text-white px-2 py-1 rounded">
-                   Edit
-                </a>
+        @forelse($books as $book)
 
-                <form action="{{ route('admin.buku.destroy', $book->id) }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button class="bg-red-500 text-white px-2 py-1 rounded">
-                        Hapus
-                    </button>
-                </form>
-            </td>
-        </tr>
-        @endforeach
-    </tbody>
+            <div class="bg-white rounded-xl shadow overflow-hidden">
 
-</table>
+                <!-- COVER -->
+                <div class="h-64 overflow-hidden bg-gray-100">
+
+                    @if($book->cover)
+
+                        <img
+                            src="{{ asset('storage/' . $book->cover) }}"
+                            class="w-full h-full object-cover">
+
+                    @endif
+
+                </div>
+
+                <!-- CONTENT -->
+                <div class="p-4">
+
+                    <h3 class="font-semibold text-kombu">
+                        {{ $book->judul }}
+                    </h3>
+
+                    <p class="text-sm text-gray-500 mt-1">
+                        {{ $book->penulis }}
+                    </p>
+
+                    <div class="mt-4">
+
+                        <span class="bg-mustard text-white text-xs px-3 py-1 rounded">
+                            Sedang Dipinjam
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        @empty
+
+            <div class="col-span-full text-center py-10 text-gray-500">
+
+                Anda belum meminjam buku
+
+            </div>
+
+        @endforelse
+
+    </div>
+
 </div>
 
 @endsection

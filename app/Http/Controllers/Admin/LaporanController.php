@@ -13,60 +13,119 @@ class LaporanController extends Controller
 {
     public function index()
     {
+        /*
+        |--------------------------------------------------------------------------
+        | SETTINGS
+        |--------------------------------------------------------------------------
+        */
+
         $setting = Setting::first();
 
         $dendaPerHari = $setting->denda_per_hari ?? 2000;
 
-        // DATA TERLAMBAT
-        $terlambat = Peminjaman::where('status', 'terlambat')->get();
+
+        /*
+        |--------------------------------------------------------------------------
+        | DATA TERLAMBAT
+        |--------------------------------------------------------------------------
+        */
+
+        $terlambat = Peminjaman::with(['book', 'user'])
+            ->where('status', 'terlambat')
+            ->get();
 
         foreach ($terlambat as $item) {
 
             $today = Carbon::now()->startOfDay();
-            $kembali = Carbon::parse($item->tgl_kembali)->startOfDay();
+
+            $kembali = Carbon::parse(
+                $item->tanggal_kembali
+            )->startOfDay();
 
             $item->hari_telat = $kembali->diffInDays($today);
 
             $item->denda = $item->hari_telat * $dendaPerHari;
         }
 
-        // TOP BUKU
-        $topBooks = Peminjaman::selectRaw('judul, COUNT(*) as total')
-            ->groupBy('judul')
+
+        /*
+        |--------------------------------------------------------------------------
+        | TOP BUKU
+        |--------------------------------------------------------------------------
+        */
+
+        $topBooks = Peminjaman::with('book')
+            ->selectRaw('book_id, COUNT(*) as total')
+            ->groupBy('book_id')
             ->orderByDesc('total')
             ->limit(5)
             ->get();
 
-        // TOP USER
-        $topUsers = Peminjaman::selectRaw('nama, COUNT(*) as total')
-            ->groupBy('nama')
+
+        /*
+        |--------------------------------------------------------------------------
+        | TOP USER
+        |--------------------------------------------------------------------------
+        */
+
+        $topUsers = Peminjaman::with('user')
+            ->selectRaw('user_id, COUNT(*) as total')
+            ->groupBy('user_id')
             ->orderByDesc('total')
             ->limit(5)
             ->get();
 
-        return view('pages.admin.laporan.index', compact(
-            'terlambat',
-            'topBooks',
-            'topUsers'
-        ));
+
+        /*
+        |--------------------------------------------------------------------------
+        | RETURN VIEW
+        |--------------------------------------------------------------------------
+        */
+
+        return view(
+            'pages.admin.laporan.index',
+            compact(
+                'terlambat',
+                'topBooks',
+                'topUsers'
+            )
+        );
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | EXPORT LAPORAN
+    |--------------------------------------------------------------------------
+    */
 
     public function export(Request $request)
     {
-        $data = Peminjaman::all();
+        $data = Peminjaman::with(['book', 'user'])->get();
 
         $setting = Setting::first();
 
         $dendaPerHari = $setting->denda_per_hari ?? 2000;
 
-        // HITUNG DENDA
+
+        /*
+        |--------------------------------------------------------------------------
+        | HITUNG DENDA
+        |--------------------------------------------------------------------------
+        */
+
         foreach ($data as $item) {
 
             $today = Carbon::now()->startOfDay();
 
-            $kembali = Carbon::parse($item->tgl_kembali)->startOfDay();
+            $kembali = Carbon::parse(
+                $item->tanggal_kembali
+            )->startOfDay();
 
-            if ($today->gt($kembali) && $item->status != 'kembali') {
+            if (
+                $today->gt($kembali) &&
+                $item->status != 'kembali'
+            ) {
 
                 $hariTelat = $kembali->diffInDays($today);
 
@@ -78,7 +137,13 @@ class LaporanController extends Controller
             }
         }
 
-        // EXPORT PDF
+
+        /*
+        |--------------------------------------------------------------------------
+        | EXPORT PDF
+        |--------------------------------------------------------------------------
+        */
+
         if ($request->type == 'pdf') {
 
             $pdf = Pdf::loadView(
@@ -89,44 +154,73 @@ class LaporanController extends Controller
             return $pdf->download('laporan.pdf');
         }
 
-        // EXPORT EXCEL / CSV
+
+        /*
+        |--------------------------------------------------------------------------
+        | EXPORT CSV
+        |--------------------------------------------------------------------------
+        */
+
         $filename = "laporan.csv";
 
         $headers = [
             'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+            'Content-Disposition' =>
+                'attachment; filename="' . $filename . '"',
         ];
 
         $callback = function () use ($data) {
 
             $file = fopen('php://output', 'w');
 
-            // HEADER
+
+            /*
+            |--------------------------------------------------------------------------
+            | HEADER CSV
+            |--------------------------------------------------------------------------
+            */
+
             fputcsv($file, [
                 'Nama',
-                'Judul',
+                'Judul Buku',
                 'Tanggal Pinjam',
                 'Tanggal Kembali',
                 'Status',
                 'Denda'
             ]);
 
-            // DATA
+
+            /*
+            |--------------------------------------------------------------------------
+            | DATA CSV
+            |--------------------------------------------------------------------------
+            */
+
             foreach ($data as $row) {
 
                 fputcsv($file, [
-                    $row->nama,
-                    $row->judul,
-                    $row->tgl_pinjam,
-                    $row->tgl_kembali,
+
+                    $row->user->name ?? '-',
+
+                    $row->book->judul ?? '-',
+
+                    $row->tanggal_pinjam,
+
+                    $row->tanggal_kembali,
+
                     $row->status,
-                    $row->denda
+
+                    $row->denda ?? 0,
                 ]);
             }
 
             fclose($file);
         };
 
-        return response()->stream($callback, 200, $headers);
+        return response()->stream(
+            $callback,
+            200,
+            $headers
+        );
     }
 }

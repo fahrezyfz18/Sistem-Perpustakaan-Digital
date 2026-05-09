@@ -20,80 +20,128 @@
     <!-- TABLE -->
     <div class="bg-white rounded-xl shadow overflow-hidden">
 
-        <table class="w-full text-sm">
+        <div class="overflow-x-auto">
 
-            <thead class="bg-primary text-white">
+            <table class="w-full text-sm">
 
-                <tr>
-
-                    <th class="p-4 text-left">
-                        Buku
-                    </th>
-
-                    <th class="p-4 text-center">
-                        Tanggal Pinjam
-                    </th>
-
-                    <th class="p-4 text-center">
-                        Status
-                    </th>
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-                @forelse($histories as $history)
-
-                    <tr class="border-b">
-
-                        <td class="p-4">
-                            {{ $history->book->judul ?? '-' }}
-                        </td>
-
-                        <td class="p-4 text-center">
-                            {{ $history->created_at->format('d M Y') }}
-                        </td>
-
-                        <td class="p-4 text-center">
-
-                            @if($history->status == 'dipinjam')
-
-                                <span class="bg-mustard text-white px-3 py-1 rounded text-xs">
-                                    Dipinjam
-                                </span>
-
-                            @else
-
-                                <span class="bg-olivine text-white px-3 py-1 rounded text-xs">
-                                    Dikembalikan
-                                </span>
-
-                            @endif
-
-                        </td>
-
-                    </tr>
-
-                @empty
+                <!-- TABLE HEAD -->
+                <thead class="bg-primary text-white">
 
                     <tr>
 
-                        <td colspan="3"
-                            class="p-6 text-center text-gray-500">
+                        <th class="p-4 text-left">
+                            Buku
+                        </th>
 
-                            Belum ada riwayat peminjaman
+                        <th class="p-4 text-center">
+                            Histori Pinjaman
+                        </th>
 
-                        </td>
+                        <th class="p-4 text-center">
+                            Tanggal Pinjam
+                        </th>
+
+                        <th class="p-4 text-center">
+                            Tanggal Kembali
+                        </th>
+
+                        <th class="p-4 text-center">
+                            Status
+                        </th>
 
                     </tr>
 
-                @endforelse
+                </thead>
 
-            </tbody>
+                <!-- TABLE BODY -->
+                <tbody>
 
-        </table>
+                    @forelse($histories as $history)
+
+                        <tr class="border-b hover:bg-gray-50 transition">
+
+                            <!-- BUKU -->
+                            <td class="p-4 font-medium text-kombu">
+
+                                {{ $history->book->judul ?? '-' }}
+
+                            </td>
+
+                            <!-- HISTORI -->
+                            <td class="p-4 text-center text-gray-600">
+
+                                Peminjaman Buku
+
+                            </td>
+
+                            <!-- TANGGAL PINJAM -->
+                            <td class="p-4 text-center text-gray-600">
+
+                                {{ \Carbon\Carbon::parse($history->tanggal_pinjam)->format('d M Y') }}
+
+                            </td>
+
+                            <!-- TANGGAL KEMBALI -->
+                            <td class="p-4 text-center text-gray-600">
+
+                                {{ \Carbon\Carbon::parse($history->tanggal_kembali)->format('d M Y') }}
+
+                            </td>
+
+                            <!-- STATUS -->
+                            <td class="p-4 text-center">
+
+                                @if($history->status == 'selesai')
+
+                                    <span class="bg-olivine text-white px-3 py-1 rounded-full text-xs">
+                                        Selesai
+                                    </span>
+
+                                @elseif($history->status == 'dipinjam')
+
+                                    <span class="bg-mustard text-white px-3 py-1 rounded-full text-xs">
+                                        Dipinjam
+                                    </span>
+
+                                @else
+
+                                    <span class="bg-gray-400 text-white px-3 py-1 rounded-full text-xs">
+                                        {{ ucfirst($history->status) }}
+                                    </span>
+
+                                @endif
+
+                            </td>
+
+                        </tr>
+
+                    @empty
+
+                        <tr>
+
+                            <td colspan="5"
+                                class="p-6 text-center text-gray-500">
+
+                                Belum ada riwayat peminjaman
+
+                            </td>
+
+                        </tr>
+
+                    @endforelse
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <!-- PAGINATION -->
+    <div class="mt-5">
+
+        {{ $histories->links() }}
 
     </div>
 

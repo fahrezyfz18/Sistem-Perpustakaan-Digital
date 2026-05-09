@@ -11,6 +11,39 @@ return new class extends Migration
      */
     public function up(): void
     {
+        /*
+        |--------------------------------------------------------------------------
+        | HAPUS KOLOM LAMA
+        |--------------------------------------------------------------------------
+        */
+
+        Schema::table('peminjaman', function (Blueprint $table) {
+
+            if (Schema::hasColumn('peminjaman', 'nama')) {
+                $table->dropColumn('nama');
+            }
+
+            if (Schema::hasColumn('peminjaman', 'judul')) {
+                $table->dropColumn('judul');
+            }
+
+            if (Schema::hasColumn('peminjaman', 'tgl_pinjam')) {
+                $table->dropColumn('tgl_pinjam');
+            }
+
+            if (Schema::hasColumn('peminjaman', 'tgl_kembali')) {
+                $table->dropColumn('tgl_kembali');
+            }
+
+        });
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | TAMBAH KOLOM BARU
+        |--------------------------------------------------------------------------
+        */
+
         Schema::table('peminjaman', function (Blueprint $table) {
 
             /*
@@ -93,6 +126,12 @@ return new class extends Migration
     {
         Schema::table('peminjaman', function (Blueprint $table) {
 
+            /*
+            |--------------------------------------------------------------------------
+            | DROP FOREIGN KEY
+            |--------------------------------------------------------------------------
+            */
+
             if (Schema::hasColumn('peminjaman', 'user_id')) {
 
                 $table->dropForeign(['user_id']);
@@ -105,6 +144,20 @@ return new class extends Migration
                 $table->dropForeign(['book_id']);
                 $table->dropColumn('book_id');
 
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | DROP COLUMN BARU
+            |--------------------------------------------------------------------------
+            */
+
+            if (Schema::hasColumn('peminjaman', 'tanggal_pinjam')) {
+                $table->dropColumn('tanggal_pinjam');
+            }
+
+            if (Schema::hasColumn('peminjaman', 'tanggal_kembali')) {
+                $table->dropColumn('tanggal_kembali');
             }
 
         });

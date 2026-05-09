@@ -17,4 +17,15 @@ class Book extends Model
         'cover',
         'deskripsi',
     ];
+
+    /*
+    |--------------------------------------------------------------------------
+    | RELATION PEMINJAMAN
+    |--------------------------------------------------------------------------
+    */
+
+    public function peminjaman()
+    {
+        return $this->hasMany(Peminjaman::class);
+    }
 }

@@ -8,16 +8,53 @@ use Illuminate\Http\Request;
 
 class PeminjamanController extends Controller
 {
+    /*
+    |--------------------------------------------------------------------------
+    | STORE
+    |--------------------------------------------------------------------------
+    */
+
     public function store(Book $book)
     {
-        // cek stok
+        /*
+        |--------------------------------------------------------------------------
+        | VALIDASI STOK
+        |--------------------------------------------------------------------------
+        */
+
         if ($book->stok <= 0) {
 
-            return back()->with('error', 'Stok buku habis');
-
+            return back()->with(
+                'error',
+                'Stok buku habis.'
+            );
         }
 
-        // simpan peminjaman
+        /*
+        |--------------------------------------------------------------------------
+        | CEK SUDAH MEMINJAM?
+        |--------------------------------------------------------------------------
+        */
+
+        $alreadyBorrowed = Peminjaman::where('user_id', auth()->id())
+            ->where('book_id', $book->id)
+            ->where('status', 'dipinjam')
+            ->exists();
+
+        if ($alreadyBorrowed) {
+
+            return back()->with(
+                'error',
+                'Anda sudah meminjam buku ini.'
+            );
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | SIMPAN PEMINJAMAN
+        |--------------------------------------------------------------------------
+        */
+
         Peminjaman::create([
 
             'user_id' => auth()->id(),
@@ -32,11 +69,25 @@ class PeminjamanController extends Controller
 
         ]);
 
-        // kurangi stok
+        /*
+        |--------------------------------------------------------------------------
+        | KURANGI STOK
+        |--------------------------------------------------------------------------
+        */
+
         $book->decrement('stok');
+
+        /*
+        |--------------------------------------------------------------------------
+        | REDIRECT
+        |--------------------------------------------------------------------------
+        */
 
         return redirect()
             ->route('user.my-books.index')
-            ->with('success', 'Buku berhasil dipinjam');
+            ->with(
+                'success',
+                'Buku berhasil dipinjam.'
+            );
     }
 }

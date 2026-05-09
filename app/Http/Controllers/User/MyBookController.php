@@ -3,18 +3,21 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Peminjaman;
 
 class MyBookController extends Controller
 {
     public function index()
     {
-        $books = Peminjaman::where('user_id', Auth::id())
+        $books = \App\Models\Peminjaman::with('book')
+            ->where('user_id', auth()->id())
             ->where('status', 'dipinjam')
             ->latest()
-            ->paginate(10);
+            ->get();
 
-        return view('user.my-books.index', compact('books'));
+        return view(
+            'pages.user.mybooks.index',
+            compact('books')
+        );
     }
-}   
+}

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -26,10 +27,12 @@ class DashboardController extends Controller
             ]
         ];
 
-        return view('pages.admin.dashboard', compact('stats', 'peminjamanTerbaru'));
-    }
-    public function userDashboard()
-    {
-        return view('pages.user.dashboard.index');
+        return view(
+            'pages.admin.dashboard',
+            compact(
+                'stats',
+                'peminjamanTerbaru'
+            )
+        );
     }
 }

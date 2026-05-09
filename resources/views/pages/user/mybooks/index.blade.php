@@ -27,11 +27,19 @@
                 <!-- COVER -->
                 <div class="h-64 overflow-hidden bg-gray-100">
 
-                    @if($book->cover)
+                    @if($book->book && $book->book->cover)
 
                         <img
-                            src="{{ asset('storage/' . $book->cover) }}"
+                            src="{{ asset('storage/' . $book->book->cover) }}"
                             class="w-full h-full object-cover">
+
+                    @else
+
+                        <div class="w-full h-full flex items-center justify-center text-gray-400">
+
+                            No Cover
+
+                        </div>
 
                     @endif
 
@@ -41,18 +49,33 @@
                 <div class="p-4">
 
                     <h3 class="font-semibold text-kombu">
-                        {{ $book->judul }}
+
+                        {{ $book->book->judul ?? '-' }}
+
                     </h3>
 
                     <p class="text-sm text-gray-500 mt-1">
-                        {{ $book->penulis }}
+
+                        {{ $book->book->penulis ?? '-' }}
+
                     </p>
 
+                    <!-- STATUS -->
                     <div class="mt-4">
 
                         <span class="bg-mustard text-white text-xs px-3 py-1 rounded">
+
                             Sedang Dipinjam
+
                         </span>
+
+                    </div>
+
+                    <!-- TANGGAL -->
+                    <div class="mt-3 text-xs text-gray-500">
+
+                        Dipinjam:
+                        {{ \Carbon\Carbon::parse($book->tanggal_pinjam)->format('d M Y') }}
 
                     </div>
 

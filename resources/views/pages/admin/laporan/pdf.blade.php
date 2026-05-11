@@ -6,7 +6,6 @@
     <title>Laporan PDF</title>
 
     <style>
-
         body {
             font-family: sans-serif;
         }
@@ -37,7 +36,6 @@
             color: red;
             font-weight: bold;
         }
-
     </style>
 
 </head>
@@ -69,20 +67,28 @@
 
                 <tr>
 
-                    <td>{{ $item->nama }}</td>
+                    <td>
+                        {{ $item->user->name ?? '-' }}
+                    </td>
 
-                    <td>{{ $item->judul }}</td>
+                    <td>
+                        {{ $item->book->judul ?? '-' }}
+                    </td>
 
-                    <td>{{ $item->tgl_pinjam }}</td>
+                    <td>
+                        {{ $item->tanggal_pinjam }}
+                    </td>
 
-                    <td>{{ $item->tgl_kembali }}</td>
+                    <td>
+                        {{ $item->tanggal_kembali }}
+                    </td>
 
-                    <td>{{ ucfirst($item->status) }}</td>
+                    <td>
+                        {{ ucfirst($item->status) }}
+                    </td>
 
                     <td class="red">
-
                         Rp {{ number_format($item->denda ?? 0, 0, ',', '.') }}
-
                     </td>
 
                 </tr>

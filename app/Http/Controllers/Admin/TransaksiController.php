@@ -46,7 +46,7 @@ class TransaksiController extends Controller
 
         $data = $query
             ->latest()
-            ->paginate(10);
+            ->paginate(8);
 
         /*
         |--------------------------------------------------------------------------

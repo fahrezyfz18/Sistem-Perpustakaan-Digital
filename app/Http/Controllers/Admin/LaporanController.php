@@ -223,4 +223,4 @@ class LaporanController extends Controller
             $headers
         );
     }
-}
+}   

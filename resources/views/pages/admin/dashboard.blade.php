@@ -2,118 +2,206 @@
 
 @section('content')
 
-    <div class="min-h-screen bg-background p-4 sm:p-6">
+<div class="min-h-screen bg-background p-4 sm:p-6">
 
-        <!-- HEADER -->
-        <div class="mb-6">
+    <!-- HEADER -->
+    <div class="mb-6">
 
-            <h1 class="text-xl sm:text-2xl md:text-3xl font-semibold text-kombu">
-                Dashboard Admin
-            </h1>
+        <h1 class="text-xl sm:text-2xl md:text-3xl font-semibold text-kombu">
+            Dashboard Admin
+        </h1>
 
-            <p class="text-sm text-gray-500 mt-1">
-                Ringkasan sistem perpustakaan
-            </p>
+        <p class="text-sm text-gray-500 mt-1">
+            Ringkasan sistem perpustakaan
+        </p>
 
-            <!-- REALTIME CLOCK -->
-            <div
-                class="mt-3 bg-white inline-block px-3 sm:px-4 py-2 rounded-lg shadow border text-xs sm:text-sm text-gray-600">
-                <span id="realtimeClock"></span>
-            </div>
-
+        <!-- REALTIME CLOCK -->
+        <div
+            class="mt-3 bg-white inline-block px-3 sm:px-4 py-2 rounded-lg shadow border text-xs sm:text-sm text-gray-600">
+            <span id="realtimeClock"></span>
         </div>
 
-  <script>
-function updateClock() {
-    const now = new Date();
+    </div>
 
-    const format = localStorage.getItem('dateFormat') || 'full';
+    <script>
+        function updateClock() {
+            const now = new Date();
 
-    let optionsDate = {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-    };
+            const format = localStorage.getItem('dateFormat') || 'full';
 
-    let date = now.toLocaleDateString('id-ID', optionsDate);
-    let time = now.toLocaleTimeString('id-ID');
+            let optionsDate = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+            };
 
-    let output = '';
+            let date = now.toLocaleDateString('id-ID', optionsDate);
+            let time = now.toLocaleTimeString('id-ID');
 
-    if (format === 'full') {
-        output = `${date} • ${time}`;
-    }
+            let output = '';
 
-    if (format === 'short') {
-        output = `${now.toLocaleDateString('id-ID')} • ${time}`;
-    }
+            if (format === 'full') {
+                output = `${date} • ${time}`;
+            }
 
-    if (format === 'time-only') {
-        output = `${time}`;
-    }
+            if (format === 'short') {
+                output = `${now.toLocaleDateString('id-ID')} • ${time}`;
+            }
 
-    document.getElementById('realtimeClock').innerHTML = output;
-}
+            if (format === 'time-only') {
+                output = `${time}`;
+            }
 
-updateClock();
-setInterval(updateClock, 1000);
-</script>
+            document.getElementById('realtimeClock').innerHTML = output;
+        }
 
-        <!-- STAT -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 mb-8">
+        updateClock();
+        setInterval(updateClock, 1000);
+    </script>
 
-            <div class="bg-white p-4 sm:p-5 rounded-xl shadow border-l-4 border-kombu">
-                <p class="text-gray-500 text-sm">Total Buku</p>
-                <h2 class="text-xl sm:text-2xl font-bold text-kombu">{{ $stats['total_buku'] ?? 0 }}</h2>
-            </div>
+    <!-- STAT -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 mb-8">
 
-            <div class="bg-white p-4 sm:p-5 rounded-xl shadow border-l-4 border-olivine">
-                <p class="text-gray-500 text-sm">Kategori</p>
-                <h2 class="text-xl sm:text-2xl font-bold text-olivine">{{ $stats['kategori'] ?? 0 }}</h2>
-            </div>
-
-            <div class="bg-white p-4 sm:p-5 rounded-xl shadow border-l-4 border-mustard">
-                <p class="text-gray-500 text-sm">Anggota</p>
-                <h2 class="text-xl sm:text-2xl font-bold text-mustard">{{ $stats['anggota'] ?? 0 }}</h2>
-            </div>
-
-            <div class="bg-white p-4 sm:p-5 rounded-xl shadow border-l-4 border-secondary">
-                <p class="text-gray-500 text-sm">Peminjaman Aktif</p>
-                <h2 class="text-xl sm:text-2xl font-bold text-secondary">{{ $stats['peminjaman'] ?? 0 }}</h2>
-            </div>
-
+        <div class="bg-white p-4 sm:p-5 rounded-xl shadow border-l-4 border-kombu">
+            <p class="text-gray-500 text-sm">Total Buku</p>
+            <h2 class="text-xl sm:text-2xl font-bold text-kombu">
+                {{ $stats['total_buku'] ?? 0 }}
+            </h2>
         </div>
 
-        <!-- CHART + TOP -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6 mb-8">
+        <div class="bg-white p-4 sm:p-5 rounded-xl shadow border-l-4 border-olivine">
+            <p class="text-gray-500 text-sm">Kategori</p>
+            <h2 class="text-xl sm:text-2xl font-bold text-olivine">
+                {{ $stats['kategori'] ?? 0 }}
+            </h2>
+        </div>
 
-            <div class="bg-white p-4 sm:p-5 rounded-xl shadow lg:col-span-2 overflow-x-auto">
-                <h3 class="text-base sm:text-lg font-semibold text-kombu mb-4">
-                    Grafik Peminjaman
-                </h3>
-                <canvas id="chartPeminjaman"></canvas>
-            </div>
+        <div class="bg-white p-4 sm:p-5 rounded-xl shadow border-l-4 border-mustard">
+            <p class="text-gray-500 text-sm">Anggota</p>
+            <h2 class="text-xl sm:text-2xl font-bold text-mustard">
+                {{ $stats['anggota'] ?? 0 }}
+            </h2>
+        </div>
 
-            <div class="bg-white p-4 sm:p-5 rounded-xl shadow">
-                <h3 class="text-base sm:text-lg font-semibold text-kombu mb-4">
-                    Top 3 Buku
-                </h3>
+        <div class="bg-white p-4 sm:p-5 rounded-xl shadow border-l-4 border-secondary">
+            <p class="text-gray-500 text-sm">Peminjaman Aktif</p>
+            <h2 class="text-xl sm:text-2xl font-bold text-secondary">
+                {{ $stats['peminjaman'] ?? 0 }}
+            </h2>
+        </div>
 
-                <ul class="space-y-2 text-sm">
-                    @forelse($topBooks ?? [] as $book)
-                        <li class="flex justify-between border-b pb-1">
-                            <span class="truncate">{{ $book->judul }}</span>
-                            <span class="text-gray-500">{{ $book->total }}x</span>
-                        </li>
+    </div>
+
+    <!-- TOP BOOK -->
+    <div class="bg-white p-4 sm:p-5 rounded-xl shadow mb-8">
+
+        <h3 class="text-base sm:text-lg font-semibold text-kombu mb-4">
+            Top 3 Buku
+        </h3>
+
+        <ul class="space-y-2 text-sm">
+
+            @forelse($topBooks ?? [] as $book)
+
+                <li class="flex justify-between border-b pb-1">
+
+                    <span class="truncate">
+                        {{ $book->judul }}
+                    </span>
+
+                    <span class="text-gray-500">
+                        {{ $book->total }}x
+                    </span>
+
+                </li>
+
+            @empty
+
+                <p class="text-gray-500">
+                    Tidak ada data
+                </p>
+
+            @endforelse
+
+        </ul>
+
+    </div>
+
+    <!-- DATA KETERLAMBATAN -->
+    <div class="bg-white p-4 sm:p-5 rounded-xl shadow">
+
+        <h3 class="text-lg font-semibold text-kombu mb-4">
+            Data Keterlambatan & Denda
+        </h3>
+
+        <div class="overflow-x-auto">
+
+            <table class="w-full text-sm">
+
+                <thead class="bg-kombu text-white">
+
+                    <tr>
+
+                        <th class="p-3 text-left">Nama</th>
+
+                        <th class="p-3 text-left">Buku</th>
+
+                        <th class="p-3 text-center">Hari Telat</th>
+
+                        <th class="p-3 text-center">Denda</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @forelse($terlambat as $item)
+
+                        <tr class="border-b hover:bg-gray-50">
+
+                            <td class="p-3">
+                                {{ $item->nama }}
+                            </td>
+
+                            <td class="p-3">
+                                {{ $item->judul }}
+                            </td>
+
+                            <td class="p-3 text-center text-red-500 font-semibold">
+                                {{ $item->hari_telat }} Hari
+                            </td>
+
+                            <td class="p-3 text-center text-red-600 font-bold">
+                                Rp {{ number_format($item->denda, 0, ',', '.') }}
+                            </td>
+
+                        </tr>
+
                     @empty
-                        <p class="text-gray-500">Tidak ada data</p>
+
+                        <tr>
+
+                            <td colspan="4"
+                                class="text-center p-4 text-gray-500">
+
+                                Tidak ada keterlambatan
+
+                            </td>
+
+                        </tr>
+
                     @endforelse
-                </ul>
-            </div>
+
+                </tbody>
+
+            </table>
 
         </div>
 
     </div>
+
+</div>
 
 @endsection

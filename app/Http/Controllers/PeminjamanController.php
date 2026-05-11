@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use App\Models\Peminjaman;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 
 class PeminjamanController extends Controller
@@ -51,6 +52,16 @@ class PeminjamanController extends Controller
 
         /*
         |--------------------------------------------------------------------------
+        | AMBIL SETTING BATAS HARI
+        |--------------------------------------------------------------------------
+        */
+
+        $setting = Setting::first();
+
+        $batasHari = $setting->batas_hari ?? 7;
+
+        /*
+        |--------------------------------------------------------------------------
         | SIMPAN PEMINJAMAN
         |--------------------------------------------------------------------------
         */
@@ -63,7 +74,7 @@ class PeminjamanController extends Controller
 
             'tanggal_pinjam' => now(),
 
-            'tanggal_kembali' => now()->addDays(7),
+            'tanggal_kembali' => now()->addDays($batasHari),
 
             'status' => 'dipinjam',
 

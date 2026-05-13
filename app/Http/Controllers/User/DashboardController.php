@@ -18,33 +18,31 @@ class DashboardController extends Controller
 
         $userId = auth()->id();
 
-        //TOTAL PEMINJAMAN
-        $totalPeminjaman = Peminjaman::where('user_id', $userId)->count();
+        // TOTAL PEMINJAMAN
+        $totalPeminjaman = Peminjaman::where('user_id', $userId)
+            ->count();
 
-        //SEDANG DIPINJAM
+        // SEDANG DIPINJAM
         $dipinjam = Peminjaman::where('user_id', $userId)
             ->where('status', 'dipinjam')
             ->count();
 
-        //RIWAYAT SELESAI
+        // RIWAYAT SELESAI
         $riwayat = Peminjaman::where('user_id', $userId)
             ->where('status', 'dikembalikan')
             ->count();
 
-        //RIWAYAT LIST
+        // RIWAYAT LIST
         $riwayatPeminjaman = Peminjaman::with('book')
             ->where('user_id', $userId)
             ->latest()
             ->get();
 
-        //TOTAL DENDA (ADMIN + USER VIEW)
-        $totalDenda = Peminjaman::where('user_id', $userId)
-            ->sum('denda');
+        // SEMENTARA DEFAULT 0
+        // karena kolom denda belum ada di database
+        $totalDenda = 0;
 
-        //RATA-RATA DENDA
-        $avgDenda = Peminjaman::where('status', 'dikembalikan')
-            ->where('denda', '>', 0)
-            ->avg('denda');
+        $avgDenda = 0;
 
         return view('pages.user.dashboard.index', compact(
             'totalBooks',

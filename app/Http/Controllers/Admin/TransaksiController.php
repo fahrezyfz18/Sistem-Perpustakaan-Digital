@@ -30,11 +30,11 @@ class TransaksiController extends Controller
                 $q->where('name', 'like', '%' . $request->search . '%');
 
             })
-            ->orWhereHas('book', function ($q) use ($request) {
+                ->orWhereHas('book', function ($q) use ($request) {
 
-                $q->where('judul', 'like', '%' . $request->search . '%');
+                    $q->where('judul', 'like', '%' . $request->search . '%');
 
-            });
+                });
 
         }
 
@@ -97,18 +97,24 @@ class TransaksiController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | JIKA BELUM ADA TANGGAL KEMBALI
+        | JIKA BELUM ADA DEADLINE
         |--------------------------------------------------------------------------
         */
 
-        if (!$item->tanggal_kembali) {
+        if (!$item->deadline) {
 
             return 0;
 
         }
 
-        $kembali = Carbon::parse(
-            $item->tanggal_kembali
+        /*
+        |--------------------------------------------------------------------------
+        | DEADLINE PENGEMBALIAN
+        |--------------------------------------------------------------------------
+        */
+
+        $deadline = Carbon::parse(
+            $item->deadline
         )->startOfDay();
 
         /*
@@ -118,11 +124,11 @@ class TransaksiController extends Controller
         */
 
         if (
-            $today->gt($kembali) &&
+            $today->gt($deadline) &&
             $item->status != 'dikembalikan'
         ) {
 
-            return $kembali
+            return $deadline
                 ->diffInDays($today) * $dendaPerHari;
 
         }

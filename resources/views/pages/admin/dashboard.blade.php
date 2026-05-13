@@ -100,85 +100,12 @@
             Top 3 Buku
         </h3>
 
-        <ul class="space-y-2 text-sm">
-
-            @forelse($topBooks ?? [] as $book)
-
-                <li class="flex justify-between border-b pb-1">
-
-                    <span class="truncate">
-                        {{ $book->judul }}
-                    </span>
-
-                    <span class="text-gray-500">
-                        {{ $book->total }}x
-                    </span>
-
-                </li>
-
-            @empty
-
-                <p class="text-gray-500">
-                    Tidak ada data
-                </p>
-
-            @endforelse
-
-        </ul>
-
-    </div>
-
-    <!-- DATA KETERLAMBATAN -->
-    <div class="bg-white p-4 sm:p-5 rounded-xl shadow">
-
-        <h3 class="text-lg font-semibold text-kombu mb-4">
-            Data Keterlambatan & Denda
-        </h3>
-
-        <div class="overflow-x-auto">
-
-            <table class="w-full text-sm">
-
-                <thead class="bg-kombu text-white">
-
-                    <tr>
-
-                        <th class="p-3 text-left">Nama</th>
-
-                        <th class="p-3 text-left">Buku</th>
-
-                        <th class="p-3 text-center">Hari Telat</th>
-
-                        <th class="p-3 text-center">Denda</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                    @forelse($terlambat as $item)
-
-                        <tr class="border-b hover:bg-gray-50">
-
-                            <td class="p-3">
-                                {{ $item->nama }}
-                            </td>
-
-                            <td class="p-3">
-                                {{ $item->judul }}
-                            </td>
-
-                            <td class="p-3 text-center text-red-500 font-semibold">
-                                {{ $item->hari_telat }} Hari
-                            </td>
-
-                            <td class="p-3 text-center text-red-600 font-bold">
-                                Rp {{ number_format($item->denda, 0, ',', '.') }}
-                            </td>
-
-                        </tr>
-
+                <ul class="space-y-2 text-sm">
+                    @forelse($topBooks ?? [] as $book)
+                        <li class="flex justify-between border-b pb-1">
+                            <span class="truncate">{{ $book->judul }}</span>
+                            <span class="text-gray-500">{{ $book->total }}x</span>
+                        </li>
                     @empty
 
                         <tr>

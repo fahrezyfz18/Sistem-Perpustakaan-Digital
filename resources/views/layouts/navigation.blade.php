@@ -62,9 +62,10 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('admin.profile.index')" class="{{ request()->routeIs('admin.profile.*')
-    ? 'text-camel bg-olivine/10'
-    : 'text-kombu hover:text-mustard hover:bg-olivine/10' }}">
+
+                        <x-dropdown-link :href="auth()->user()->role === 'admin'
+        ? route('admin.profile.index')
+        : route('user.profile.index')" class="text-kombu hover:text-mustard hover:bg-olivine/10">
                             Profile
                         </x-dropdown-link>
 

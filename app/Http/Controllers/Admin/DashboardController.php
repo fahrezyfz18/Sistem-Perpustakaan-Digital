@@ -13,104 +13,29 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        /*
-        |--------------------------------------------------------------------------
-        | SETTINGS
-        |--------------------------------------------------------------------------
-        */
-
-        $setting = Setting::first();
-
-        $dendaPerHari = $setting->denda_per_hari ?? 2000;
-
-        /*
-        |--------------------------------------------------------------------------
-        | STATS
-        |--------------------------------------------------------------------------
-        */
-
         $stats = [
-
-            'total_buku' => Book::count(),
-
-            'kategori' => Book::distinct('kategori')->count(),
-
-            'anggota' => User::where('role', 'user')->count(),
-
-            'peminjaman' => Peminjaman::where(
-                'status',
-                'dipinjam'
-            )->count(),
-
+            'total_buku' => 5,
+            'kategori' => 5,
+            'anggota' => 5,
+            'peminjaman' => 3,
         ];
 
-        /*
-        |--------------------------------------------------------------------------
-        | TOP BOOKS
-        |--------------------------------------------------------------------------
-        */
-
-        $topBooks = Peminjaman::select('book_id')
-            ->selectRaw('count(*) as total')
-            ->groupBy('book_id')
-            ->with('book')
-            ->limit(3)
-            ->get()
-            ->map(function ($item) {
-
-                return (object) [
-
-                    'judul' => $item->book->judul ?? '-',
-
-                    'total' => $item->total,
-
-                ];
-
-            });
-
-        /*
-        |--------------------------------------------------------------------------
-        | DATA TERLAMBAT
-        |--------------------------------------------------------------------------
-        */
-
-        $today = Carbon::now()->startOfDay();
-
-        $terlambat = Peminjaman::with([
-                'user',
-                'book'
-            ])
-            ->where('status', 'dipinjam')
-            ->whereDate('tanggal_kembali', '<', $today)
-            ->get()
-            ->map(function ($item) use ($today, $dendaPerHari) {
-
-                $jatuhTempo = Carbon::parse(
-                    $item->tanggal_kembali
-                )->startOfDay();
-
-                $hariTelat = $jatuhTempo->diffInDays($today);
-
-                $item->hari_telat = $hariTelat;
-
-                $item->denda = $hariTelat * $dendaPerHari;
-
-                return $item;
-
-            });
-
-        /*
-        |--------------------------------------------------------------------------
-        | RETURN VIEW
-        |--------------------------------------------------------------------------
-        */
+        $peminjamanTerbaru = [
+            [
+                'kode' => 'PMJ001',
+                'anggota' => 'Budi',
+                'buku' => 'Laravel Dasar',
+                'tgl_pinjam' => '2024-01-01',
+                'tgl_kembali' => '2024-01-07',
+                'status' => 'Dipinjam',
+            ]
+        ];
 
         return view(
             'pages.admin.dashboard',
             compact(
                 'stats',
-                'topBooks',
-                'terlambat'
+                'peminjamanTerbaru'
             )
         );
     }

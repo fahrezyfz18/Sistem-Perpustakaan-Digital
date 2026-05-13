@@ -61,7 +61,7 @@ use App\Models\Peminjaman;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', fn () => view('home'))
+Route::get('/', fn() => view('home'))
     ->name('home');
 
 
@@ -71,24 +71,34 @@ Route::get('/', fn () => view('home'))
 |--------------------------------------------------------------------------
 */
 
-Route::get('/login',
-    [AuthenticatedSessionController::class, 'create'])
+Route::get(
+    '/login',
+    [AuthenticatedSessionController::class, 'create']
+)
     ->name('login');
 
-Route::post('/login',
-    [AuthenticatedSessionController::class, 'store']);
+Route::post(
+    '/login',
+    [AuthenticatedSessionController::class, 'store']
+);
 
-Route::post('/logout',
-    [AuthenticatedSessionController::class, 'destroy'])
+Route::post(
+    '/logout',
+    [AuthenticatedSessionController::class, 'destroy']
+)
     ->name('logout');
 
 
-Route::get('/register',
-    [RegisteredUserController::class, 'create'])
+Route::get(
+    '/register',
+    [RegisteredUserController::class, 'create']
+)
     ->name('register');
 
-Route::post('/register',
-    [RegisteredUserController::class, 'store']);
+Route::post(
+    '/register',
+    [RegisteredUserController::class, 'store']
+);
 
 
 /*
@@ -110,8 +120,8 @@ Route::get('/dashboard', function () {
         : redirect()->route('user.dashboard');
 
 })
-->middleware(['auth'])
-->name('dashboard');
+    ->middleware(['auth'])
+    ->name('dashboard');
 
 
 /*
@@ -131,8 +141,10 @@ Route::middleware(['auth', 'isAdmin'])
         |--------------------------------------------------------------------------
         */
 
-        Route::get('/dashboard',
-            [AdminDashboardController::class, 'index'])
+        Route::get(
+            '/dashboard',
+            [AdminDashboardController::class, 'index']
+        )
             ->name('dashboard');
 
 
@@ -155,8 +167,10 @@ Route::middleware(['auth', 'isAdmin'])
         |--------------------------------------------------------------------------
         */
 
-        Route::get('/pengembalian',
-            [PengembalianController::class, 'index'])
+        Route::get(
+            '/pengembalian',
+            [PengembalianController::class, 'index']
+        )
             ->name('pengembalian.index');
 
 
@@ -166,12 +180,16 @@ Route::middleware(['auth', 'isAdmin'])
         |--------------------------------------------------------------------------
         */
 
-        Route::get('/laporan-peminjaman',
-            [LaporanController::class, 'index'])
+        Route::get(
+            '/laporan-peminjaman',
+            [LaporanController::class, 'index']
+        )
             ->name('laporan.peminjaman');
 
-        Route::get('/laporan/export',
-            [LaporanController::class, 'export'])
+        Route::get(
+            '/laporan/export',
+            [LaporanController::class, 'export']
+        )
             ->name('laporan.export');
 
 
@@ -181,16 +199,22 @@ Route::middleware(['auth', 'isAdmin'])
         |--------------------------------------------------------------------------
         */
 
-        Route::get('/profile',
-            [AdminProfileController::class, 'index'])
+        Route::get(
+            '/profile',
+            [AdminProfileController::class, 'index']
+        )
             ->name('profile.index');
 
-        Route::get('/profile/edit',
-            [AdminProfileController::class, 'edit'])
+        Route::get(
+            '/profile/edit',
+            [AdminProfileController::class, 'edit']
+        )
             ->name('profile.edit');
 
-        Route::patch('/profile',
-            [AdminProfileController::class, 'update'])
+        Route::patch(
+            '/profile',
+            [AdminProfileController::class, 'update']
+        )
             ->name('profile.update');
 
 
@@ -200,16 +224,22 @@ Route::middleware(['auth', 'isAdmin'])
         |--------------------------------------------------------------------------
         */
 
-        Route::get('/settings',
-            [SettingController::class, 'index'])
+        Route::get(
+            '/settings',
+            [SettingController::class, 'index']
+        )
             ->name('settings.index');
 
-        Route::get('/settings/edit',
-            [SettingController::class, 'edit'])
+        Route::get(
+            '/settings/edit',
+            [SettingController::class, 'edit']
+        )
             ->name('settings.edit');
 
-        Route::post('/settings/update',
-            [SettingController::class, 'update'])
+        Route::post(
+            '/settings/update',
+            [SettingController::class, 'update']
+        )
             ->name('settings.update');
 
 
@@ -223,8 +253,10 @@ Route::middleware(['auth', 'isAdmin'])
 
             $data = Peminjaman::all();
 
-            return view('pages.admin.laporan.pdf',
-                compact('data'));
+            return view(
+                'pages.admin.laporan.pdf',
+                compact('data')
+            );
 
         });
 
@@ -242,14 +274,26 @@ Route::middleware(['auth', 'isUser'])
     ->name('user.')
     ->group(function () {
 
+        Route::get('/profile', [UserProfileController::class, 'show'])
+            ->name('profile.show');
+
+        Route::get('/profile/edit', [UserProfileController::class, 'edit'])
+            ->name('profile.edit');
+
+        Route::patch('/profile', [UserProfileController::class, 'update'])
+            ->name('profile.update');
+
+
         /*
         |--------------------------------------------------------------------------
         | DASHBOARD
         |--------------------------------------------------------------------------
         */
 
-        Route::get('/dashboard',
-            [UserDashboardController::class, 'index'])
+        Route::get(
+            '/dashboard',
+            [UserDashboardController::class, 'index']
+        )
             ->name('dashboard');
 
 
@@ -259,16 +303,22 @@ Route::middleware(['auth', 'isUser'])
         |--------------------------------------------------------------------------
         */
 
-        Route::get('/books',
-            [UserBookController::class, 'index'])
+        Route::get(
+            '/books',
+            [UserBookController::class, 'index']
+        )
             ->name('books.index');
 
-        Route::get('/books/{book}',
-            [UserBookController::class, 'show'])
+        Route::get(
+            '/books/{book}',
+            [UserBookController::class, 'show']
+        )
             ->name('books.show');
 
-        Route::get('/books/filter',
-            [UserBookController::class, 'filter'])
+        Route::get(
+            '/books/filter',
+            [UserBookController::class, 'filter']
+        )
             ->name('books.filter');
 
 
@@ -278,8 +328,10 @@ Route::middleware(['auth', 'isUser'])
         |--------------------------------------------------------------------------
         */
 
-        Route::get('/history',
-            [HistoryController::class, 'index'])
+        Route::get(
+            '/history',
+            [HistoryController::class, 'index']
+        )
             ->name('history.index');
 
 
@@ -288,10 +340,32 @@ Route::middleware(['auth', 'isUser'])
         | MY BOOKS
         |--------------------------------------------------------------------------
         */
-
-        Route::get('/my-books',
-            [MyBookController::class, 'index'])
+        Route::get(
+            '/my-books',
+            [MyBookController::class, 'index']
+        )
             ->name('my-books.index');
+
+
+        Route::get(
+            '/my-books/{id}/detail',
+            [MyBookController::class, 'detail']
+        )
+            ->name('my-books.detail');
+
+
+        Route::get(
+            '/my-books/{id}/return',
+            [PengembalianController::class, 'create']
+        )
+            ->name('my-books.return.form');
+
+
+        Route::post(
+            '/my-books/{id}/return',
+            [PengembalianController::class, 'store']
+        )
+            ->name('my-books.return');
 
 
         /*
@@ -300,27 +374,38 @@ Route::middleware(['auth', 'isUser'])
         |--------------------------------------------------------------------------
         */
 
-        Route::post('/borrow/{book}',
-            [PeminjamanController::class, 'store'])
+        Route::post(
+            '/borrow/{book}',
+            [PeminjamanController::class, 'store']
+        )
             ->name('borrow.store');
 
-        Route::get('/borrow/status',
-            [PeminjamanController::class, 'status'])
+        Route::get(
+            '/borrow/status',
+            [PeminjamanController::class, 'status']
+        )
             ->name('borrow.status');
 
-
+        Route::get(
+            '/borrow/{book}/create',
+            [PeminjamanController::class, 'create']
+        )->name('borrow.create');
         /*
         |--------------------------------------------------------------------------
         | USER PROFILE
         |--------------------------------------------------------------------------
         */
 
-        Route::get('/profile',
-            [UserProfileController::class, 'edit'])
+        Route::get(
+            '/profile',
+            [UserProfileController::class, 'edit']
+        )
             ->name('profile.edit');
 
-        Route::patch('/profile',
-            [UserProfileController::class, 'update'])
+        Route::patch(
+            '/profile',
+            [UserProfileController::class, 'update']
+        )
             ->name('profile.update');
 
     });
@@ -332,21 +417,18 @@ Route::middleware(['auth', 'isUser'])
 |--------------------------------------------------------------------------
 */
 
-Route::middleware('auth')
-    ->prefix('profile')
-    ->name('profile.')
+Route::middleware(['auth', 'isUser'])
+    ->prefix('user')
+    ->name('user.')
     ->group(function () {
 
-        Route::get('/',
-            [UserProfileController::class, 'edit'])
-            ->name('edit');
+        Route::get('/profile', [UserProfileController::class, 'show'])
+            ->name('profile.show');
 
-        Route::patch('/',
-            [UserProfileController::class, 'update'])
-            ->name('update');
+        Route::get('/profile/edit', [UserProfileController::class, 'edit'])
+            ->name('profile.edit');
 
-        Route::delete('/',
-            [UserProfileController::class, 'destroy'])
-            ->name('destroy');
+        Route::patch('/profile', [UserProfileController::class, 'update'])
+            ->name('profile.update');
 
     });

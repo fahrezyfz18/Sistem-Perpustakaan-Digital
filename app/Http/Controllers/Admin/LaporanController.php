@@ -39,7 +39,7 @@ class LaporanController extends Controller
             $today = Carbon::now()->startOfDay();
 
             $kembali = Carbon::parse(
-                $item->tanggal_kembali
+                $item->deadline
             )->startOfDay();
 
             $item->hari_telat = $kembali->diffInDays($today);
@@ -119,12 +119,12 @@ class LaporanController extends Controller
             $today = Carbon::now()->startOfDay();
 
             $kembali = Carbon::parse(
-                $item->tanggal_kembali
+                $item->deadline
             )->startOfDay();
 
             if (
                 $today->gt($kembali) &&
-                $item->status != 'kembali'
+                $item->status != 'dikembalikan'
             ) {
 
                 $hariTelat = $kembali->diffInDays($today);
@@ -206,7 +206,7 @@ class LaporanController extends Controller
 
                     $row->tanggal_pinjam,
 
-                    $row->tanggal_kembali,
+                    $row->deadline,
 
                     $row->status,
 

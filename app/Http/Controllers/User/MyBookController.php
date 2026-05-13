@@ -7,9 +7,15 @@ use App\Models\Peminjaman;
 
 class MyBookController extends Controller
 {
+    /*
+    |--------------------------------------------------------------------------
+    | INDEX
+    |--------------------------------------------------------------------------
+    */
+
     public function index()
     {
-        $books = \App\Models\Peminjaman::with('book')
+        $books = Peminjaman::with('book')
             ->where('user_id', auth()->id())
             ->where('status', 'dipinjam')
             ->latest()
@@ -18,6 +24,27 @@ class MyBookController extends Controller
         return view(
             'pages.user.mybooks.index',
             compact('books')
+        );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | DETAIL
+    |--------------------------------------------------------------------------
+    */
+
+    public function detail($id)
+    {
+        $book = Peminjaman::with('book')
+
+            ->where('user_id', auth()->id())
+
+            ->findOrFail($id);
+
+        return view(
+            'pages.user.mybooks.detail',
+            compact('book')
         );
     }
 }

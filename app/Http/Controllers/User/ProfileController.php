@@ -8,9 +8,16 @@ use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
+
+    public function index()
+    {
+        return view('pages.user.profile.index', [
+            'user' => Auth::user()
+        ]);
+    }
     public function edit()
     {
-        return view('user.profile.edit', [
+        return view('pages.user.profile.edit', [
             'user' => Auth::user()
         ]);
     }
@@ -23,16 +30,25 @@ class ProfileController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email',
+            'username' => 'nullable|string|max:255',
+            'no_hp' => 'nullable|string|max:20',
+            'alamat' => 'nullable|string',
+            'status' => 'nullable|string',
         ]);
 
         $user->update([
-            'name'  => $request->name,
+            'name' => $request->name,
             'email' => $request->email,
+            'username' => $request->username,
+            'no_hp' => $request->no_hp,
+            'alamat' => $request->alamat,
+            'status' => $request->status,
         ]);
 
-        return back()->with('success', 'Profile updated successfully.');
+        return redirect()
+            ->route('user.profile.show')
+            ->with('success', 'Profil berhasil diperbarui');
     }
-
 
     public function destroy()
     {

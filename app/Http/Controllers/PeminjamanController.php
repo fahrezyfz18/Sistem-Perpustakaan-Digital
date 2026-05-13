@@ -15,39 +15,29 @@ class PeminjamanController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function store(Book $book)
+    public function store(Request $request, $id)
     {
-        /*
-        |--------------------------------------------------------------------------
-        | VALIDASI STOK
-        |--------------------------------------------------------------------------
-        */
+        $book = Book::findOrFail($id);
 
+        // VALIDASI
+    $request->validate([
+        'tanggal_pinjam' => 'required|date',
+        'deadline' => 'required|date|after_or_equal:tanggal_pinjam',
+    ]);
+
+        // CEK STOK
         if ($book->stok <= 0) {
-
-            return back()->with(
-                'error',
-                'Stok buku habis.'
-            );
+            return back()->with('error', 'Stok buku habis.');
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | CEK SUDAH MEMINJAM?
-        |--------------------------------------------------------------------------
-        */
-
+        // CEK DOUBLE PINJAM
         $alreadyBorrowed = Peminjaman::where('user_id', auth()->id())
             ->where('book_id', $book->id)
             ->where('status', 'dipinjam')
             ->exists();
 
         if ($alreadyBorrowed) {
-
-            return back()->with(
-                'error',
-                'Anda sudah meminjam buku ini.'
-            );
+            return back()->with('error', 'Anda sudah meminjam buku ini.');
         }
 
         /*
@@ -60,45 +50,34 @@ class PeminjamanController extends Controller
 
         $batasHari = $setting->batas_hari ?? 7;
 
-        /*
-        |--------------------------------------------------------------------------
-        | SIMPAN PEMINJAMAN
-        |--------------------------------------------------------------------------
-        */
-
+        // SIMPAN PEMINJAMAN
         Peminjaman::create([
-
             'user_id' => auth()->id(),
-
             'book_id' => $book->id,
 
             'tanggal_pinjam' => now(),
 
-            'tanggal_kembali' => now()->addDays($batasHari),
+            'tanggal_kembali' => now()->addDays(7),
 
             'status' => 'dipinjam',
-
         ]);
 
-        /*
-        |--------------------------------------------------------------------------
-        | KURANGI STOK
-        |--------------------------------------------------------------------------
-        */
-
+        // KURANGI STOK
         $book->decrement('stok');
-
-        /*
-        |--------------------------------------------------------------------------
-        | REDIRECT
-        |--------------------------------------------------------------------------
-        */
 
         return redirect()
             ->route('user.my-books.index')
-            ->with(
-                'success',
-                'Buku berhasil dipinjam.'
-            );
+            ->with('success', 'Buku berhasil dipinjam.');
+    }
+
+    public function create(Book $book)
+    {
+        // anti double borrow
+        if (Peminjaman::isAlreadyBorrowed(auth()->id(), $book->id)) {
+            return redirect()->route('user.books.show', $book->id)
+                ->with('error', 'Kamu sudah meminjam buku ini.');
+        }
+
+        return view('pages.user.books.borrow', compact('book'));
     }
 }

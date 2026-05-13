@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Book;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $books = \App\Models\Book::latest()->take(8)->get();
+        $books = Book::latest()->take(8)->get();
 
-        return view('home', compact('books'));
+        $data = $this->getData();
+
+        return view('home', compact('books', 'data'));
     }
-}
 
-  // data untuk ditampilkan di home
-    public function getData()
+    // data untuk ditampilkan di home
+    private function getData()
     {
         return [
             ['nama' => 'Total Buku', 'jumlah' => 120],
@@ -31,11 +32,4 @@ class HomeController extends Controller
 
         return view('home', compact('data'));
     }
-
-public function index()
-{
-    $books = \App\Models\Book::latest()->take(8)->get();
-
-    return view('home', compact('books'));
-}
 }

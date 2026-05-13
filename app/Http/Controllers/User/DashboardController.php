@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Book;
+use App\Models\Peminjaman;
 
 class DashboardController extends Controller
 {
@@ -15,9 +16,45 @@ class DashboardController extends Controller
             ->take(4)
             ->get();
 
+        $userId = auth()->id();
+
+        //TOTAL PEMINJAMAN
+        $totalPeminjaman = Peminjaman::where('user_id', $userId)->count();
+
+        //SEDANG DIPINJAM
+        $dipinjam = Peminjaman::where('user_id', $userId)
+            ->where('status', 'dipinjam')
+            ->count();
+
+        //RIWAYAT SELESAI
+        $riwayat = Peminjaman::where('user_id', $userId)
+            ->where('status', 'dikembalikan')
+            ->count();
+
+        //RIWAYAT LIST
+        $riwayatPeminjaman = Peminjaman::with('book')
+            ->where('user_id', $userId)
+            ->latest()
+            ->get();
+
+        //TOTAL DENDA (ADMIN + USER VIEW)
+        $totalDenda = Peminjaman::where('user_id', $userId)
+            ->sum('denda');
+
+        //RATA-RATA DENDA
+        $avgDenda = Peminjaman::where('status', 'dikembalikan')
+            ->where('denda', '>', 0)
+            ->avg('denda');
+
         return view('pages.user.dashboard.index', compact(
             'totalBooks',
-            'latestBooks'
+            'latestBooks',
+            'totalPeminjaman',
+            'dipinjam',
+            'riwayat',
+            'riwayatPeminjaman',
+            'totalDenda',
+            'avgDenda'
         ));
     }
 }

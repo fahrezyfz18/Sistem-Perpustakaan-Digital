@@ -121,6 +121,49 @@
 
         </a>
 
+        <!-- PENGATURAN -->
+        <a href="{{ route('profile.edit') }}"
+           class="flex items-center gap-3 px-4 py-2 rounded-lg transition
+                  hover:bg-accent/40 hover:pl-5">
+
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 class="w-5 h-5"
+                 fill="none"
+                 viewBox="0 0 24 24"
+                 stroke="currentColor">
+
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M10.325 4.317a1.724 1.724 0 013.35 0
+                         1.724 1.724 0 002.573 1.066
+                         1.724 1.724 0 012.37 2.37
+                         1.724 1.724 0 001.065 2.572
+                         1.724 1.724 0 010 3.35
+                         1.724 1.724 0 00-1.066 2.573
+                         1.724 1.724 0 01-2.37 2.37
+                         1.724 1.724 0 00-2.572 1.065
+                         1.724 1.724 0 01-3.35 0
+                         1.724 1.724 0 00-2.573-1.066
+                         1.724 1.724 0 01-2.37-2.37
+                         1.724 1.724 0 00-1.065-2.572
+                         1.724 1.724 0 010-3.35
+                         1.724 1.724 0 001.066-2.573
+                         1.724 1.724 0 012.37-2.37
+                         1.724 1.724 0 002.572-1.065z" />
+
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 12a3 3 0 11-6 0
+                         3 3 0 016 0z" />
+
+            </svg>
+
+            Pengaturan
+
+        </a>
+
         <!-- LOGOUT -->
         <form method="POST"
             action="{{ route('logout') }}"

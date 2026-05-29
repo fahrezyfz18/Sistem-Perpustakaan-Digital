@@ -62,4 +62,16 @@ class Peminjaman extends Model
     {
         return $this->belongsTo(Book::class);
     }
-}
+/*
+    |--------------------------------------------------------------------------
+    | CHECK IF BOOK IS ALREADY BORROWEDBY USER
+    |--------------------------------------------------------------------------
+    */
+    public static function isAlreadyBorrowed($userId, $bookId)
+    {
+        return self::where('user_id', $userId)
+            ->where('book_id', $bookId)
+            ->where('status', 'dipinjam') 
+            ->exists(); 
+    }
+    }

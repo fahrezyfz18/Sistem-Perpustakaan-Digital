@@ -80,18 +80,11 @@
 
                     <x-slot name="content">
 
-                        <!-- LOGOUT -->
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-
-                            <x-dropdown-link
-                                :href="route('logout')"
-                                onclick="event.preventDefault();
-                                this.closest('form').submit();">
-
-                                Logout
-
-                            </x-dropdown-link>
+                        <x-dropdown-link :href="auth()->user()->role === 'admin'
+        ? route('admin.profile.index')
+        : route('user.profile.index')" class="text-kombu hover:text-mustard hover:bg-olivine/10">
+                            Profile
+                        </x-dropdown-link>
 
                         </form>
 
@@ -135,23 +128,10 @@
             {{ Auth::user()->name }}
         </div>
 
-        <div class="px-4 pb-3 space-y-2">
-
-            <!-- LOGOUT -->
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-
-                <x-responsive-nav-link
-                    :href="route('logout')"
-                    onclick="event.preventDefault();
-                    this.closest('form').submit();">
-
-                    Logout
-
-                </x-responsive-nav-link>
-
-            </form>
-
+        <div class="px-4 pb-3">
+            <x-responsive-nav-link :href="route('profile.edit')">
+                Profile
+            </x-responsive-nav-link>
         </div>
 
     </div>

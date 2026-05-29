@@ -24,16 +24,16 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        // ✅ Proses login (sudah include Auth::attempt)
+        // Proses login 
         $request->authenticate();
 
-        // ✅ Regenerate session (biar aman)
+        // Regenerate session 
         $request->session()->regenerate();
 
-        // ✅ Ambil user login
+        // user login
         $user = Auth::user();
 
-        // ❗ Tambahan pengaman (kalau role kosong)
+        // Tambahan pengaman (kalau role kosong)
         if (!$user || !$user->role) {
             Auth::logout();
             return redirect()->route('login')->withErrors([

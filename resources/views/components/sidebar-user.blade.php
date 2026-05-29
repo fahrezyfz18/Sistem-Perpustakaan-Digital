@@ -122,7 +122,7 @@
         </a>
 
         <!-- PENGATURAN -->
-        <a href="{{ route('profile.edit') }}"
+        <a href="{{ route('user.dashboard') }}"
            class="flex items-center gap-3 px-4 py-2 rounded-lg transition
                   hover:bg-accent/40 hover:pl-5">
 

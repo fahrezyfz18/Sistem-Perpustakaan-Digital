@@ -81,8 +81,8 @@
                     <x-slot name="content">
 
                         <x-dropdown-link :href="auth()->user()->role === 'admin'
-        ? route('admin.profile.index')
-        : route('user.profile.index')" class="text-kombu hover:text-mustard hover:bg-olivine/10">
+    ? route('admin.profile.index')
+    : route('user.profile.show')" class="text-kombu hover:text-mustard hover:bg-olivine/10">
                             Profile
                         </x-dropdown-link>
 
@@ -129,7 +129,9 @@
         </div>
 
         <div class="px-4 pb-3">
-
+            <x-responsive-nav-link :href="route('profile.edit')">
+                Profile
+            </x-responsive-nav-link>
         </div>
 
     </div>

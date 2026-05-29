@@ -80,4 +80,4 @@ class PeminjamanController extends Controller
 
         return view('pages.user.books.borrow', compact('book'));
     }
-}
+}   

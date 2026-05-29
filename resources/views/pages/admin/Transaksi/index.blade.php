@@ -1,313 +1,141 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('content')
 
-<div class="p-6 bg-background min-h-screen">
+    <div class="min-h-screen bg-gray-100 p-6">
 
-    <!-- HEADER -->
-    <div class="mb-6">
+        <div class="mb-6">
 
-        <h1 class="text-2xl md:text-3xl font-semibold text-kombu">
-            Transaksi Peminjaman & Pengembalian
-        </h1>
+            <h1 class="text-4xl font-bold text-green-900">
+                Transaksi Peminjaman & Pengembalian
+            </h1>
 
-        <p class="text-sm text-gray-500 mt-1">
-            Monitoring aktivitas peminjaman dan pengembalian buku
-        </p>
-
-    </div>
-
-    <!-- SEARCH -->
-    <div class="mb-6">
-
-        <div class="relative">
-
-            <input
-                type="text"
-                id="search"
-                placeholder="Cari Nama Anggota atau Buku..."
-                class="w-full border rounded-lg py-2 pl-10 pr-4
-                       focus:ring-2 focus:ring-secondary
-                       focus:border-secondary
-                       outline-none transition">
-
-            <!-- ICON -->
-            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-
-                <svg
-                    class="w-5 h-5 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24">
-
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M21 21l-4.35-4.35M16 10a6 6 0 11-12 0 6 6 0 0112 0z" />
-
-                </svg>
-
-            </div>
-
+            <p class="text-gray-500 mt-2">
+                Monitoring aktivitas peminjaman dan pengembalian buku
+            </p>
         </div>
 
-    </div>
+        <div class="bg-white rounded-2xl shadow-md p-6 border border-gray-200">
 
-    <!-- TABLE -->
-    <div class="bg-white shadow rounded-lg overflow-hidden">
+            <form method="GET" class="mb-6">
 
-        <div class="overflow-x-auto">
+                <div class="relative">
 
-            <table class="min-w-[900px] w-full text-sm text-center">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                        <svg class="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                        </svg>
+                    </div>
 
-                <!-- HEAD -->
-                <thead class="bg-primary text-white">
+                    <input type="search" name="search" value="{{ request('search') }}"
+                        class="block w-full p-4 ps-10 text-sm border border-gray-300 rounded-xl bg-gray-50 focus:ring-green-500 focus:border-green-500"
+                        placeholder="Cari Nama Anggota atau Buku...">
+                </div>
+            </form>
+            <div class="overflow-x-auto rounded-xl border border-gray-200">
 
-                    <tr>
+                <table class="w-full text-sm text-left text-gray-500">
 
-                        <th class="p-3">Nama</th>
-
-                        <th class="p-3">Buku</th>
-
-                        <th class="p-3">Tgl Pinjam</th>
-
-                        <th class="p-3">Jatuh Tempo</th>
-
-                        <th class="p-3">Status</th>
-
-                        <th class="p-3">Aksi</th>
-
-                        <th class="p-3">Denda</th>
-
-                    </tr>
-
-                </thead>
-
-                <!-- BODY -->
-                <tbody id="table-body">
-
-                    @forelse($data as $item)
-
-                        <tr class="border-b hover:bg-gray-50">
-
-                            <!-- USER -->
-                            <td class="p-3">
-
-                                {{ $item->user->name }}
-
-                            </td>
-
-                            <!-- BOOK -->
-                            <td class="p-3">
-
-                                {{ $item->book->judul }}
-
-                            </td>
-
-                            <!-- TGL PINJAM -->
-                            <td class="p-3">
-
-                                {{ \Carbon\Carbon::parse($item->tanggal_pinjam)->format('d M Y') }}
-
-                            </td>
-
-                            <!-- TGL KEMBALI -->
-                            <td class="p-3">
-
-                                {{ $item->tanggal_kembali
-                                    ? \Carbon\Carbon::parse($item->tanggal_kembali)->format('d M Y')
-                                    : '-' }}
-
-                            </td>
-
-                            <!-- STATUS -->
-                            <td class="p-3">
-
-                                @if($item->status == 'dipinjam')
-
-                                    <span class="bg-olivine text-white px-3 py-1 rounded-full text-xs">
-
-                                        Dipinjam
-
-                                    </span>
-
-                                @elseif($item->status == 'dikembalikan')
-
-                                    <span class="bg-asparagus text-white px-3 py-1 rounded-full text-xs">
-
-                                        Dikembalikan
-
-                                    </span>
-
-                                @else
-
-                                    <span class="bg-red-500 text-white px-3 py-1 rounded-full text-xs">
-
-                                        Terlambat
-
-                                    </span>
-
-                                @endif
-
-                            </td>
-
-                            <!-- AKSI -->
-                            <td class="p-3">
-
-                                <a
-                                    href="{{ route('admin.transaksi.show', $item->id) }}"
-                                    class="text-primary hover:underline">
-
-                                    Detail
-
-                                </a>
-
-                            </td>
-
-                            <!-- DENDA -->
-                            <td class="p-3">
-
-                                @if(isset($item->denda) && $item->denda > 0)
-
-                                    <span class="bg-red-100 text-red-600 px-2 py-1 rounded text-sm font-semibold">
-
-                                        Rp {{ number_format($item->denda, 0, ',', '.') }}
-
-                                    </span>
-
-                                @else
-
-                                    <span class="text-gray-400 text-sm">
-
-                                        -
-
-                                    </span>
-
-                                @endif
-
-                            </td>
-
-                        </tr>
-
-                    @empty
-
+                    <thead class="text-sm text-white uppercase bg-green-900">
                         <tr>
-
-                            <td colspan="7" class="text-center p-4 text-gray-500">
-
-                                Belum ada transaksi
-
-                            </td>
-
+                            <th class="px-6 py-4">Nama</th>
+                            <th class="px-6 py-4">Buku</th>
+                            <th class="px-6 py-4">Tanggal Pinjam</th>
+                            <th class="px-6 py-4">Jatuh Tempo</th>
+                            <th class="px-6 py-4">Status</th>
+                            <th class="px-6 py-4">Denda</th>
+                            <th class="px-6 py-4">Aksi</th>
                         </tr>
+                    </thead>
 
-                    @endforelse
+                    <tbody>
+                        @forelse($transaksi as $item)
 
-                </tbody>
+                            <tr class="bg-white border-b hover:bg-gray-50 transition duration-200">
 
-            </table>
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                    {{ $item['nama'] }}
+                                </td>
 
-        </div>
+                                <td class="px-6 py-4 text-gray-700">
+                                    {{ $item['buku'] }}
+                                </td>
 
-        <!-- PAGINATION -->
-        <div class="p-4 flex flex-col md:flex-row justify-between items-center gap-3 text-sm">
+                                <td class="px-6 py-4 text-gray-700">
+                                    {{ \Carbon\Carbon::parse($item['tgl_pinjam'])->translatedFormat('d F Y') }}
+                                </td>
 
-            <span class="text-gray-500">
+                                <td class="px-6 py-4 text-gray-700">
+                                    {{ \Carbon\Carbon::parse($item['jatuh_tempo'])->translatedFormat('d F Y') }}
+                                </td>
+                                <td class="px-6 py-4">
 
-                Showing {{ $data->firstItem() }} to {{ $data->lastItem() }} of {{ $data->total() }} results
+                                    @if($item['status'] == 'Dipinjam')
 
-            </span>
+                                        <span class="bg-green-100 text-green-800 text-xs font-semibold px-4 py-2 rounded-full">
+                                            Dipinjam
+                                        </span>
 
-            <div class="flex gap-2">
+                                    @elseif($item['status'] == 'Dikembalikan')
 
-                <!-- PREV -->
-                @if ($data->onFirstPage())
+                                        <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-4 py-2 rounded-full">
+                                            Dikembalikan
+                                        </span>
 
-                    <span class="px-3 py-1 border rounded text-gray-400">
+                                    @else
 
-                        Prev
+                                        <span class="bg-red-100 text-red-800 text-xs font-semibold px-4 py-2 rounded-full">
+                                            Terlambat
+                                        </span>
 
-                    </span>
+                                    @endif
+                                </td>
 
-                @else
+                                <td class="px-6 py-4 font-semibold">
 
-                    <a
-                        href="{{ $data->previousPageUrl() }}"
-                        class="px-3 py-1 border rounded hover:bg-gray-100">
+                                    @if($item['denda'] > 0)
 
-                        Prev
+                                        <span class="text-red-600">
+                                            Rp {{ number_format($item['denda'], 0, ',', '.') }}
+                                        </span>
 
-                    </a>
+                                    @else
 
-                @endif
+                                        <span class="text-gray-400">
+                                            -
+                                        </span>
 
-                <!-- CURRENT -->
-                <span class="px-3 py-1 bg-primary text-white rounded">
+                                    @endif
 
-                    {{ $data->currentPage() }}
+                                </td>
+                                <td class="px-6 py-4">
 
-                </span>
+                                    <button type="button"
+                                        class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 transition duration-200">
+                                        Detail
+                                    </button>
+                                </td>
+                            </tr>
 
-                <!-- NEXT -->
-                @if ($data->hasMorePages())
+                        @empty
 
-                    <a
-                        href="{{ $data->nextPageUrl() }}"
-                        class="px-3 py-1 border rounded hover:bg-gray-100">
+                            <tr>
+                                <td colspan="7" class="px-6 py-6 text-center text-gray-500">
+                                    Data transaksi tidak ditemukan.
+                                </td>
+                            </tr>
 
-                        Next
+                        @endforelse
 
-                    </a>
-
-                @else
-
-                    <span class="px-3 py-1 border rounded text-gray-400">
-
-                        Next
-
-                    </span>
-
-                @endif
-
+                    </tbody>
+                </table>
             </div>
-
+            <div class="mt-6">
+                {{ $transaksi->links() }}
+            </div>
         </div>
-
     </div>
-
-</div>
-
-<!-- REALTIME SEARCH -->
-<script>
-
-let timeout = null;
-
-document.getElementById('search').addEventListener('keyup', function () {
-
-    clearTimeout(timeout);
-
-    timeout = setTimeout(() => {
-
-        let keyword = this.value;
-
-        fetch(`/admin/transaksi?search=${keyword}`)
-            .then(res => res.text())
-            .then(html => {
-
-                let parser = new DOMParser();
-
-                let doc = parser.parseFromString(html, 'text/html');
-
-                document.getElementById('table-body').innerHTML =
-                    doc.querySelector('#table-body').innerHTML;
-
-            });
-
-    }, 300);
-
-});
-
-</script>
 
 @endsection

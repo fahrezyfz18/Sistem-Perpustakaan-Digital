@@ -129,9 +129,7 @@
         </div>
 
         <div class="px-4 pb-3">
-            <x-responsive-nav-link :href="route('profile.edit')">
-                Profile
-            </x-responsive-nav-link>
+
         </div>
 
     </div>

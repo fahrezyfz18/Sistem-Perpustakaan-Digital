@@ -92,8 +92,12 @@
                             Kategori
                         </label>
 
-                        <input type="text" name="kategori" placeholder="Masukkan kategori"
-                            class="w-full mt-1 border rounded-lg p-2 focus:ring-2 focus:ring-primary outline-none">
+                        <select name="category_id" class="w-full mt-1 border rounded-lg p-2 focus:ring-2 focus:ring-primary outline-none">
+                            <option value="">Pilih Kategori</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <!-- TAHUN & STOK -->

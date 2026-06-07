@@ -1,7 +1,7 @@
 <aside class="fixed z-40 w-64 h-screen font-sans text-white shadow-xl bg-primary
            transform transition-transform duration-300
            -translate-x-full md:translate-x-0" :class="{ 'translate-x-0': sidebarOpen }">
-           
+
     <!-- LOGO / TITLE -->
     <div class="flex items-center h-16 px-4 border-b border-accent/30">
 
@@ -49,6 +49,27 @@
             </svg>
             Kelola Data Anggota
         </a>
+
+        <!-- KATEGORI -->
+<a href="{{ route('admin.kategori.index') }}"
+    class="flex items-center gap-3 px-4 py-2 rounded-lg transition
+    hover:bg-accent/40 hover:pl-5">
+
+    <svg xmlns="http://www.w3.org/2000/svg"
+        class="w-5 h-5"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor">
+
+        <path stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M7 7h10M7 12h10M7 17h6M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z" />
+
+    </svg>
+
+    Kelola Kategori Buku
+</a>
 
         <!-- TRANSAKSI -->
         <a href="{{ route('admin.transaksi.index') }}" class="flex items-center gap-3 px-4 py-2 rounded-lg transition

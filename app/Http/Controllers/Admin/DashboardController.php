@@ -3,11 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Book;
-use App\Models\Peminjaman;
-use App\Models\Setting;
-use App\Models\User;
-use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -18,6 +13,7 @@ class DashboardController extends Controller
             'kategori' => 5,
             'anggota' => 5,
             'peminjaman' => 3,
+            'terlambat' => 1,
         ];
 
         $peminjamanTerbaru = [
@@ -31,11 +27,27 @@ class DashboardController extends Controller
             ]
         ];
 
+        $topBooks = [
+            (object) [
+                'judul' => 'Laravel Dasar',
+                'total' => 12,
+            ],
+            (object) [
+                'judul' => 'PHP OOP',
+                'total' => 10,
+            ],
+            (object) [
+                'judul' => 'MySQL Fundamental',
+                'total' => 8,
+            ],
+        ];
+
         return view(
             'pages.admin.dashboard',
             compact(
                 'stats',
-                'peminjamanTerbaru'
+                'peminjamanTerbaru',
+                'topBooks'
             )
         );
     }

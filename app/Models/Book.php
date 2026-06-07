@@ -13,7 +13,7 @@ class Book extends Model
         'isbn',
         'penulis',
         'penerbit',
-        'kategori',
+        'category_id',
         'tahun',
         'stok',
         'cover',
@@ -29,5 +29,10 @@ class Book extends Model
     public function peminjaman(): HasMany
     {
         return $this->hasMany(Peminjaman::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }

@@ -6,342 +6,185 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Book;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Category;
 
 class BookController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
-    | INDEX
+    | INDEX (UPDATED: SEARCH + CATEGORY FILTER)
     |--------------------------------------------------------------------------
-    |
-    | Menampilkan daftar buku + search
-    |
     */
 
     public function index(Request $request)
     {
         $search = $request->search;
+        $category = $request->category;
 
-        $books = Book::query()
-
+        $books = Book::with('category')
             ->when($search, function ($query) use ($search) {
-
-                $query->where('judul', 'like', "%{$search}%")
-                    ->orWhere('penulis', 'like', "%{$search}%")
-                    ->orWhere('kategori', 'like', "%{$search}%");
-
+                $query->where(function ($q) use ($search) {
+                    $q->where('judul', 'like', "%{$search}%")
+                        ->orWhere('penulis', 'like', "%{$search}%");
+                });
             })
-
+            ->when($category, function ($query) use ($category) {
+                $query->where('category_id', $category);
+            })
             ->latest()
             ->paginate(10);
 
-        return view(
-            'pages.admin.books.index',
-            compact('books')
-        );
-    }
+        $categories = Category::orderBy('nama')->get();
 
+        return view('pages.admin.books.index', [
+            'books' => $books,
+            'categories' => $categories
+        ]);
+    }
 
     /*
     |--------------------------------------------------------------------------
     | CREATE
     |--------------------------------------------------------------------------
-    |
-    | Menampilkan form tambah buku
-    |
     */
 
     public function create()
     {
-        return view('pages.admin.books.create');
-    }
+        $categories = Category::orderBy('nama')->get();
 
+        return view('pages.admin.books.create', compact('categories'));
+    }
 
     /*
     |--------------------------------------------------------------------------
     | STORE
     |--------------------------------------------------------------------------
-    |
-    | Menyimpan data buku baru
-    |
     */
 
     public function store(Request $request)
     {
-        /*
-        |--------------------------------------------------------------------------
-        | VALIDATION
-        |--------------------------------------------------------------------------
-        */
-
         $validated = $request->validate([
 
-            'judul' => 'required|string|max:255',
+            'judul' => 'required|string|max:100',
+            'isbn' => 'nullable|string|max:30',
+            'penulis' => 'required|string|max:50',
+            'penerbit' => 'required|string|max:50',
 
-            'isbn' => 'nullable|string|max:255',
-
-            'penulis' => 'required|string|max:255',
-
-            'penerbit' => 'required|string|max:255',
-
-            'kategori' => 'required|string|max:255',
+            // UPDATED: pakai category_id (lebih standar)
+            'category_id' => 'required|exists:categories,id',
 
             'tahun' => 'required|numeric',
-
             'stok' => 'required|numeric',
 
-            /*
-            |--------------------------------------------------------------------------
-            | COVER
-            |--------------------------------------------------------------------------
-            */
-
             'cover' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-
-            /*
-            |--------------------------------------------------------------------------
-            | DESKRIPSI
-            |--------------------------------------------------------------------------
-            */
-
             'deskripsi' => 'nullable',
-
         ]);
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | UPLOAD COVER
-        |--------------------------------------------------------------------------
-        */
-
         if ($request->hasFile('cover')) {
-
             $validated['cover'] = $request
                 ->file('cover')
                 ->store('books', 'public');
         }
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | SIMPAN KE DATABASE
-        |--------------------------------------------------------------------------
-        */
-
         Book::create($validated);
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | REDIRECT
-        |--------------------------------------------------------------------------
-        */
 
         return redirect()
             ->route('admin.buku.index')
-            ->with(
-                'success',
-                'Buku berhasil ditambahkan.'
-            );
+            ->with('success', 'Buku berhasil ditambahkan.');
     }
-
 
     /*
     |--------------------------------------------------------------------------
     | SHOW
     |--------------------------------------------------------------------------
-    |
-    | Menampilkan detail buku
-    |
     */
 
     public function show(Book $buku)
     {
-        return view(
-            'pages.admin.books.detail',
-            compact('buku')
-        );
+        return view('pages.admin.books.detail', compact('buku'));
     }
-
 
     /*
     |--------------------------------------------------------------------------
     | EDIT
     |--------------------------------------------------------------------------
-    |
-    | Menampilkan form edit buku
-    |
     */
 
     public function edit(Book $buku)
     {
+        $categories = Category::orderBy('nama')->get();
+
         return view(
             'pages.admin.books.edit',
-            compact('buku')
+            compact('buku', 'categories')
         );
     }
-
 
     /*
     |--------------------------------------------------------------------------
     | UPDATE
     |--------------------------------------------------------------------------
-    |
-    | Mengupdate data buku
-    |
     */
 
     public function update(Request $request, Book $buku)
     {
-        /*
-        |--------------------------------------------------------------------------
-        | VALIDATION
-        |--------------------------------------------------------------------------
-        */
-
         $validated = $request->validate([
 
-            'judul' => 'required|string|max:255',
+            'judul' => 'required|string|max:100',
+            'isbn' => 'nullable|string|max:30',
+            'penulis' => 'required|string|max:50',
+            'penerbit' => 'required|string|max:50',
 
-            'isbn' => 'nullable|string|max:255',
-
-            'penulis' => 'required|string|max:255',
-
-            'penerbit' => 'required|string|max:255',
-
-            'kategori' => 'required|string|max:255',
+            // UPDATED
+            'category_id' => 'required|exists:categories,id',
 
             'tahun' => 'required|numeric',
-
             'stok' => 'required|numeric',
 
-            /*
-            |--------------------------------------------------------------------------
-            | COVER
-            |--------------------------------------------------------------------------
-            */
-
             'cover' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-
-            /*
-            |--------------------------------------------------------------------------
-            | DESKRIPSI
-            |--------------------------------------------------------------------------
-            */
-
             'deskripsi' => 'nullable',
-
         ]);
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | JIKA ADA COVER BARU
-        |--------------------------------------------------------------------------
-        */
-
         if ($request->hasFile('cover')) {
-
-            /*
-            |--------------------------------------------------------------------------
-            | HAPUS COVER LAMA
-            |--------------------------------------------------------------------------
-            */
 
             if (
                 $buku->cover &&
                 Storage::disk('public')->exists($buku->cover)
             ) {
-
-                Storage::disk('public')
-                    ->delete($buku->cover);
+                Storage::disk('public')->delete($buku->cover);
             }
-
-
-            /*
-            |--------------------------------------------------------------------------
-            | UPLOAD COVER BARU
-            |--------------------------------------------------------------------------
-            */
 
             $validated['cover'] = $request
                 ->file('cover')
                 ->store('books', 'public');
         }
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | UPDATE DATABASE
-        |--------------------------------------------------------------------------
-        */
-
         $buku->update($validated);
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | REDIRECT
-        |--------------------------------------------------------------------------
-        */
 
         return redirect()
             ->route('admin.buku.index')
-            ->with(
-                'success',
-                'Data buku berhasil diperbarui.'
-            );
+            ->with('success', 'Data buku berhasil diperbarui.');
     }
-
 
     /*
     |--------------------------------------------------------------------------
     | DESTROY
     |--------------------------------------------------------------------------
-    |
-    | Menghapus buku
-    |
     */
 
     public function destroy(Book $buku)
     {
-        /*
-        |--------------------------------------------------------------------------
-        | HAPUS COVER
-        |--------------------------------------------------------------------------
-        */
-
         if (
             $buku->cover &&
             Storage::disk('public')->exists($buku->cover)
         ) {
-
-            Storage::disk('public')
-                ->delete($buku->cover);
+            Storage::disk('public')->delete($buku->cover);
         }
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | HAPUS DATA
-        |--------------------------------------------------------------------------
-        */
 
         $buku->delete();
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | REDIRECT
-        |--------------------------------------------------------------------------
-        */
-
         return redirect()
             ->route('admin.buku.index')
-            ->with(
-                'success',
-                'Data buku berhasil dihapus.'
-            );
+            ->with('success', 'Data buku berhasil dihapus.');
     }
 }

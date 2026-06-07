@@ -20,6 +20,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
 use App\Http\Controllers\Admin\BookController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\TransaksiController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\LaporanController;
@@ -157,6 +158,8 @@ Route::middleware(['auth', 'isAdmin'])
         Route::resource('/buku', BookController::class);
 
         Route::resource('/anggota', AnggotaController::class);
+
+        Route::resource('/kategori', CategoryController::class);
 
         Route::resource('/transaksi', TransaksiController::class);
 

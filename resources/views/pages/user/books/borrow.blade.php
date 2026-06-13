@@ -47,16 +47,25 @@
 
                     <!-- TANGGAL PINJAM -->
                     <x-input label="Tanggal Pinjam">
-                        <input type="date" name="tanggal_pinjam" value="{{ date('Y-m-d') }}"
+                        <input type="date" name="tanggal_pinjam" id="tanggal_pinjam" value="{{ date('Y-m-d') }}" min="{{ date('Y-m-d') }}"
                             class="w-full border rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none">
                     </x-input>
                     
                     <!-- DEADLINE -->
                     <x-input label="Deadline Pengembalian">
-                        <input type="date" name="deadline" value="{{ now()->addDays(7)->format('Y-m-d') }}"
+                        <input type="date" name="deadline" id="deadline" min="{{ date('Y-m-d') }}" max="{{ now()->addDays(7)->format('Y-m-d') }}"
                             class="w-full border rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none">
                     </x-input>
                 </div>
+
+                <script>
+                    document.getElementById('tanggal_pinjam').onchange = function () {
+                        // alert(this.value);
+                        // this.value + 7 hari;
+
+                        document.getElementById('deadline').setAttribute('max', '2026-06-30' );
+                    }
+                </script>
 
                 <!-- STATUS -->
                 <x-input label="Status">

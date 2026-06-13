@@ -37,7 +37,8 @@
                     <!-- badge -->
                     <span
                         class="absolute -top-1 -right-1 bg-mustard text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
-                        3
+                        3 
+                        <!-- Data diambil dari database tabel peminjaman , yang peminjamannya overdue, yang kena denda dll -->
                     </span>
 
                 </button>

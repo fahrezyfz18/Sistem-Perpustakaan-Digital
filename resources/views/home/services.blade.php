@@ -1,7 +1,7 @@
 <!-- =========================================================
      SERVICES SECTION
 ========================================================= -->
-<section id="layanan" class="py-24 bg-white">
+<section id="layanan" class="py-4 px-4 bg-white">
 
     <div class="container-page text-center">
 

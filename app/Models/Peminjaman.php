@@ -16,62 +16,30 @@ class Peminjaman extends Model
         'deadline',
         'tanggal_dikembalikan',
         'status',
-        'kondisi',
-        'catatan'
+        'denda'
     ];
-
-    /*
-    |--------------------------------------------------------------------------
-    | CASTS
-    |--------------------------------------------------------------------------
-    */
 
     protected $casts = [
-
         'tanggal_pinjam' => 'date',
-
         'deadline' => 'date',
-
         'tanggal_dikembalikan' => 'date',
-
     ];
-
-    protected $appends = [
-        'denda',
-        'hari_telat'
-    ];
-
-    /*
-    |--------------------------------------------------------------------------
-    | RELATION : USER
-    |--------------------------------------------------------------------------
-    */
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | RELATION : BOOK
-    |--------------------------------------------------------------------------
-    */
-
     public function book(): BelongsTo
     {
         return $this->belongsTo(Book::class);
     }
-/*
-    |--------------------------------------------------------------------------
-    | CHECK IF BOOK IS ALREADY BORROWEDBY USER
-    |--------------------------------------------------------------------------
-    */
+
     public static function isAlreadyBorrowed($userId, $bookId)
     {
         return self::where('user_id', $userId)
             ->where('book_id', $bookId)
-            ->where('status', 'dipinjam') 
-            ->exists(); 
+            ->where('status', 'dipinjam')
+            ->exists();
     }
-    }
+}

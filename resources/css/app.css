@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import font */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap');
+@import './bootstrap';
+@import 'flowbite';
+
+/* Global styling */
+@layer base {
+    body {
+        @apply font-sans;
+        scroll-behavior: smooth;
+    }
+}
+
+/* Custom utilities */
+@layer components {
+    .container-page {
+        @apply max-w-7xl mx-auto px-6 md:px-10 lg:px-16;
+    }
+}
+
+@layer utilities {
+    .hero-bg {
+        background: radial-gradient(circle at top right, rgba(154, 178, 131, 0.15), transparent),
+                    radial-gradient(circle at bottom left, rgba(188, 158, 95, 0.1), transparent);
+    }
+}

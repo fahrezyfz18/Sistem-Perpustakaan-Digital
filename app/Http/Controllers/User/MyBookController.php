@@ -4,7 +4,6 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Peminjaman;
-use Illuminate\Http\Request;
 
 class MyBookController extends Controller
 {
@@ -14,11 +13,11 @@ class MyBookController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function index( Request $request )
+    public function index()
     {
         $books = Peminjaman::with('book')
             ->where('user_id', auth()->id())
-            ->where('status', $request->query('status') ?? 'dipinjam')
+            ->where('status', 'dipinjam')
             ->latest()
             ->get();
 

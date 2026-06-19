@@ -51,25 +51,25 @@
         </a>
 
         <!-- KATEGORI -->
-<a href="{{ route('admin.kategori.index') }}"
-    class="flex items-center gap-3 px-4 py-2 rounded-lg transition
+        <a href="{{ route('admin.kategori.index') }}"
+            class="flex items-center gap-3 px-4 py-2 rounded-lg transition
     hover:bg-accent/40 hover:pl-5">
 
-    <svg xmlns="http://www.w3.org/2000/svg"
-        class="w-5 h-5"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                class="w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor">
 
-        <path stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M7 7h10M7 12h10M7 17h6M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z" />
+                <path stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M7 7h10M7 12h10M7 17h6M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z" />
 
-    </svg>
+            </svg>
 
-    Kelola Kategori Buku
-</a>
+            Kelola Kategori Buku
+        </a>
 
         <!-- TRANSAKSI -->
         <a href="{{ route('admin.transaksi.index') }}" class="flex items-center gap-3 px-4 py-2 rounded-lg transition
@@ -83,7 +83,7 @@
         </a>
 
         <!-- LAPORAN -->
-        <a href="{{ route('admin.laporan.peminjaman') }}" class="flex items-center gap-3 px-4 py-2 rounded-lg transition
+        <a href="{{ route('admin.laporan.index') }}" class="flex items-center gap-3 px-4 py-2 rounded-lg transition
                    hover:bg-accent/40 hover:pl-5">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">

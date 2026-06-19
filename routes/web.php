@@ -113,13 +113,11 @@ Route::get('/dashboard', function () {
     if (!auth()->check()) {
 
         return redirect()->route('login');
-
     }
 
     return auth()->user()->role === 'admin'
         ? redirect()->route('admin.dashboard')
         : redirect()->route('user.dashboard');
-
 })
     ->middleware(['auth'])
     ->name('dashboard');
@@ -184,10 +182,9 @@ Route::middleware(['auth', 'isAdmin'])
         */
 
         Route::get(
-            '/laporan-peminjaman',
+            '/laporan',
             [LaporanController::class, 'index']
-        )
-            ->name('laporan.peminjaman');
+        )->name('laporan.index');
 
         Route::get(
             '/laporan/export',
@@ -260,9 +257,7 @@ Route::middleware(['auth', 'isAdmin'])
                 'pages.admin.laporan.pdf',
                 compact('data')
             );
-
         });
-
     });
 
 
@@ -416,6 +411,4 @@ Route::middleware(['auth', 'isUser'])
             [PeminjamanController::class, 'create']
         )
             ->name('borrow.create');
-
     });
-

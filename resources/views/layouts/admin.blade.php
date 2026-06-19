@@ -3,33 +3,32 @@
 
 <head>
     <title>Admin</title>
-    @vite('resources/css/app.css')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="bg-gray-100">
 
-<div x-data="{ sidebarOpen: false }" class="flex min-h-screen">
+    <div x-data="{ sidebarOpen: false }" class="flex min-h-screen">
 
-    @include('components.sidebar-admin')
+        @include('components.sidebar-admin')
 
-    <!-- OVERLAY -->
-    <div 
-        x-show="sidebarOpen"
-        @click="sidebarOpen = false"
-        class="fixed inset-0 bg-black/40 z-30 md:hidden"
-    ></div>
+        <!-- OVERLAY -->
+        <div
+            x-show="sidebarOpen"
+            @click="sidebarOpen = false"
+            class="fixed inset-0 bg-black/40 z-30 md:hidden"></div>
 
-    <div class="flex-1 w-full md:ml-64">
+        <div class="flex-1 w-full md:ml-64">
 
-        @include('layouts.navigation')
+            @include('layouts.navigation')
 
-        <main class="p-6">
-            @yield('content')
-        </main>
+            <main class="p-6">
+                @yield('content')
+            </main>
+
+        </div>
 
     </div>
-
-</div>
 
 </body>
 

@@ -1,38 +1,74 @@
 @extends('layouts.admin')
 
 @section('content')
-    <h1 class="text-xl font-bold mb-4">Data Kategori</h1>
 
-    <a href="{{ route('admin.kategori.create') }}" class="bg-primary text-white px-4 py-2 rounded">
-        + Tambah Kategori
-    </a>
+<x-page title="Data Kategori" subtitle="Manajemen data kategori buku perpustakaan"
+    :action="route('admin.kategori.create')" actionText="+ Tambah Kategori">
 
-    <table class="w-full mt-4 bg-white shadow rounded">
-        <thead>
-            <tr class="border-b">
-                <th class="p-2 text-left">Nama</th>
-                <th class="p-2">Aksi</th>
-            </tr>
-        </thead>
+    <!-- SEARCH -->
+    <div class="mb-4">
+        <x-search-filter
+            :action="route('admin.kategori.index')"
+            placeholder="Cari kategori..." />
+    </div>
 
-        <tbody>
-            @foreach ($categories as $category)
-                <tr class="border-b">
-                    <td class="p-2">{{ $category->nama }}</td>
-                    <td class="p-2">
-                        <a href="{{ route('admin.kategori.edit', $category->id) }}" class="text-blue-600">Edit</a>
+    <!-- TABLE -->
+    <x-table
+        :headers="[
+        'Nama Kategori',
+        'Aksi'
+    ]">
 
-                        <form action="{{ route('admin.kategori.destroy', $category->id) }}" method="POST" class="inline">
-                            @csrf
-                            @method('DELETE')
+        @forelse($categories as $category)
 
-                            <button class="text-red-600 ml-2">
-                                Hapus
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+        <x-table-row>
+
+            <x-table-cell>
+                {{ $category->nama }}
+            </x-table-cell>
+
+            <x-table-cell>
+
+                <div class="flex justify-center gap-2">
+
+                    <a href="{{ route('admin.kategori.edit',$category->id) }}"
+                        class="px-3 py-2 bg-yellow-100 text-yellow-700 rounded-lg">
+                        Edit
+                    </a>
+
+                    <form method="POST"
+                        action="{{ route('admin.kategori.destroy',$category->id) }}">
+                        @csrf
+                        @method('DELETE')
+
+                        <button class="px-3 py-2 bg-red-100 text-red-600 rounded-lg">
+                            Hapus
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </x-table-cell>
+
+        </x-table-row>
+
+        @empty
+
+        <tr>
+            <td colspan="2" class="p-6 text-center text-gray-500">
+                Data tidak ditemukan
+            </td>
+        </tr>
+
+        @endforelse
+
+    </x-table>
+
+    </div>
+
+    </div>
+
+</x-page>
+
 @endsection

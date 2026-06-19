@@ -2,219 +2,315 @@
 
 @section('content')
 
-    <div class="p-6 bg-background min-h-screen">
+<x-page
+    title="Laporan & Statistik"
+    subtitle="Analisis data perpustakaan">
 
-        <!-- HEADER -->
-        <div class="flex flex-col md:flex-row justify-between gap-4 mb-6">
+    <div
+        class="mt-3 bg-white inline-block px-3 py-2 rounded-lg shadow border text-sm text-gray-600 mb-5">
 
-            <div>
-                <h1 class="text-2xl md:text-3xl font-semibold text-primary">
-                    Laporan & Statistik
-                </h1>
+        <span id="realtimeClock"></span>
 
-                <p class="text-sm text-gray-500">
-                    Analisis data perpustakaan
-                </p>
-            </div>
+    </div>
 
-            <!-- BUTTON EXPORT -->
-            <div class="flex gap-2">
+    <script>
+        function updateClock() {
 
-                <a href="{{ route('admin.laporan.export') }}"
-                    class="bg-asparagus hover:bg-olivine transition text-white px-4 py-2 rounded-lg">
-                    Excel
-                </a>
+            const now = new Date();
 
-                <a href="{{ route('admin.laporan.export', ['type' => 'pdf']) }}"
-                    class="bg-secondary hover:bg-mustard transition text-white px-4 py-2 rounded-lg">
-                    PDF
-                </a>
+            let date = now.toLocaleDateString(
+                'id-ID', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                }
+            );
 
-            </div>
+            let time = now.toLocaleTimeString('id-ID');
 
+            document.getElementById(
+                'realtimeClock'
+            ).innerHTML = `${date} • ${time}`;
+        }
+
+        updateClock();
+        setInterval(updateClock, 1000);
+    </script>
+
+    <x-slot name="headerActions">
+
+        <a href="{{ route('admin.laporan.export', [
+    'start_date' => request('start_date'),
+    'end_date' => request('end_date')
+]) }}"
+            class="bg-asparagus hover:bg-olivine transition text-white px-4 py-2 rounded-lg">
+            Export Excel
+        </a>
+
+        <a href="{{ route('admin.laporan.export', [
+    'type' => 'pdf',
+    'start_date' => request('start_date'),
+    'end_date' => request('end_date')
+]) }}"
+            class="bg-secondary hover:bg-mustard transition text-white px-4 py-2 rounded-lg">
+            Export PDF
+        </a>
+
+    </x-slot>
+
+    <!-- FILTER -->
+    <div class="bg-white p-4 rounded-lg shadow mb-6">
+
+        <form id="filterForm"
+            method="GET"
+            action="{{ route('admin.laporan.index') }}"
+            class="flex flex-col md:flex-row gap-3">
+
+            <input
+                type="date"
+                name="start_date"
+                value="{{ request('start_date') }}"
+                class="border border-gray-300 px-3 py-2 rounded-lg w-full">
+
+            <input
+                type="date"
+                name="end_date"
+                value="{{ request('end_date') }}"
+                class="border border-gray-300 px-3 py-2 rounded-lg w-full">
+
+        </form>
+
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 mb-8">
+
+        <div class="bg-white p-5 rounded-xl shadow border-l-4 border-kombu">
+            <p class="text-gray-500 text-sm">
+                Total Peminjaman
+            </p>
+
+            <h2 class="text-2xl font-bold text-kombu">
+                {{ $totalPeminjaman }}
+            </h2>
         </div>
 
+        <div class="bg-white p-5 rounded-xl shadow border-l-4 border-olivine">
+            <p class="text-gray-500 text-sm">
+                Dikembalikan
+            </p>
 
-        <!-- FILTER -->
-        <div class="bg-white p-4 rounded-lg shadow mb-6">
-
-            <form class="flex flex-col md:flex-row gap-3">
-
-                <input type="date" class="border px-3 py-2 rounded w-full">
-
-                <input type="date" class="border px-3 py-2 rounded w-full">
-
-                <button class="bg-primary text-white px-4 py-2 rounded">
-                    Filter
-                </button>
-
-            </form>
-
+            <h2 class="text-2xl font-bold text-olivine">
+                {{ $totalDikembalikan }}
+            </h2>
         </div>
 
+        <div class="bg-white p-5 rounded-xl shadow border-l-4 border-red-500">
+            <p class="text-gray-500 text-sm">
+                Terlambat
+            </p>
 
-        <!-- GRAFIK -->
-        <div class="bg-white p-6 rounded-lg shadow mb-6">
+            <h2 class="text-2xl font-bold text-red-500">
+                {{ $totalTerlambat }}
+            </h2>
+        </div>
 
-            <h3 class="text-lg font-semibold text-primary mb-4">
-                Grafik Peminjaman
-            </h3>
+        <div class="bg-white p-5 rounded-xl shadow border-l-4 border-mustard">
+            <p class="text-gray-500 text-sm">
+                Total Denda
+            </p>
 
+            <h2 class="text-2xl font-bold text-mustard">
+                Rp {{ number_format($totalDenda,0,',','.') }}
+            </h2>
+        </div>
+
+    </div>
+
+    <!-- CHART -->
+    <div class="bg-white p-6 rounded-lg shadow mb-6">
+
+        <h3 class="text-lg font-semibold text-primary mb-4">
+            Grafik Peminjaman
+        </h3>
+
+        <div style="height:350px;">
             <canvas id="chartBesar"></canvas>
-
         </div>
 
+    </div>
 
-        <!-- TOP DATA -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
 
-            <!-- TOP BUKU -->
-            <div class="bg-white p-4 rounded-lg shadow">
+            const start = document.querySelector('[name="start_date"]');
+            const end = document.querySelector('[name="end_date"]');
+            const form = document.getElementById('filterForm');
 
-                <h3 class="font-semibold text-primary mb-3">
-                    Top 5 Buku
-                </h3>
+            function submitFilter() {
 
-                <ul class="space-y-2 text-sm">
+                let timer;
 
-                    @forelse($topBooks ?? [] as $book)
+                function submitFilter() {
 
-                        <li class="flex justify-between border-b pb-1">
-                            <span>{{ $book->book->judul ?? '-' }}</span>
-                            <span>{{ $book->total }}x</span>
-                        </li>
+                    clearTimeout(timer);
 
-                    @empty
+                    timer = setTimeout(() => {
 
-                        <p class="text-gray-500">
-                            Tidak ada data
-                        </p>
+                        form.submit();
 
-                    @endforelse
+                    }, 500);
 
-                </ul>
+                }
 
-            </div>
+            }
 
+            start.addEventListener('change', submitFilter);
+            end.addEventListener('change', submitFilter);
 
-            <!-- TOP USER -->
-            <div class="bg-white p-4 rounded-lg shadow">
+        });
+    </script>
 
-                <h3 class="font-semibold text-primary mb-3">
-                    Anggota Aktif
-                </h3>
+    <!-- TOP DATA -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
 
-                <ul class="space-y-2 text-sm">
+        <!-- TOP BUKU -->
+        <div class="bg-white p-5 rounded-xl shadow">
 
-                    @forelse($topUsers ?? [] as $user)
-
-                        <li class="flex justify-between border-b pb-1">
-                            <span>{{ $user->user->name ?? '-' }}</span> <span>{{ $user->total }}x</span>
-                        </li>
-
-                    @empty
-
-                        <p class="text-gray-500">
-                            Tidak ada data
-                        </p>
-
-                    @endforelse
-
-                </ul>
-
-            </div>
-
-        </div>
-
-
-        <!-- DATA KETERLAMBATAN -->
-        <div class="bg-white p-6 rounded-lg shadow">
-
-            <h3 class="font-semibold text-primary mb-4">
-                Data Keterlambatan
+            <h3 class="text-lg font-semibold text-kombu mb-4">
+                Top 3 Buku Terpopuler
             </h3>
 
-            <table class="w-full text-sm">
+            <ul class="space-y-2 text-sm">
 
-                <thead class="bg-primary text-white">
+                @forelse($topBooks ?? [] as $book)
 
-                    <tr>
-                        <th class="p-3">Nama</th>
-                        <th class="p-3">Buku</th>
-                        <th class="p-3 text-center">Telat</th>
-                        <th class="p-3 text-center">Denda</th>
-                    </tr>
+                <li class="flex justify-between border-b pb-2">
+                    <span>{{ $book->book->judul ?? '-' }}</span>
+                    <span class="font-semibold">{{ $book->total }}x</span>
+                </li>
 
-                </thead>
+                @empty
 
-                <tbody>
+                <li class="text-gray-500">
+                    Tidak ada data
+                </li>
 
-                    @forelse($terlambat as $item)
+                @endforelse
 
-                        <tr class="border-b hover:bg-gray-50">
+            </ul>
 
-                            <td class="p-3">
-                                {{ $item->user->name ?? '-' }}
-                            </td>
+        </div>
 
-                            <td class="p-3">
-                                {{ $item->book->judul ?? '-' }}
-                            </td>
+        <!-- TOP USER -->
+        <div class="bg-white p-5 rounded-xl shadow">
 
-                            <td class="p-3 text-center text-red-500 font-semibold">
-                                {{ $item->hari_telat }} Hari
-                            </td>
+            <h3 class="text-lg font-semibold text-kombu mb-4">
+                Anggota Aktif
+            </h3>
 
-                            <td class="p-3 text-center text-red-500 font-bold">
-                                Rp {{ number_format($item->denda, 0, ',', '.') }}
-                            </td>
+            <ul class="space-y-2 text-sm">
 
-                        </tr>
+                @forelse($topUsers ?? [] as $user)
 
-                    @empty
+                <li class="flex justify-between border-b pb-2">
+                    <span>{{ $user->user->name ?? '-' }}</span>
+                    <span class="font-semibold">{{ $user->total }}x</span>
+                </li>
 
-                        <tr>
+                @empty
 
-                            <td colspan="4" class="text-center p-4 text-gray-500">
+                <li class="text-gray-500">
+                    Tidak ada data
+                </li>
 
-                                Tidak ada keterlambatan
+                @endforelse
 
-                            </td>
-
-                        </tr>
-
-                    @endforelse
-
-                </tbody>
-
-            </table>
+            </ul>
 
         </div>
 
     </div>
 
+    <!-- DATA KETERLAMBATAN -->
+    <x-table
+        :headers="[
+            'Nama',
+            'Buku',
+            'Hari Terlambat',
+            'Denda'
+        ]">
 
-    <!-- CHART -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        @forelse($terlambat as $item)
 
-    <script>
+        <x-table-row>
 
-        new Chart(document.getElementById('chartBesar'), {
+            <x-table-cell>
+                {{ $item->user->name ?? '-' }}
+            </x-table-cell>
 
-            type: 'bar',
+            <x-table-cell>
+                {{ $item->book->judul ?? '-' }}
+            </x-table-cell>
 
-            data: {
+            <x-table-cell>
+                <span class="text-red-500 font-semibold">
+                    {{ $item->hari_telat }} Hari
+                </span>
+            </x-table-cell>
 
-                labels: ['May'],
+            <x-table-cell>
+                <span class="text-red-500 font-bold">
+                    Rp {{ number_format($item->denda, 0, ',', '.') }}
+                </span>
+            </x-table-cell>
 
-                datasets: [{
-                    label: 'Peminjaman',
-                    data: [{{ count($terlambat) }}]
-                }]
+        </x-table-row>
+
+        @empty
+
+        <tr>
+            <td colspan="4" class="text-center p-6 text-gray-500">
+                Tidak ada keterlambatan
+            </td>
+        </tr>
+
+        @endforelse
+
+    </x-table>
+
+</x-page>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        new Chart(
+            document.getElementById('chartBesar'), {
+                type: 'bar',
+
+                data: {
+
+                    labels: @json($chartLabels),
+
+                    datasets: [{
+                        label: 'Jumlah Peminjaman',
+
+                        data: @json($chartValues)
+                    }]
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false
+                }
             }
+        );
 
-        });
-
-    </script>
+    });
+</script>
 
 @endsection

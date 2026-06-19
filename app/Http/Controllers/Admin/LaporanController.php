@@ -8,11 +8,29 @@ use App\Models\Peminjaman;
 use App\Models\Setting;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\LaporanExport;
 
 class LaporanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
+
+        $query = Peminjaman::query();
+
+        if ($startDate && $endDate) {
+
+            $query->whereBetween(
+                'tanggal_pinjam',
+                [$startDate, $endDate]
+            );
+        }
+
+        $setting = Setting::first();
+
         /*
         |--------------------------------------------------------------------------
         | SETTINGS
@@ -30,9 +48,12 @@ class LaporanController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        $terlambat = Peminjaman::with(['book', 'user'])
+        $terlambat = (clone $query)
+            ->with(['book', 'user'])
             ->where('status', 'terlambat')
             ->get();
+
+        $totalDenda = 0;
 
         foreach ($terlambat as $item) {
 
@@ -45,6 +66,8 @@ class LaporanController extends Controller
             $item->hari_telat = $kembali->diffInDays($today);
 
             $item->denda = $item->hari_telat * $dendaPerHari;
+
+            $totalDenda += $item->denda;
         }
 
 
@@ -54,7 +77,8 @@ class LaporanController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        $topBooks = Peminjaman::with('book')
+        $topBooks = (clone $query)
+            ->with('book')
             ->selectRaw('book_id, COUNT(*) as total')
             ->groupBy('book_id')
             ->orderByDesc('total')
@@ -68,13 +92,41 @@ class LaporanController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        $topUsers = Peminjaman::with('user')
+        $topUsers = (clone $query)
+            ->with('user')
             ->selectRaw('user_id, COUNT(*) as total')
             ->groupBy('user_id')
             ->orderByDesc('total')
             ->limit(5)
             ->get();
 
+        $chartData = (clone $query)
+            ->selectRaw('DATE(tanggal_pinjam) as tanggal')
+            ->selectRaw('COUNT(*) as total')
+            ->groupBy('tanggal')
+            ->orderBy('tanggal')
+            ->get();
+
+        $chartLabels = $chartData
+            ->pluck('tanggal')
+            ->map(fn($d) => Carbon::parse($d)->format('d M'))
+            ->values();
+
+        $chartValues = $chartData
+            ->pluck('total')
+            ->values();
+
+        $totalPeminjaman = (clone $query)->count();
+
+        $totalDikembalikan = (clone $query)
+            ->where('status', 'dikembalikan')
+            ->count();
+
+        $totalTerlambat = (clone $query)
+            ->where('status', 'terlambat')
+            ->count();
+
+        $totalDenda = $terlambat->sum('denda');
 
         /*
         |--------------------------------------------------------------------------
@@ -87,7 +139,13 @@ class LaporanController extends Controller
             compact(
                 'terlambat',
                 'topBooks',
-                'topUsers'
+                'topUsers',
+                'chartLabels',
+                'chartValues',
+                'totalPeminjaman',
+                'totalDikembalikan',
+                'totalTerlambat',
+                'totalDenda'
             )
         );
     }
@@ -101,7 +159,20 @@ class LaporanController extends Controller
 
     public function export(Request $request)
     {
-        $data = Peminjaman::with(['book', 'user'])->get();
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
+
+        $query = Peminjaman::with(['book', 'user']);
+
+        if ($startDate && $endDate) {
+
+            $query->whereBetween(
+                'tanggal_pinjam',
+                [$startDate, $endDate]
+            );
+        }
+
+        $data = $query->get();
 
         $setting = Setting::first();
 
@@ -130,7 +201,6 @@ class LaporanController extends Controller
                 $hariTelat = $kembali->diffInDays($today);
 
                 $item->denda = $hariTelat * $dendaPerHari;
-
             } else {
 
                 $item->denda = 0;
@@ -166,7 +236,7 @@ class LaporanController extends Controller
         $headers = [
             'Content-Type' => 'text/csv',
             'Content-Disposition' =>
-                'attachment; filename="' . $filename . '"',
+            'attachment; filename="' . $filename . '"',
         ];
 
         $callback = function () use ($data) {
@@ -223,4 +293,4 @@ class LaporanController extends Controller
             $headers
         );
     }
-}   
+}

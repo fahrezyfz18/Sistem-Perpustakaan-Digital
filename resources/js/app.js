@@ -17,3 +17,32 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+// AUTO SEARCH GLOBAL (AMAN UNTUK SEMUA PAGE)
+document.addEventListener('DOMContentLoaded', () => {
+
+    const inputs = document.querySelectorAll('[data-auto-search="true"]');
+
+    inputs.forEach((input) => {
+
+        const form = input.closest('form');
+
+        if (!form) return;
+
+        let timeout = null;
+
+        input.addEventListener('input', () => {
+
+            clearTimeout(timeout);
+
+            timeout = setTimeout(() => {
+
+                form.requestSubmit();
+
+            }, 500);
+
+        });
+
+    });
+
+});

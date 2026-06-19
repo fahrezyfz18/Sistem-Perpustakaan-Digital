@@ -17,12 +17,46 @@
             </p>
         </div>
 
+        @if(session('success'))
+        <div class="mb-4 p-3 bg-olivine text-white rounded-lg shadow">
+            {{ session('success') }}
+        </div>
+        @endif
+
         <!-- FORM -->
         <div class="p-6">
 
             <form action="{{ route('admin.buku.update', $buku->id) }}" method="POST" class="space-y-4">
                 @csrf
                 @method('PUT')
+
+                <!-- COVER -->
+                <div>
+                    <label class="text-sm text-gray-600">
+                        Cover Buku
+                    </label>
+
+                    <input type="file"
+                        name="cover"
+                        class="w-full mt-1 border rounded-lg p-2"
+                        accept="image/jpeg,image/png,image/jpg">
+
+                    <p class="text-xs text-gray-400 mt-1">
+                        Format: JPG, JPEG, PNG | Maks: 5MB
+                    </p>
+                </div>
+
+                <p class="text-xs text-yellow-600 mt-1">
+                    Kosongkan jika tidak ingin mengganti cover
+                </p>
+
+                @if($buku->cover)
+                <div class="mt-2">
+                    <p class="text-xs text-gray-500">Cover saat ini:</p>
+                    <img src="{{ asset('storage/'.$buku->cover) }}"
+                        class="w-20 h-28 object-cover rounded mt-1">
+                </div>
+                @endif
 
                 <!-- JUDUL -->
                 <div>
@@ -55,8 +89,28 @@
                 <!-- KATEGORI -->
                 <div>
                     <label class="text-sm text-gray-600">Kategori</label>
-                    <input type="text" name="kategori" value="{{ $buku->kategori }}"
+
+                    <select name="category_id"
                         class="w-full mt-1 border rounded-lg p-2 focus:ring-2 focus:ring-primary outline-none">
+
+                        <option value="">Pilih Kategori</option>
+
+                        @foreach($categories as $category)
+                        <option value="{{ $category->id }}"
+                            {{ $buku->category_id == $category->id ? 'selected' : '' }}>
+                            {{ $category->name }}
+                        </option>
+                        @endforeach
+
+                    </select>
+                </div>
+
+                <!-- DESKRIPSI -->
+                <div>
+                    <label class="text-sm text-gray-600">Deskripsi</label>
+
+                    <textarea name="deskripsi" rows="4"
+                        class="w-full mt-1 border rounded-lg p-2 focus:ring-2 focus:ring-primary outline-none">{{ $buku->deskripsi }}</textarea>
                 </div>
 
                 <!-- TAHUN & STOK -->

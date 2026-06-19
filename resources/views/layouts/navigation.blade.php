@@ -24,24 +24,7 @@
             <div class="flex items-center gap-4">
 
                 <!-- NOTIFIKASI -->
-                <button class="relative text-kombu hover:text-mustard transition">
-
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M15 17h5l-1.4-1.4A2 2 0 0118 14.2V11a6 6 0 10-12 0v3.2c0 .5-.2 1-.6 1.4L4 17h5m6 0a3 3 0 11-6 0m6 0H9" />
-
-                    </svg>
-
-                    <!-- badge -->
-                    <span
-                        class="absolute -top-1 -right-1 bg-mustard text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
-                        3 
-                        <!-- Data diambil dari database tabel peminjaman , yang peminjamannya overdue, yang kena denda dll -->
-                    </span>
-
-                </button>
+                <button ></button>
 
                 <!-- USER DROPDOWN -->
                 <x-dropdown align="right" width="48">

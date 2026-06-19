@@ -62,24 +62,20 @@ class BookController extends Controller
     */
 
     public function store(Request $request)
-    {
-        $validated = $request->validate([
+{
+    $validated = $request->validate([
+        'judul'       => 'required|string|max:100',
+        'isbn'        => 'nullable|string|max:30',
+        'penulis'     => 'required|string|max:50',
+        'penerbit'    => 'required|string|max:50',
+        'category_id' => 'required|exists:categories,id',
+        'stok'        => 'required|integer|min:0',
+        'tahun'       => 'required|digits:4',
+        'cover'       => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
+        'deskripsi'   => 'nullable|string',
+    ]);
 
-            'judul' => 'required|string|max:100',
-            'isbn' => 'nullable|string|max:30',
-            'penulis' => 'required|string|max:50',
-            'penerbit' => 'required|string|max:50',
-
-            // UPDATED: pakai category_id (lebih standar)
-            'category_id' => 'required|exists:categories,id',
-
-            'tahun' => 'required|numeric',
-            'stok' => 'required|numeric',
-
-            'cover' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'deskripsi' => 'nullable',
-        ]);
-
+    
         if ($request->hasFile('cover')) {
             $validated['cover'] = $request
                 ->file('cover')

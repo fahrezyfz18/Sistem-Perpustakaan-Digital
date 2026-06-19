@@ -112,18 +112,90 @@
         </a>
 
         <!-- LOGOUT -->
-        <form method="POST" action="{{ route('logout') }}" class="pt-6 mt-4 border-t border-accent/30">
+        <form
+            method="POST"
+            action="{{ route('logout') }}"
+            onsubmit="return confirm('Yakin ingin logout dari sistem?')">
+
             @csrf
+
             <button
+                type="submit"
                 class="flex items-center w-full gap-3 px-4 py-2 transition rounded-lg bg-secondary hover:bg-camel hover:pl-5">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    class="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
                     stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
                         d="M17 16l4-4m0 0l-4-4m4 4H7" />
+
                 </svg>
+
                 Logout
+
             </button>
+
         </form>
 
     </nav>
+    <div
+        id="logoutModal"
+        class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
+
+        <div class="bg-white rounded-xl shadow-lg p-6 w-96">
+
+            <h3 class="text-xl font-bold text-kombu mb-2">
+                Konfirmasi Logout
+            </h3>
+
+            <p class="text-gray-600 mb-6">
+                Apakah Anda yakin ingin keluar dari sistem?
+            </p>
+
+            <div class="flex justify-end gap-3">
+
+                <button
+                    onclick="closeLogoutModal()"
+                    class="px-4 py-2 rounded-lg bg-gray-300 hover:bg-gray-400">
+
+                    Batal
+
+                </button>
+
+                <form method="POST" action="{{ route('logout') }}">
+
+                    @csrf
+
+                    <button
+                        type="submit"
+                        class="px-4 py-2 rounded-lg bg-secondary text-white hover:bg-camel">
+
+                        Logout
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+    <script>
+        function openLogoutModal() {
+            document.getElementById('logoutModal')
+                .classList.remove('hidden');
+        }
+
+        function closeLogoutModal() {
+            document.getElementById('logoutModal')
+                .classList.add('hidden');
+        }
+    </script>
 </aside>

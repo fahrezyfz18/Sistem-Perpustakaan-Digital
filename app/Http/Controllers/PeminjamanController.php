@@ -34,7 +34,7 @@ class PeminjamanController extends Controller
             'user_id' => auth()->id(),
             'book_id' => $book->id,
             'tanggal_pinjam' => now(),
-            'deadline' => now()->addDays($batasHari),
+            'tgl_jatuh_tempo' => now()->addDays($batasHari),
             'status' => 'dipinjam',
             'denda' => 0,
         ]);

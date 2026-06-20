@@ -38,4 +38,15 @@ class TransaksiController extends Controller
             compact('transaksi')
         );
     }
+
+    public function show($id)
+    {
+        $data = Peminjaman::with(['user', 'book'])
+            ->findOrFail($id);
+
+        return view(
+            'pages.admin.transaksi.detail',
+            compact('data')
+        );
+    }
 }

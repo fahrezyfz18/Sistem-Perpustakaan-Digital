@@ -88,10 +88,10 @@
 
                             <p>
                                 <span class="font-medium">
-                                    Deadline:
+                                    Tgl Jatuh Tempo:
                                 </span>
 
-                                {{ \Carbon\Carbon::parse($book->deadline)->format('d M Y') }}
+                                {{ $book->tgl_jatuh_tempo?->format('d M Y') ?? '-' }}
                             </p>
 
                         </div>

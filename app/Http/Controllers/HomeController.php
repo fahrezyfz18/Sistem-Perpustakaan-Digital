@@ -9,7 +9,10 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $books = Book::latest()->take(8)->get();
+        $books = Book::with('category')
+            ->latest()
+            ->take(8)
+            ->get();
 
         $data = $this->getData();
 
@@ -26,6 +29,7 @@ class HomeController extends Controller
         ];
     }
 
+    // sementara tidak digunakan
     public function tampilkan()
     {
         $data = $this->getData();

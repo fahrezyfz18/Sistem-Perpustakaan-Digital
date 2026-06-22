@@ -1,77 +1,74 @@
-<footer class="bg-primary text-white pt-20 pb-6 mt-0 shadow-inner">
-    <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-3 gap-8 border-b border-white/5 pb-8">
+<footer class="bg-kombu text-white pt-16 pb-8 mt-0 shadow-inner">
+    <div class="max-w-7xl mx-auto px-6 grid gap-12 md:grid-cols-3 border-b border-white/5 pb-12">
 
         <!-- LEFT: BRAND -->
-        <div class="space-y-6 text-center md:text-left">
-            <div class="flex items-center justify-center md:justify-start gap-2">
+        <div class="flex flex-col items-center md:items-start space-y-6 text-center md:text-left">
+            <div class="space-y-4">
 
-                <div class="space-y-4">
-                    <!-- LOGO -->
-                    <img src="{{ asset('images/LOGO_TRANSPARAN.png') }}" alt="LeafShelf Logo"
-                        class="h-20 w-auto opacity-95 
-                        drop-shadow-[0_2px_4px_rgba(0,0,0,0.2)]
-                        hover:drop-shadow-[0_8px_16px_rgba(0,0,0,0.3)]
-                        transition duration-300" />
+                <!-- LOGO -->
+                <img src="{{ asset('images/LOGO_TRANSPARAN.png') }}" alt="LeafShelf Logo"
+                    class="h-20 w-auto brightness-0 invert opacity-90
+                    drop-shadow-[0_2px_4px_rgba(0,0,0,0.2)]
+                    hover:drop-shadow-[0_8px_16px_rgba(0,0,0,0.3)]
+                    transition duration-300" />
 
-                    <!-- TAGLINE -->
-                    <p class="text-olivine/60 text-sm leading-relaxed max-w-xs mx-auto md:mx-0 !text-white">
-                        Sistem Perpustakaan Digital masa depan.
-                    </p>
-                </div>
-
-            </div>
-
-            <!-- DESCRIPTION -->
-            <p class="text-olivine/60 text-sm leading-relaxed !text-white">
-                Membangun jembatan literasi digital demi masa depan yang lebih cerah.
-                Turn a New Leaf!
-            </p>
-        </div>
-
-
-        <!-- MIDDLE: QUICK LINKS -->
-        <div class="space-y-6 text-center">
-            <h4 class="text-camel font-bold tracking-widest uppercase text-sm !text-white">
-                Quick Links
-            </h4>
-
-            <nav class="flex flex-col gap-4 text-sm text-olivine/70 font-semibold">
-                <a href="#koleksi" class="hover:text-white transition !text-white">Koleksi</a>
-                <a href="#about" class="hover:text-white transition !text-white">Tentang Kami</a>
-                <a href="#services" class="hover:text-white transition !text-white">Layanan</a>
-            </nav>
-        </div>
-
-
-        <!-- RIGHT: CONTACT -->
-        <div class="space-y-6 text-center md:text-right">
-            <h4 class="text-camel font-bold tracking-widest uppercase text-sm !text-white">
-                Find Us
-            </h4>
-
-            <div class="text-sm text-olivine/70 space-y-2 !text-white">
-                <p>Politeknik Negeri Batam</p>
-                <p>
-                    <a href="mailto:admin@leafshelf.sch.id"
-                        class="hover:text-white transition !text-white">
-                        admin@leafshelf.sch.id
-                    </a>
+                <!-- DESCRIPTION -->
+                <p class="text-white/75 text-sm leading-relaxed max-w-xs mx-auto md:mx-0">
+                    Sistem Perpustakaan Digital masa depan.
                 </p>
             </div>
 
-            <!-- SOCIAL MEDIA -->
-            <div class="flex justify-center md:justify-end gap-6 text-xl pt-4 text-white">
-                <i class="fab fa-instagram hover:text-white cursor-pointer transition"></i>
-                <i class="fab fa-facebook hover:text-white cursor-pointer transition"></i>
-                <i class="fab fa-whatsapp hover:text-white cursor-pointer transition"></i>
-            </div>
         </div>
+
+        <p class="text-white/75 text-sm leading-relaxed max-w-md md:max-w-none">
+            Membangun jembatan literasi digital demi masa depan yang lebih cerah.
+            <span class="block mt-2 font-medium tracking-wide text-white/90">Turn a New Leaf!</span>
+        </p>
+    </div>
+
+
+    <!-- MIDDLE: QUICK LINKS -->
+    <div class="space-y-6 flex flex-col items-center md:items-start text-center md:text-left">
+        <h4 class="text-white font-bold tracking-widest uppercase text-sm h-14 flex items-end pb-2 md:pb-0">
+            Quick Links
+        </h4>
+
+        <nav class="flex flex-col gap-4 text-sm">
+            <a href="#koleksi" class="text-white/75 hover:text-asparagus transition-all duration-300">Koleksi</a>
+            <a href="#about" class="text-white/75 hover:text-asparagus transition-all duration-300">Tentang Kami</a>
+            <a href="#layanan" class="text-white/75 hover:text-asparagus transition-all duration-300">Layanan</a>
+        </nav>
+    </div>
+
+    <!-- RIGHT: CONTACT -->
+    <div class="space-y-6 flex flex-col items-center md:items-start text-center md:text-left">
+        <h4 class="text-white font-bold tracking-widest uppercase text-sm h-14 flex items-end pb-2 md:pb-0">
+            Find Us
+        </h4>
+
+        <div class="text-sm text-white/75 space-y-2 w-full">
+            <p class="text-white">Politeknik Negeri Batam</p>
+            <p>
+                <a href="mailto:admin@leafshelf.sch.id"
+                    class="text-white/75 hover:text-asparagus transition-all duration-300">
+                    admin@leafshelf.sch.id
+                </a>
+            </p>
+        </div>
+
+        <!-- SOCIAL MEDIA -->
+        <div class="flex justify-center md:justify-start gap-6 text-xl pt-4 text-white/80 w-full">
+            <i class="fab fa-instagram hover:text-asparagus cursor-pointer transition duration-300"></i>
+            <i class="fab fa-facebook hover:text-asparagus cursor-pointer transition duration-300"></i>
+            <i class="fab fa-whatsapp hover:text-asparagus cursor-pointer transition duration-300"></i>
+        </div>
+    </div>
 
     </div>
 
     <!-- COPYRIGHT -->
     <div class="max-w-7xl mx-auto px-4 mt-12 text-center">
-        <p class="text-[10px] text-white uppercase tracking-[0.5em] font-black">
+        <p class="text-[11px] text-asparagus/90 uppercase tracking-[0.4em] font-semibold">
             &copy; 2026 PBL IF-2MB-03. All rights reserved.
         </p>
     </div>

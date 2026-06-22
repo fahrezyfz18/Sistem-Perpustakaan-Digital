@@ -1,7 +1,7 @@
 <!-- =========================================================
      HERO SECTION
 ========================================================= -->
-<header class="relative flex min-h-screen items-center overflow-hidden
+<header class="relative flex min-h-[90vh] items-center overflow-hidden
            bg-gradient-to-br
            from-[#E6EDD8]
            via-[#DEE8CF]
@@ -29,18 +29,17 @@
          MAIN CONTAINER
     ====================================================== -->
     <div class="relative z-10
-               grid h-full w-full items-stretch
-               lg:grid-cols-[42%_58%]">
-
-        <!-- =================================================
+container-page
+grid h-full items-stretch
+lg:grid-cols-[50%_50%]">
+        <!-- =====================================F============
              LEFT CONTENT
         ================================================== -->
-        <section class="flex flex-col justify-center
-                   space-y-6 md:space-y-8
-                   px-8 py-12
-                   md:px-10
-                   lg:pl-32 lg:pr-10 lg:py-20 lg:pb-48
-                   animate-fade-in">
+        <section
+            class="flex flex-col
+            justify-center 
+            pr-10
+            space-y-8 animate-fade-in">
 
             <!-- =============================================
                  BADGE
@@ -70,8 +69,8 @@
             <h1 class="max-w-xl
                        text-5xl font-extrabold leading-tight tracking-tight
                        text-kombu
-                       md:text-6xl
-                       lg:text-7xl">
+                       md:text-7xl
+                       lg:text-8xl">
                 Selamat Datang di
 
                 <span class="text-asparagus">
@@ -152,12 +151,11 @@
         <!-- =================================================
              RIGHT IMAGE
         ================================================== -->
-        <section class="relative hidden
-           min-h-screen
-           overflow-hidden
-           lg:flex
-           items-center
-           justify-end">
+        <section
+            class="hidden 
+            lg:flex
+            items-center
+            justify-center">
 
             <!-- MAIN GLOW -->
             <div class="absolute right-10
@@ -175,13 +173,14 @@
 
             <!-- HERO IMAGE DESKTOP -->
             <img src="{{ asset('images/welcome_transparan.png') }}" alt="LeafShelf Illustration" loading="eager"
-                decoding="async" class="absolute inset-0
-           h-full w-full
-           scale-110
-           object-cover
-           object-right
-           mix-blend-multiply
-           drop-shadow-[0_30px_60px_rgba(54,78,49,0.18)]">
+                decoding="async" class="
+w-full
+max-w-4xl
+h-auto
+object-contain
+mx-auto
+drop-shadow-2xl
+[0_30px_60px_rgba(54,78,49,0.18)]">
         </section>
     </div>
 </header>

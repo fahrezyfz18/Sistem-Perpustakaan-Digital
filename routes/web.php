@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,8 +63,10 @@ use App\Models\Peminjaman;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', fn() => view('home'))
-    ->name('home');
+Route::get(
+    '/',
+    [HomeController::class, 'index']
+)->name('home');
 
 
 /*

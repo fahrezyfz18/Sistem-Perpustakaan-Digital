@@ -12,10 +12,6 @@
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap"
-        rel="stylesheet">
-
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -27,20 +23,23 @@
                 radial-gradient(circle at bottom left, rgba(188, 158, 95, 0.1), transparent);
         }
     </style>
-    </head>
+</head>
 
-    <body class="bg-asparagus/30 text-kombu">
+<!-- wrapper -->
 
-        {{-- Navbar --}}
-        @include('components.navbar-guest')
+<body class="bg-asparagus/30 text-kombu">
 
-        {{-- Content --}}
+    {{-- Navbar --}}
+    @include('components.navbar-guest')
+
+    {{-- Content --}}
+    <main>
         {{ $slot }}
+    </main>
 
-        {{-- Footer --}}
-        @include('components.footer')
+    {{-- Footer --}}
+    @include('components.footer')
 
-
-    </body>
+</body>
 
 </html>

@@ -1,7 +1,9 @@
 <!-- =========================================================
      ABOUT SECTION
      ========================================================= -->
-<section id="about" class="py-24 bg-white border-t border-gray-100">
+<section
+    id="about"
+    class="section-spacing bg-white border-t border-gray-100">
     <div class="max-w-7xl mx-auto px-4 text-center">
 
         <!-- =========================
@@ -42,8 +44,7 @@
                                object-cover object-top
                                rounded-[2.5rem]
                                border-4 border-white
-                               shadow-2xl"
-                    >
+                               shadow-2xl">
                 </div>
 
                 <!-- MEMBER NAME -->
@@ -81,8 +82,7 @@
                                object-cover object-top
                                rounded-[2.5rem]
                                border-4 border-white
-                               shadow-2xl"
-                    >
+                               shadow-2xl">
                 </div>
 
                 <!-- MEMBER NAME -->
@@ -120,8 +120,7 @@
                                object-cover object-top
                                rounded-[2.5rem]
                                border-4 border-white
-                               shadow-2xl"
-                    >
+                               shadow-2xl">
                 </div>
 
                 <!-- MEMBER NAME -->

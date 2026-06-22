@@ -14,10 +14,21 @@
         scroll-behavior: smooth;
     }
 }
+
 /* Custom utilities */
 @layer utilities {
     .hero-bg {
         background: radial-gradient(circle at top right, rgba(154, 178, 131, 0.15), transparent),
-                    radial-gradient(circle at bottom left, rgba(188, 158, 95, 0.1), transparent);
+            radial-gradient(circle at bottom left, rgba(188, 158, 95, 0.1), transparent);
+    }
+}
+
+@layer components {
+    .container-page {
+        @apply max-w-7xl mx-auto px-6 sm:px-8 lg:px-12;
+    }
+
+    .section-spacing {
+        @apply py-24;
     }
 }

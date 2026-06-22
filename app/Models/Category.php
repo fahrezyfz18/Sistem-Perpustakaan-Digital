@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends Model
 {
@@ -10,7 +11,10 @@ class Category extends Model
         'nama'
     ];
 
-    public function books()
+    /**
+     * Get all books for the category.
+     */
+    public function books(): HasMany
     {
         return $this->hasMany(Book::class);
     }

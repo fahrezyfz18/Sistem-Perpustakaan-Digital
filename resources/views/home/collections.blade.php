@@ -1,15 +1,16 @@
 <!-- =========================================================
      COLLECTION SECTION
      ========================================================= -->
-<section id="koleksi" class="py-24 bg-slate-50">
-
+<section
+    id="koleksi"
+    class="section-spacing bg-slate-50">
     <div class="container-page">
 
         <!-- =================================================
              SECTION HEADER
              ================================================= -->
         <div class="flex flex-col gap-6 mb-16
-                   md:flex-row md:items-end md:justify-between">
+                    md:flex-row md:items-end md:justify-between">
 
             <!-- TITLE -->
             <div>
@@ -33,15 +34,40 @@
             </a>
         </div>
 
-
         <!-- =================================================
              BOOK GRID
              ================================================= -->
         <div class="grid grid-cols-2 gap-10 md:grid-cols-4">
 
-            <!-- =============================================
-                 BOOK ITEM 1
-                 aa============================================= -->
+            @if(isset($books) && $books->count() > 0)
+
+            {{-- Buku dari Database --}}
+            @foreach($books as $book)
+            <div class="group">
+
+                <div class="relative mb-6 overflow-hidden rounded-[2rem] shadow-xl aspect-[3/4]">
+                    <img
+                        src="{{ $book->cover ? asset('storage/' . $book->cover) : 'https://placehold.co/400x600?text=LeafShelf' }}"
+                        alt="{{ $book->judul }}"
+                        class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+                </div>
+
+                <h3 class="text-lg font-bold text-kombu">
+                    {{ $book->judul }}
+                </h3>
+
+                <p class="mt-1 text-xs font-bold uppercase tracking-widest text-mustard">
+                    {{ $book->category->nama ?? 'Umum' }}
+                </p>
+
+            </div>
+            @endforeach
+
+            @else
+
+            {{-- Dummy lama dipertahankan sementara --}}
+
+            <!-- BOOK ITEM 1 -->
             <div class="group">
 
                 <!-- BOOK COVER -->
@@ -87,10 +113,7 @@
                 </p>
             </div>
 
-
-            <!-- =============================================
-                 BOOK ITEM 2
-                 ============================================= -->
+            <!-- BOOK ITEM 2 -->
             <div class="group">
 
                 <!-- BOOK COVER -->
@@ -136,10 +159,7 @@
                 </p>
             </div>
 
-
-            <!-- =============================================
-                 BOOK ITEM 3
-                 ============================================= -->
+            <!-- BOOK ITEM 3 -->
             <div class="group">
 
                 <!-- BOOK COVER -->
@@ -185,10 +205,7 @@
                 </p>
             </div>
 
-
-            <!-- =============================================
-                 BOOK ITEM 4
-                 ============================================= -->
+            <!-- BOOK ITEM 4 -->
             <div class="group">
 
                 <!-- BOOK COVER -->
@@ -234,6 +251,7 @@
                 </p>
             </div>
 
+            @endif
+
         </div>
-    </div>
 </section>

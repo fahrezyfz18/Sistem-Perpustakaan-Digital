@@ -16,7 +16,7 @@ class Peminjaman extends Model
         'tgl_jatuh_tempo',
         'tanggal_dikembalikan',
         'status',
-        'denda'
+        'denda',
     ];
 
     protected $casts = [
@@ -42,6 +42,7 @@ class Peminjaman extends Model
             ->where('status', 'dipinjam')
             ->exists();
     }
+
     public function getStatusLabelAttribute()
     {
         if ($this->status === 'dikembalikan') {
@@ -51,15 +52,14 @@ class Peminjaman extends Model
         if (
             $this->status === 'dipinjam' &&
             $this->tgl_jatuh_tempo &&
-            now()->gt($this->tgl_jatuh_tempo)
+            now()->startOfDay()->gt($this->tgl_jatuh_tempo->startOfDay())
         ) {
             return 'Terlambat';
         }
 
         return 'Dipinjam';
     }
- public function getStatusLabelAttribute()
-{
+ public function getDendaTerlambatAttribute()
 {
     // Jika tidak ada tanggal jatuh tempo, tidak ada denda
     if (!$this->tgl_jatuh_tempo) return 0;
@@ -70,17 +70,7 @@ class Peminjaman extends Model
             $hariTerlambat = ceil($this->tgl_jatuh_tempo->diffInDays(now(), false));
             return ($hariTerlambat < 1 ? 1 : $hariTerlambat) * 2000;
         }
+
         return 0;
     }
-
-    // KONDISI 2: Buku sudah dikembalikan
-    if ($this->status === 'dikembalikan' && $this->tanggal_dikembalikan) {
-        if ($this->tanggal_dikembalikan->gt($this->tgl_jatuh_tempo)) {
-            $hariTerlambat = ceil($this->tgl_jatuh_tempo->diffInDays($this->tanggal_dikembalikan, false));
-            return ($hariTerlambat < 1 ? 1 : $hariTerlambat) * 2000;
-        }
-    }
-
-    return $this->denda;
-}
 }

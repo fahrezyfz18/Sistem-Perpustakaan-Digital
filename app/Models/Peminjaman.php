@@ -58,7 +58,8 @@ class Peminjaman extends Model
 
         return 'Dipinjam';
     }
- public function getDendaTerlambatAttribute()
+ public function getStatusLabelAttribute()
+{
 {
     // Jika tidak ada tanggal jatuh tempo, tidak ada denda
     if (!$this->tgl_jatuh_tempo) return 0;

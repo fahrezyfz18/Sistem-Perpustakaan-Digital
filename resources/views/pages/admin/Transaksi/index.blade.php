@@ -13,6 +13,7 @@
             <p class="text-gray-500 mt-2">
                 Monitoring aktivitas peminjaman dan pengembalian buku
             </p>
+
         </div>
 
         <div class="bg-white rounded-2xl shadow-md p-6 border border-gray-200">
@@ -32,8 +33,11 @@
                     <input type="search" name="search" value="{{ request('search') }}"
                         class="block w-full p-4 ps-10 text-sm border border-gray-300 rounded-xl bg-gray-50 focus:ring-green-500 focus:border-green-500"
                         placeholder="Cari Nama Anggota atau Buku...">
+
                 </div>
+
             </form>
+
             <div class="overflow-x-auto rounded-xl border border-gray-200">
 
                 <table class="w-full text-sm text-left text-gray-500">
@@ -52,6 +56,7 @@
                     </thead>
 
                     <tbody>
+
                         @forelse($transaksi as $item)
 
                             <tr class="bg-white border-b hover:bg-gray-50 transition duration-200">
@@ -78,13 +83,13 @@
 
                                 <td class="px-6 py-4">
 
-                                    @if($item->status_label == 'Dikembalikan')
+                                    @if($item->status_label === 'Dikembalikan')
 
                                         <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-4 py-2 rounded-full">
                                             {{ $item->status_label }}
                                         </span>
 
-                                    @elseif($item->status_label == 'Terlambat')
+                                    @elseif($item->status_label === 'Terlambat')
 
                                         <span class="bg-red-100 text-red-800 text-xs font-semibold px-4 py-2 rounded-full">
                                             {{ $item->status_label }}
@@ -101,27 +106,11 @@
                                 </td>
 
 <td class="px-6 py-4 font-semibold">
-    @php
-        $denda = 0;
 
-        if (
-            $item->status == 'dipinjam' &&
-            $item->tgl_jatuh_tempo &&
-            now()->gt($item->tgl_jatuh_tempo)
-        ) {
-            // UBAH BARIS DI BAWAH INI
-            $hari = ceil($item->tgl_jatuh_tempo->diffInDays(now(), false));
-            $hari = $hari < 1 ? 1 : $hari;
-            $denda = $hari * 2000;
-        } else {
-            $denda = $item->denda;
-        }
-    @endphp
-
-    @if($denda > 0)
+    @if($item->status_label === 'Terlambat')
 
         <span class="text-red-600">
-            Rp {{ number_format($denda, 0, ',', '.') }}
+            Rp {{ number_format($item->denda_terlambat, 0, ',', '.') }}
         </span>
 
     @else
@@ -133,13 +122,16 @@
     @endif
 
 </td>
+
                                 <td class="px-6 py-4">
 
                                     <a href="{{ route('admin.transaksi.show', $item->id) }}"
                                         class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 transition duration-200 inline-block">
                                         Detail
                                     </a>
+
                                 </td>
+
                             </tr>
 
                         @empty
@@ -153,12 +145,17 @@
                         @endforelse
 
                     </tbody>
+
                 </table>
+
             </div>
+
             <div class="mt-6">
                 {{ $transaksi->links() }}
             </div>
+
         </div>
+
     </div>
 
 @endsection

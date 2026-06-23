@@ -38,11 +38,9 @@ public function store(Request $request, $id)
         $today->gt($peminjaman->tgl_jatuh_tempo)
     ) {
         // Gunakan ceil untuk membulatkan selisih hari ke atas
-        $selisihHari = ceil($peminjaman->tgl_jatuh_tempo->diffInDays($today, false));
-        $selisihHari = $selisihHari < 1 ? 1 : $selisihHari;
+$selisihHari = $peminjaman->tgl_jatuh_tempo->diffInDays($today);
 
-        $denda = $selisihHari * 2000;
-    }
+$denda = $selisihHari * 2000;
 
     $peminjaman->update([
         'status' => 'dikembalikan',

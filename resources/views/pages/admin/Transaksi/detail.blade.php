@@ -43,16 +43,15 @@
             <p>
                 <b>Denda:</b>
 
-                @if($data->denda > 0)
+                @if($data->denda_terlambat > 0)
 
-                    Rp {{ number_format($data->denda, 0, ',', '.') }}
+                    Rp {{ number_format($data->denda_terlambat, 0, ',', '.') }}
 
                 @else
 
                     -
 
                 @endif
-
             </p>
 
         </div>

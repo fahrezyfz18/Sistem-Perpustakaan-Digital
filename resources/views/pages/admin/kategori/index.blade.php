@@ -2,73 +2,111 @@
 
 @section('content')
 
-<x-page title="Data Kategori" subtitle="Manajemen data kategori buku perpustakaan"
-    :action="route('admin.kategori.create')" actionText="+ Tambah Kategori">
+    <x-page title="Data Kategori" subtitle="Manajemen data kategori buku perpustakaan"
+        :action="route('admin.kategori.create')" actionText="+ Tambah Kategori">
 
-    <!-- SEARCH -->
-    <div class="mb-4">
-        <x-search-filter
-            :action="route('admin.kategori.index')"
-            placeholder="Cari kategori..." />
-    </div>
+        <!-- SEARCH -->
+        <div class="mb-4">
+            <x-search-filter :action="route('admin.kategori.index')" placeholder="Cari kategori..." />
+        </div>
 
-    <!-- TABLE -->
-    <x-table
-        :headers="[
-        'Nama Kategori',
-        'Aksi'
-    ]">
+        <!-- TABLE -->
 
-        @forelse($categories as $category)
+        <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
 
-        <x-table-row>
+            <div class="overflow-x-auto">
 
-            <x-table-cell>
-                {{ $category->nama }}
-            </x-table-cell>
+                <table class="w-full">
 
-            <x-table-cell>
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th class="px-6 py-4 text-left font-semibold">
+                                Nama Kategori
+                            </th>
 
-                <div class="flex justify-center gap-2">
+                            <th class="px-6 py-4 text-center font-semibold">
+                                Aksi
+                            </th>
+                        </tr>
+                    </thead>
 
-                    <a href="{{ route('admin.kategori.edit',$category->id) }}"
-                        class="px-3 py-2 bg-yellow-100 text-yellow-700 rounded-lg">
-                        Edit
-                    </a>
+                    <tbody>
 
-                    <form method="POST"
-                        action="{{ route('admin.kategori.destroy',$category->id) }}">
-                        @csrf
-                        @method('DELETE')
+                        @forelse($categories as $category)
 
-                        <button class="px-3 py-2 bg-red-100 text-red-600 rounded-lg">
-                            Hapus
-                        </button>
+                            <tr class="border-b border-gray-100 hover:bg-gray-50 transition">
 
-                    </form>
+                                <td class="px-6 py-4 font-medium text-gray-800">
+                                    {{ $category->nama }}
+                                </td>
 
-                </div>
+                                <td class="px-6 py-4">
 
-            </x-table-cell>
+                                    <div class="flex justify-center gap-2">
 
-        </x-table-row>
+                                        <a href="{{ route('admin.kategori.edit', $category->id) }}" class="px-4 py-2 rounded-lg
+                                          bg-yellow-100 text-yellow-700
+                                          hover:bg-yellow-200 transition
+                                          text-sm font-medium">
+                                            Edit
+                                        </a>
 
-        @empty
+                                        <a href="{{ route('admin.kategori.show', $category->id) }}" class="px-4 py-2 rounded-lg
+                                          bg-blue-100 text-blue-700
+                                          hover:bg-blue-200 transition
+                                          text-sm font-medium">
+                                            Detail
+                                        </a>
 
-        <tr>
-            <td colspan="2" class="p-6 text-center text-gray-500">
-                Data tidak ditemukan
-            </td>
-        </tr>
+                                        <form method="POST" action="{{ route('admin.kategori.destroy', $category->id) }}"
+                                            onsubmit="return confirm('Yakin hapus data ini?')">
 
-        @endforelse
+                                            @csrf
+                                            @method('DELETE')
 
-    </x-table>
+                                            <button type="submit" class="px-4 py-2 rounded-lg
+                                               bg-red-100 text-red-700
+                                               hover:bg-red-200 transition
+                                               text-sm font-medium">
+                                                Hapus
+                                            </button>
 
-    </div>
+                                        </form>
 
-    </div>
+                                    </div>
 
-</x-page>
+                                </td>
+
+                            </tr>
+
+                        @empty
+
+                            <tr>
+                                <td colspan="2" class="py-12 text-center">
+
+                                    <div class="flex flex-col items-center gap-2">
+
+                                        <span class="text-5xl"></span>
+
+                                        <p class="text-gray-500">
+                                            Belum ada data kategori.
+                                        </p>
+
+                                    </div>
+
+                                </td>
+                            </tr>
+
+                        @endforelse
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </x-page>
 
 @endsection

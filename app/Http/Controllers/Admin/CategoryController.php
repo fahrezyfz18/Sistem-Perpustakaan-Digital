@@ -58,7 +58,7 @@ class CategoryController extends Controller
     {
         return view(
             'pages.admin.kategori.show',
-            compact('category')
+            compact('kategori')
         );
     }
 
@@ -67,7 +67,10 @@ class CategoryController extends Controller
      */
     public function edit(Category $kategori)
     {
-        return view('pages.admin.kategori.edit', compact('category'));
+        return view(
+            'pages.admin.kategori.edit',
+            compact('kategori')
+        );
     }
 
     /**

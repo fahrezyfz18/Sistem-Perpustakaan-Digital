@@ -37,15 +37,17 @@ public function store(Request $request, $id)
         $peminjaman->tgl_jatuh_tempo &&
         $today->gt($peminjaman->tgl_jatuh_tempo)
     ) {
-        // Gunakan ceil untuk membulatkan selisih hari ke atas
-$selisihHari = $peminjaman->tgl_jatuh_tempo->diffInDays($today);
+        $hariTelat = $peminjaman->tgl_jatuh_tempo
+            ->startOfDay()
+            ->diffInDays($today->startOfDay());
 
-$denda = $selisihHari * 2000;
+        $denda = $hariTelat * 2000;
+    }
 
     $peminjaman->update([
         'status' => 'dikembalikan',
         'tanggal_dikembalikan' => $today,
-        'denda' => $denda, // Nilai denda sekarang dijamin bulat
+        'denda' => $denda,
     ]);
 
     if ($peminjaman->book) {

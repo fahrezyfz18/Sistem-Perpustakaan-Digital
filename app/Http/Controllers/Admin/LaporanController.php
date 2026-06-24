@@ -31,16 +31,7 @@ class LaporanController extends Controller
 
         $setting = Setting::first();
 
-        /*
-        |--------------------------------------------------------------------------
-        | SETTINGS
-        |--------------------------------------------------------------------------
-        */
-
-        $setting = Setting::first();
-
         $dendaPerHari = $setting->denda_per_hari ?? 2000;
-
 
         /*
         |--------------------------------------------------------------------------
@@ -49,27 +40,21 @@ class LaporanController extends Controller
         */
 
         $terlambat = (clone $query)
-            ->with(['book', 'user'])
-            ->where('status', 'terlambat')
-            ->get();
+            ->with(['user', 'book'])
+            ->where('status', 'dipinjam')
+            ->get()
+            ->filter(function ($item) {
 
-        $totalDenda = 0;
+                return $item->status_label === 'Terlambat';
+
+            });
 
         foreach ($terlambat as $item) {
 
-            $today = Carbon::now()->startOfDay();
+            $item->hari_telat = $item->hari_terlambat;
 
-            $kembali = Carbon::parse(
-                $item->deadline
-            )->startOfDay();
-
-            $item->hari_telat = $kembali->diffInDays($today);
-
-            $item->denda = $item->hari_telat * $dendaPerHari;
-
-            $totalDenda += $item->denda;
+            $item->denda = $item->denda_terlambat;
         }
-
 
         /*
         |--------------------------------------------------------------------------
@@ -84,7 +69,6 @@ class LaporanController extends Controller
             ->orderByDesc('total')
             ->limit(5)
             ->get();
-
 
         /*
         |--------------------------------------------------------------------------
@@ -122,17 +106,11 @@ class LaporanController extends Controller
             ->where('status', 'dikembalikan')
             ->count();
 
-        $totalTerlambat = (clone $query)
-            ->where('status', 'terlambat')
-            ->count();
+        $totalTerlambat = $terlambat->count();
 
-        $totalDenda = $terlambat->sum('denda');
-
-        /*
-        |--------------------------------------------------------------------------
-        | RETURN VIEW
-        |--------------------------------------------------------------------------
-        */
+        $totalDenda = $terlambat->sum(function ($item) {
+            return $item->denda_terlambat;
+        });
 
         return view(
             'pages.admin.laporan.index',
@@ -187,23 +165,13 @@ class LaporanController extends Controller
 
         foreach ($data as $item) {
 
-            $today = Carbon::now()->startOfDay();
+            if ($item->status_label === 'Terlambat') {
 
-            $kembali = Carbon::parse(
-                $item->deadline
-            )->startOfDay();
+                $item->denda = $item->denda_terlambat;
 
-            if (
-                $today->gt($kembali) &&
-                $item->status != 'dikembalikan'
-            ) {
-
-                $hariTelat = $kembali->diffInDays($today);
-
-                $item->denda = $hariTelat * $dendaPerHari;
             } else {
 
-                $item->denda = 0;
+                $item->denda = $item->denda ?? 0;
             }
         }
 
@@ -236,7 +204,7 @@ class LaporanController extends Controller
         $headers = [
             'Content-Type' => 'text/csv',
             'Content-Disposition' =>
-            'attachment; filename="' . $filename . '"',
+                'attachment; filename="' . $filename . '"',
         ];
 
         $callback = function () use ($data) {
@@ -254,6 +222,7 @@ class LaporanController extends Controller
                 'Nama',
                 'Judul Buku',
                 'Tanggal Pinjam',
+                'Jatuh Tempo',
                 'Tanggal Kembali',
                 'Status',
                 'Denda'
@@ -276,9 +245,11 @@ class LaporanController extends Controller
 
                     $row->tanggal_pinjam,
 
-                    $row->deadline,
+                    $row->tgl_jatuh_tempo,
 
-                    $row->status,
+                    $row->tanggal_dikembalikan,
+
+                    $row->status_label,
 
                     $row->denda ?? 0,
                 ]);

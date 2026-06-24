@@ -60,20 +60,23 @@ class Peminjaman extends Model
         return 'Dipinjam';
     }
 
-    public function getDendaTerlambatAttribute()
+    public function getHariTerlambatAttribute()
     {
         if (
             $this->status === 'dipinjam' &&
             $this->tgl_jatuh_tempo &&
             now()->startOfDay()->gt($this->tgl_jatuh_tempo->startOfDay())
         ) {
-            $hariTerlambat = $this->tgl_jatuh_tempo
+            return $this->tgl_jatuh_tempo
                 ->startOfDay()
                 ->diffInDays(now()->startOfDay());
-
-            return $hariTerlambat * 2000;
         }
 
         return 0;
+    }
+
+    public function getDendaTerlambatAttribute()
+    {
+        return $this->hari_terlambat * 2000;
     }
 }

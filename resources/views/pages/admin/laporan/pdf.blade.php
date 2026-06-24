@@ -49,14 +49,13 @@
         <thead>
 
             <tr>
-
                 <th>Nama</th>
                 <th>Judul Buku</th>
                 <th>Tanggal Pinjam</th>
+                <th>Jatuh Tempo</th>
                 <th>Tanggal Kembali</th>
                 <th>Status</th>
                 <th>Denda</th>
-
             </tr>
 
         </thead>
@@ -80,11 +79,15 @@
                     </td>
 
                     <td>
-                        {{ $item->tanggal_kembali }}
+                        {{ $item->tgl_jatuh_tempo ?? '-' }}
                     </td>
 
                     <td>
-                        {{ ucfirst($item->status) }}
+                        {{ $item->tanggal_dikembalikan ?? '-' }}
+                    </td>
+
+                    <td>
+                        {{ $item->status_label }}
                     </td>
 
                     <td class="red">

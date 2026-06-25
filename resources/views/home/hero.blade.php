@@ -20,7 +20,7 @@
 
     <!-- RIGHT GLOW -->
     <div class="absolute -bottom-[120px] -right-[100px]
-               h-[600px] w-[600px]
+               h-[900px] w-[900px]
                rounded-full
                bg-asparagus/20
                blur-3xl"></div>
@@ -113,7 +113,7 @@ lg:grid-cols-[50%_50%]">
                     Kembangkan wawasanmu bersama
                     <span class="font-bold text-kombu">
                         LeafShelf
-                    </span>.
+                    </span>
 
                     Temukan perpustakaan digital yang tenang
                     dengan ribuan judul pilihan untuk mendukung

@@ -4,7 +4,6 @@
 
 <div class="max-w-5xl mx-auto p-6">
 
-    ```
     <div class="bg-white rounded-2xl shadow overflow-hidden">
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -134,7 +133,6 @@
         </div>
 
     </div>
-    ```
 
 </div>
 

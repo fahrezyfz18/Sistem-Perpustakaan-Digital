@@ -59,18 +59,24 @@ class Peminjaman extends Model
 
         return 'Dipinjam';
     }
- public function getDendaTerlambatAttribute()
-{
-    // Jika tidak ada tanggal jatuh tempo, tidak ada denda
-    if (!$this->tgl_jatuh_tempo) return 0;
 
-    // KONDISI 1: Buku belum dikembalikan dan sudah lewat jatuh tempo
-    if ($this->status === 'dipinjam') {
-        if (now()->gt($this->tgl_jatuh_tempo)) {
-            $hariTerlambat = ceil($this->tgl_jatuh_tempo->diffInDays(now(), false));
-            return ($hariTerlambat < 1 ? 1 : $hariTerlambat) * 2000;
+    public function getHariTerlambatAttribute()
+    {
+        if (
+            $this->status === 'dipinjam' &&
+            $this->tgl_jatuh_tempo &&
+            now()->startOfDay()->gt($this->tgl_jatuh_tempo->startOfDay())
+        ) {
+            return $this->tgl_jatuh_tempo
+                ->startOfDay()
+                ->diffInDays(now()->startOfDay());
         }
 
         return 0;
+    }
+
+    public function getDendaTerlambatAttribute()
+    {
+        return $this->hari_terlambat * 2000;
     }
 }

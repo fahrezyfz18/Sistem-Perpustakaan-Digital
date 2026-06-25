@@ -158,7 +158,7 @@ lg:grid-cols-[50%_50%]">
             justify-center">
 
             <!-- MAIN GLOW -->
-            <div class="absolute right-10
+            <div class="absolute right-5
                        h-[650px] w-[650px]
                        rounded-full
                        bg-white/20
@@ -172,7 +172,7 @@ lg:grid-cols-[50%_50%]">
                        blur-3xl"></div>
 
             <!-- HERO IMAGE DESKTOP -->
-            <img src="{{ asset('images/welcome_transparan.png') }}" alt="LeafShelf Illustration" loading="eager"
+            <img src="{{ asset('images/hero_transparan.png') }}" alt="LeafShelf Illustration" loading="eager"
                 decoding="async" class="
 w-full
 max-w-4xl

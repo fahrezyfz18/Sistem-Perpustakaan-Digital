@@ -62,20 +62,26 @@
                             <tr class="bg-white border-b hover:bg-gray-50 transition duration-200">
 
                                 <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                    {{ $item->user->name }}
+                                    {{ $item->user?->name ?? 'User tidak ditemukan' }}
                                 </td>
 
                                 <td class="px-6 py-4 text-gray-700">
-                                    {{ $item->book->judul }}
-                                </td>
+    {{ $item->book?->judul ?? 'Buku tidak ditemukan' }}
+</td>
 
                                 <td class="px-6 py-4 text-gray-700">
                                     {{ $item->tanggal_pinjam?->locale('id')->translatedFormat('d F Y') ?? '-' }}
                                 </td>
 
-                                <td class="px-6 py-4 text-gray-700">
-                                    {{ $item->tanggal_dikembalikan?->locale('id')->translatedFormat('d F Y') ?? '-' }}
-                                </td>
+<td class="px-6 py-4 text-gray-700">
+    @if($item->status == 'dikembalikan' && $item->tanggal_dikembalikan)
+        {{ $item->tanggal_dikembalikan->locale('id')->translatedFormat('d F Y') }}
+    @else
+        <span class="text-orange-600 font-medium">
+            Belum dikembalikan
+        </span>
+    @endif
+</td>
 
                                 <td class="px-6 py-4 text-gray-700">
                                     {{ $item->tgl_jatuh_tempo?->locale('id')->translatedFormat('d F Y') ?? '-' }}

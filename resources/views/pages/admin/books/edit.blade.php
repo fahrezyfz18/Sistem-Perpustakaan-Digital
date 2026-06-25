@@ -90,14 +90,14 @@
                 <div>
                     <label class="text-sm text-gray-600">Kategori</label>
 
-                    <select name="category_id"
+                    <select name="kategori_id"
                         class="w-full mt-1 border rounded-lg p-2 focus:ring-2 focus:ring-primary outline-none">
 
                         <option value="">Pilih Kategori</option>
 
                         @foreach($categories as $category)
                         <option value="{{ $category->id }}"
-                            {{ $buku->category_id == $category->id ? 'selected' : '' }}>
+                            {{ $buku->kategori_id == $category->id ? 'selected' : '' }}>
                             {{ $category->name }}
                         </option>
                         @endforeach

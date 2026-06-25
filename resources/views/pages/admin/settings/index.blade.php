@@ -118,50 +118,6 @@
                 </form>
             </div>
 
-
-            <!-- NOTIFIKASI -->
-            <div class="bg-white p-6 rounded-2xl shadow border border-mustard/20">
-
-                <div class="flex items-center gap-3 mb-5">
-                    <svg class="w-5 h-5 text-mustard" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M15 17h5l-1.4-1.4A2 2 0 0118 14.2V11a6 6 0 10-12 0v3.2c0 .5-.2 1-.6 1.4L4 17h5m6 0a3 3 0 11-6 0" />
-                    </svg>
-
-                    <h2 class="font-semibold text-mustard text-lg">
-                        Notifikasi Sistem
-                    </h2>
-                </div>
-
-                <form method="POST" action="#">
-                    @csrf
-
-                    <div class="space-y-4 text-sm text-gray-600">
-
-                        <label class="flex items-center justify-between">
-                            <span>Notifikasi Peminjaman</span>
-                            <input type="checkbox" class="accent-mustard">
-                        </label>
-
-                        <label class="flex items-center justify-between">
-                            <span>Notifikasi Pengembalian</span>
-                            <input type="checkbox" class="accent-mustard">
-                        </label>
-
-                        <label class="flex items-center justify-between">
-                            <span>Notifikasi Denda</span>
-                            <input type="checkbox" class="accent-mustard">
-                        </label>
-
-                    </div>
-
-                    <button type="submit" class="mt-5 bg-mustard text-white px-4 py-2 rounded-lg hover:bg-camel transition">
-                        Simpan Notifikasi
-                    </button>
-
-                </form>
-            </div>
-
         </div>
 
     </div>

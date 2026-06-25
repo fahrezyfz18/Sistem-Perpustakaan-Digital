@@ -62,20 +62,28 @@ class BookController extends Controller
     */
 
     public function store(Request $request)
-{
-    $validated = $request->validate([
-        'judul'       => 'required|string|max:100',
-        'isbn'        => 'nullable|string|max:30',
-        'penulis'     => 'required|string|max:50',
-        'penerbit'    => 'required|string|max:50',
-        'category_id' => 'required|exists:categories,id',
-        'stok'        => 'required|integer|min:0',
-        'tahun'       => 'required|digits:4',
-        'cover'       => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
-        'deskripsi'   => 'nullable|string',
-    ]);
+    {
+        $validated = $request->validate([
+            'judul' => 'required|string|max:100',
+            'isbn' => 'nullable|string|max:30',
+            'penulis' => 'required|string|max:50',
+            'penerbit' => 'required|string|max:50',
+            'kategori_id' => 'required|exists:categories,id',
+            'stok' => 'required|integer|min:0',
+            'tahun' => 'required|integer|digits:4|min:1900|max:' . date('Y'),
+            'cover' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
+            'deskripsi' => 'nullable|string',
+        ]);
 
-    
+         if ($request->hasFile('cover')) {
+
+        $path = $request->file('cover')->store('books', 'public');
+
+     
+
+        $validated['cover'] = $path;
+    }
+
         if ($request->hasFile('cover')) {
             $validated['cover'] = $request
                 ->file('cover')
@@ -88,6 +96,7 @@ class BookController extends Controller
             ->route('admin.buku.index')
             ->with('success', 'Buku berhasil ditambahkan.');
     }
+
 
     /*
     |--------------------------------------------------------------------------
@@ -130,12 +139,9 @@ class BookController extends Controller
             'isbn' => 'nullable|string|max:30',
             'penulis' => 'required|string|max:50',
             'penerbit' => 'required|string|max:50',
-
-            // UPDATED
-            'category_id' => 'required|exists:categories,id',
-
-            'tahun' => 'required|numeric',
-            'stok' => 'required|numeric',
+            'kategori_id' => 'required|exists:categories,id',
+            'tahun' => 'required|integer|digits:4|min:1900|max:' . date('Y'),
+            'stok' => 'required|integer|min:0',
 
             'cover' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'deskripsi' => 'nullable',

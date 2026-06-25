@@ -47,7 +47,7 @@
                         <p><span class="font-semibold text-kombu">Tanggal Pinjam:</span>
                             {{ \Carbon\Carbon::parse($book->tanggal_pinjam)->format('d M Y') }}</p>
                         <p><span class="font-semibold text-kombu">Deadline:</span>
-                            {{ \Carbon\Carbon::parse($book->deadline)->format('d M Y') }}</p>
+                            {{ \Carbon\Carbon::parse($book->tgl_jatuh_tempo)->format('d M Y') }}</p>
 
                     </div>
 

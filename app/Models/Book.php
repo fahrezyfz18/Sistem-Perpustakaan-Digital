@@ -8,18 +8,16 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Book extends Model
 {
     protected $fillable = [
-
         'judul',
         'isbn',
         'penulis',
         'penerbit',
-        'category_id',
+        'kategori_id',
         'tahun',
         'stok',
         'cover',
         'deskripsi',
     ];
-
     /*
     |--------------------------------------------------------------------------
     | RELATION PEMINJAMAN
@@ -33,6 +31,6 @@ class Book extends Model
 
     public function category()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class, 'kategori_id');
     }
 }

@@ -62,43 +62,52 @@
 
         <tbody>
 
-            @foreach($data as $item)
+            
+            @forelse($data as $item)
+
+                    <tr>
+
+                        <td>{{ $item->user->name ?? '-' }}</td>
+
+                        <td>{{ $item->book->judul ?? '-' }}</td>
+
+                        <td>
+                            {{ \Carbon\Carbon::parse($item->tanggal_pinjam)->format('d-m-Y') }}
+                        </td>
+
+                        <td>
+                            {{ $item->tgl_jatuh_tempo
+                ? \Carbon\Carbon::parse($item->tgl_jatuh_tempo)->format('d-m-Y')
+                : '-' }}
+                        </td>
+
+                        <td>
+                            {{ $item->tanggal_dikembalikan
+                ? \Carbon\Carbon::parse($item->tanggal_dikembalikan)->format('d-m-Y')
+                : '-' }}
+                        </td>
+
+                        <td>{{ $item->status_label }}</td>
+
+                        <td class="red">
+                            Rp {{ number_format($item->denda ?? 0, 0, ',', '.') }}
+                        </td>
+
+                    </tr>
+
+            @empty
 
                 <tr>
-
-                    <td>
-                        {{ $item->user->name ?? '-' }}
+                    <td colspan="7">
+                        Tidak ada data pada periode yang dipilih
                     </td>
-
-                    <td>
-                        {{ $item->book->judul ?? '-' }}
-                    </td>
-
-                    <td>
-                        {{ $item->tanggal_pinjam }}
-                    </td>
-
-                    <td>
-                        {{ $item->tgl_jatuh_tempo ?? '-' }}
-                    </td>
-
-                    <td>
-                        {{ $item->tanggal_dikembalikan ?? '-' }}
-                    </td>
-
-                    <td>
-                        {{ $item->status_label }}
-                    </td>
-
-                    <td class="red">
-                        Rp {{ number_format($item->denda ?? 0, 0, ',', '.') }}
-                    </td>
-
                 </tr>
 
-            @endforeach
+            @endforelse
+    
 
         </tbody>
+
 
     </table>
 

@@ -4,10 +4,10 @@
 
     <div class="p-6 bg-background min-h-screen">
 
-        <!-- PAGE HEADER -->
+        <!-- HEADER -->
         <div class="mb-6">
 
-            <h1 class="text-2xl md:text-3xl font-semibold text-kombu tracking-tight">
+            <h1 class="text-4xl font-bold text-kombu">
                 Dashboard
             </h1>
 
@@ -15,51 +15,52 @@
                 Ringkasan aktivitas peminjaman dan rekomendasi buku untuk Anda
             </p>
 
-        </div>
-
-
-        <!-- SEARCH -->
-        <div class="bg-white rounded-xl shadow p-4 mb-6">
-
-            <form action="{{ route('user.books.index') }}" method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-3">
-
-                <!-- SEARCH INPUT -->
-                <div class="md:col-span-3">
-
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari buku..." class="w-full border rounded-lg px-4 py-2
-                                           focus:ring-2 focus:ring-primary outline-none">
-
-                </div>
-
-                <!-- CATEGORY -->
-                <div>
-
-                    <select name="kategori" class="w-full border rounded-lg px-4 py-2
-                                           focus:ring-2 focus:ring-primary outline-none">
-
-                        <option value="">
-                            Semua Kategori
-                        </option>
-
-                        @foreach($categories ?? [] as $kategori)
-
-                            <option value="{{ $kategori }}" {{ request('kategori') == $kategori ? 'selected' : '' }}>
-
-                                {{ $kategori }}
-
-                            </option>
-
-                        @endforeach
-
-                    </select>
-
-                </div>
-
-            </form>
+            <!-- REALTIME CLOCK -->
+            <div
+                class="mt-3 bg-white inline-block px-3 sm:px-4 py-2 rounded-lg shadow border text-xs sm:text-sm text-gray-600">
+                <span id="realtimeClock"></span>
+            </div>
 
         </div>
 
+        <script>
+            function updateClock() {
 
+                const now = new Date();
+
+                const format = localStorage.getItem('dateFormat') || 'full';
+
+                let optionsDate = {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                };
+
+                let date = now.toLocaleDateString('id-ID', optionsDate);
+                let time = now.toLocaleTimeString('id-ID');
+
+                let output = '';
+
+                if (format === 'full') {
+                    output = `${date} • ${time}`;
+                }
+
+                if (format === 'short') {
+                    output = `${now.toLocaleDateString('id-ID')} • ${time}`;
+                }
+
+                if (format === 'time-only') {
+                    output = `${time}`;
+                }
+
+                document.getElementById('realtimeClock').innerHTML = output;
+            }
+
+            updateClock();
+            setInterval(updateClock, 1000);
+        </script>
+        
         <!-- STATISTICS -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
 
@@ -164,12 +165,13 @@
                 @forelse(($rekomendasiBuku ?? collect()) as $book)
 
                         <div class="bg-white border rounded-xl overflow-hidden
-                                hover:shadow-lg transition duration-300">
+                                                        hover:shadow-lg transition duration-300">
 
                             <!-- COVER -->
                             <img src="{{ $book->cover
                     ? asset('storage/' . $book->cover)
-                    : asset('images/no-cover.png') }}" alt="{{ $book->judul ?? '-' }}" class="w-full h-60 object-cover">
+                    : asset('images/no-cover.png') }}" alt="{{ $book->judul ?? '-' }}"
+                                class="w-full h-60 object-cover">
 
                             <!-- CONTENT -->
                             <div class="p-4">
@@ -198,8 +200,8 @@
                                 <div class="mt-5">
 
                                     <a href="{{ route('user.books.show', $boo->id) }}" class="w-full inline-flex justify-center items-center
-                                          bg-primary text-white px-4 py-2 rounded-lg
-                                          hover:bg-accent transition">
+                                                                  bg-primary text-white px-4 py-2 rounded-lg
+                                                                  hover:bg-accent transition">
 
                                         Detail Buku
 

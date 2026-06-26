@@ -144,10 +144,6 @@
                             <!-- RETURN -->
                             @if($book->status == 'dipinjam')
 
-    <span class="bg-mustard text-white px-3 py-1 rounded-full text-xs">
-        Sedang Dipinjam
-    </span>
-
     <a href="{{ route('user.my-books.return.form', $book->id) }}"
        class="bg-secondary text-white px-3 py-2 rounded-lg text-sm">
         Kembalikan

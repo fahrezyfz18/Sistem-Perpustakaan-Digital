@@ -85,16 +85,21 @@ class LaporanController extends Controller
             ->get();
 
         $chartData = (clone $query)
-            ->selectRaw('DATE(tanggal_pinjam) as tanggal')
+            ->selectRaw('MONTH(tanggal_pinjam) as bulan')
+            ->selectRaw('YEAR(tanggal_pinjam) as tahun')
             ->selectRaw('COUNT(*) as total')
-            ->groupBy('tanggal')
-            ->orderBy('tanggal')
+            ->groupBy('tahun', 'bulan')
+            ->orderBy('tahun')
+            ->orderBy('bulan')
             ->get();
 
-        $chartLabels = $chartData
-            ->pluck('tanggal')
-            ->map(fn($d) => Carbon::parse($d)->format('d M'))
-            ->values();
+        $chartLabels = $chartData->map(function ($item) {
+
+            return Carbon::create()
+                ->month($item->bulan)
+                ->translatedFormat('F');
+
+        })->values();
 
         $chartValues = $chartData
             ->pluck('total')
@@ -235,24 +240,35 @@ class LaporanController extends Controller
             |--------------------------------------------------------------------------
             */
 
-            foreach ($data as $row) {
+            if ($data->isEmpty()) {
 
                 fputcsv($file, [
-
-                    $row->user->name ?? '-',
-
-                    $row->book->judul ?? '-',
-
-                    $row->tanggal_pinjam,
-
-                    $row->tgl_jatuh_tempo,
-
-                    $row->tanggal_dikembalikan,
-
-                    $row->status_label,
-
-                    $row->denda ?? 0,
+                    'Tidak ada data pada periode yang dipilih'
                 ]);
+
+            } else {
+
+                foreach ($data as $row) {
+
+                    fputcsv($file, [
+
+                        $row->user->name ?? '-',
+
+                        $row->book->judul ?? '-',
+
+                        $row->tanggal_pinjam,
+
+                        $row->tgl_jatuh_tempo,
+
+                        $row->tanggal_dikembalikan,
+
+                        $row->status_label,
+
+                        $row->denda ?? 0,
+
+                    ]);
+                }
+
             }
 
             fclose($file);

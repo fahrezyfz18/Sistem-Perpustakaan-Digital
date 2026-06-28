@@ -108,7 +108,7 @@
         </div>
 
         <!-- TOTAL DENDA -->
-        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-red-500">
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-red-500 mb-5">
 
             <p class="text-gray-500 text-sm">
                 Total Denda
@@ -121,7 +121,7 @@
         </div>
 
         <!-- RATA-RATA DENDA -->
-        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-red-800">
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-red-800 mb-8">
 
             <p class="text-gray-500 text-sm">
                 Rata-rata Denda

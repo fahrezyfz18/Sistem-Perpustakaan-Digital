@@ -1,6 +1,14 @@
-<aside class="fixed z-40 w-64 h-screen font-sans text-white shadow-xl bg-primary
+<aside
+    class="fixed inset-y-0 left-0 z-40
+           w-64
+           h-screen
+           bg-primary
+           text-white
+           shadow-xl
+           font-sans
            transform transition-transform duration-300
-           -translate-x-full md:translate-x-0" :class="{ 'translate-x-0': sidebarOpen }">
+           -translate-x-full md:translate-x-0"
+    :class="{ 'translate-x-0': sidebarOpen }">
 
     <!-- LOGO / TITLE -->
     <div class="flex items-center h-16 px-4 border-b border-accent/30">
@@ -115,7 +123,7 @@
         <form
             method="POST"
             action="{{ route('logout') }}"
-            onsubmit="return confirm('Yakin ingin logout dari sistem?')">
+            onsubmit="return confirm('Apakah Anda yakin ingin keluar dari LeafShelf?')">
 
             @csrf
 
@@ -155,7 +163,7 @@
             </h3>
 
             <p class="text-gray-600 mb-6">
-                Apakah Anda yakin ingin keluar dari sistem?
+                Apakah Anda yakin ingin keluar dari LeafShelf?
             </p>
 
             <div class="flex justify-end gap-3">

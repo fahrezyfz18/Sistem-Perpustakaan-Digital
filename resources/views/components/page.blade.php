@@ -6,7 +6,7 @@
 ])
 
 <!-- WRAPPER -->
-<div class="p-6 bg-background min-h-screen">
+<div class="p-6 bg-background h-full">
 
     <!-- HEADER -->
     <div class="mb-6">

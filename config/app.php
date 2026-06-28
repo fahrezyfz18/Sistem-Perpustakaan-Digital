@@ -13,7 +13,9 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'LeafShelf'),
+
+    'logout_confirmation' => 'Apakah Anda yakin ingin keluar dari LeafShelf?',
 
     /*
     |--------------------------------------------------------------------------

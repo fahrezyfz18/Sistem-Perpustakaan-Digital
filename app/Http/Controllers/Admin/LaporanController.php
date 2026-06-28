@@ -62,8 +62,9 @@ class LaporanController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        $topBooks = (clone $query)
-            ->with('book')
+        $topBooks = Peminjaman::with('book')
+            ->whereMonth('tanggal_pinjam', now()->month)
+            ->whereYear('tanggal_pinjam', now()->year)
             ->selectRaw('book_id, COUNT(*) as total')
             ->groupBy('book_id')
             ->orderByDesc('total')
@@ -76,8 +77,9 @@ class LaporanController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        $topUsers = (clone $query)
-            ->with('user')
+        $topUsers = Peminjaman::with('user')
+            ->whereMonth('tanggal_pinjam', now()->month)
+            ->whereYear('tanggal_pinjam', now()->year)
             ->selectRaw('user_id, COUNT(*) as total')
             ->groupBy('user_id')
             ->orderByDesc('total')

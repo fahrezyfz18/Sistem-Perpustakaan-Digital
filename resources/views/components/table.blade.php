@@ -4,7 +4,7 @@
 
 <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
 
-    <di v class="overflow-x-auto">
+    <div class="overflow-x-auto">
 
        <table class="w-full text-sm text-gray-700">
 

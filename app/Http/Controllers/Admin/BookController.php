@@ -28,11 +28,13 @@ class BookController extends Controller
                         ->orWhere('penulis', 'like', "%{$search}%");
                 });
             })
-            ->when($category, function ($query) use ($category) {
-                $query->where('category_id', $category);
+
+            ->when($category, function ($query) use ($request) {
+                $query->where('kategori_id', $request->category);
             })
             ->latest()
-            ->paginate(10);
+            ->paginate(10)
+            ->withQueryString();
 
         $categories = Category::orderBy('nama')->get();
 
@@ -75,14 +77,14 @@ class BookController extends Controller
             'deskripsi' => 'nullable|string',
         ]);
 
-         if ($request->hasFile('cover')) {
+        if ($request->hasFile('cover')) {
 
-        $path = $request->file('cover')->store('books', 'public');
+            $path = $request->file('cover')->store('books', 'public');
 
-     
 
-        $validated['cover'] = $path;
-    }
+
+            $validated['cover'] = $path;
+        }
 
         if ($request->hasFile('cover')) {
             $validated['cover'] = $request

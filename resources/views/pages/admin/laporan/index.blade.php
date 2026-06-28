@@ -181,7 +181,7 @@
         <div class="bg-white p-5 rounded-xl shadow">
 
             <h3 class="text-lg font-semibold text-kombu mb-4">
-                Top 5 Buku Terpopuler
+                Buku Paling Banyak Dipinjam Bulan Ini
             </h3>
 
             <ul class="space-y-2 text-sm">
@@ -216,7 +216,7 @@
         <div class="bg-white p-5 rounded-xl shadow">
 
             <h3 class="text-lg font-semibold text-kombu mb-4">
-                Anggota Aktif
+                Anggota Paling Aktif Meminjam Bulan Ini
             </h3>
 
             <ul class="space-y-2 text-sm">

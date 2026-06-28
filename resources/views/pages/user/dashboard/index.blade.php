@@ -62,7 +62,7 @@
         </script>
         
         <!-- STATISTICS -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 mb-8">
 
             <!-- TOTAL PEMINJAMAN -->
             <div class="bg-white rounded-xl shadow p-5 border-l-4 border-kombu">
@@ -77,7 +77,6 @@
 
             </div>
 
-
             <!-- SEDANG DIPINJAM -->
             <div class="bg-white rounded-xl shadow p-5 border-l-4 border-olivine">
 
@@ -90,7 +89,6 @@
                 </h2>
 
             </div>
-
 
             <!-- RIWAYAT -->
             <div class="bg-white rounded-xl shadow p-5 border-l-4 border-mustard">
@@ -105,31 +103,31 @@
 
             </div>
 
-        </div>
+            <!-- TOTAL DENDA -->
+            <div class="bg-white rounded-xl shadow p-5 border-l-4 border-red-500">
 
-        <!-- TOTAL DENDA -->
-        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-red-500">
+                <p class="text-gray-500 text-sm">
+                    Total Denda
+                </p>
 
-            <p class="text-gray-500 text-sm">
-                Total Denda
-            </p>
+                <h2 class="text-3xl font-bold text-red-500 mt-2">
+                    Rp {{ number_format($totalDenda ?? 0, 0, ',', '.') }}
+                </h2>
 
-            <h2 class="text-3xl font-bold text-red-500 mt-2">
-                Rp {{ number_format($totalDenda ?? 0, 0, ',', '.') }}
-            </h2>
+            </div>
 
-        </div>
+            <!-- RATA-RATA DENDA -->
+            <div class="bg-white rounded-xl shadow p-5 border-l-4 border-red-800">
 
-        <!-- RATA-RATA DENDA -->
-        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-red-800">
+                <p class="text-gray-500 text-sm">
+                    Rata-rata Denda
+                </p>
 
-            <p class="text-gray-500 text-sm">
-                Rata-rata Denda
-            </p>
+                <h2 class="text-3xl font-bold text-red-800 mt-2">
+                    Rp {{ number_format($avgDenda ?? 0, 0, ',', '.') }}
+                </h2>
 
-            <h2 class="text-3xl font-bold text-red-800 mt-2">
-                Rp {{ number_format($avgDenda ?? 0, 0, ',', '.') }}
-            </h2>
+            </div>
 
         </div>
 

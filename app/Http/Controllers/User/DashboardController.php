@@ -5,54 +5,49 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\Book;
 use App\Models\Peminjaman;
+use App\Models\Category;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
+    /**
+     * Menampilkan dashboard utama untuk user.
+     */
     public function index()
     {
-        $totalBooks = Book::count();
+        $userId = Auth::id();
 
-        $latestBooks = Book::latest()
-            ->take(4)
-            ->get();
+        // 1. Data Statistik (Dashboard Cards)
+        $totalPinjam = Peminjaman::where('user_id', $userId)->count();
+        $dipinjam    = Peminjaman::where('user_id', $userId)->where('status', 'dipinjam')->count();
+        $selesai     = Peminjaman::where('user_id', $userId)->where('status', 'dikembalikan')->count();
+        
+        // Menghitung total denda dari transaksi user
+        $totalDenda  = Peminjaman::where('user_id', $userId)->sum('denda');
 
-        $userId = auth()->id();
+        // 2. Data Rekomendasi Buku (Buku terbaru)
+        $rekomendasi = Book::latest()->take(3)->get();
 
-        // TOTAL PEMINJAMAN
-        $totalPeminjaman = Peminjaman::where('user_id', $userId)
-            ->count();
-
-        // SEDANG DIPINJAM
-        $dipinjam = Peminjaman::where('user_id', $userId)
+        // 3. Data Peringatan Jatuh Tempo (H-3 hari)
+        // Menggunakan kolom 'tgl_jatuh_tempo' sesuai struktur tabel Anda
+        $jatuhTempo = Peminjaman::where('user_id', $userId)
             ->where('status', 'dipinjam')
-            ->count();
-
-        // RIWAYAT SELESAI
-        $riwayat = Peminjaman::where('user_id', $userId)
-            ->where('status', 'dikembalikan')
-            ->count();
-
-        // RIWAYAT LIST
-        $riwayatPeminjaman = Peminjaman::with('book')
-            ->where('user_id', $userId)
-            ->latest()
+            ->where('tgl_jatuh_tempo', '<=', now()->addDays(3))
+            ->with('book')
             ->get();
 
-        // SEMENTARA DEFAULT 0
-        // karena kolom denda belum ada di database
-        $totalDenda = 0;
-
-        $avgDenda = 0;
+        // 4. Data Kategori Populer
+        // Mengambil kategori, bisa disesuaikan dengan relasi jika ada
+        $kategoriPopuler = Category::take(8)->get();
 
         return view('pages.user.dashboard.index', compact(
-            'totalBooks',
-            'latestBooks',
-            'totalPeminjaman',
-            'dipinjam',
-            'riwayat',
-            'riwayatPeminjaman',
-            'totalDenda',
-            'avgDenda'
+            'totalPinjam', 
+            'dipinjam', 
+            'selesai', 
+            'totalDenda', 
+            'rekomendasi', 
+            'jatuhTempo', 
+            'kategoriPopuler'
         ));
     }
 }

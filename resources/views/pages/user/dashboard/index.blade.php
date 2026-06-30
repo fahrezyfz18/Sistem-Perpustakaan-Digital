@@ -1,373 +1,113 @@
 @extends('layouts.app')
 
 @section('content')
+    <div class="min-h-screen bg-background p-4 sm:p-6 space-y-6">
 
-    <div class="p-6 bg-background min-h-screen">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+                <h1 class="text-4xl font-bold text-kombu tracking-tight">Dashboard</h1>
+                <p class="text-sm text-gray-500 mt-1">Halo, {{ auth()->user()->name }}! Ringkasan aktivitas Anda hari ini.
+                </p>
+                <div
+                    class="mt-3 bg-white inline-flex items-center gap-2 px-4 py-2 rounded-xl shadow-sm border text-xs text-gray-600">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span id="realtimeClockUser"></span>
+                </div>
+            </div>
+        </div>
 
-        <!-- HEADER -->
-        <div class="mb-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <div class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-kombu">
+                <p class="text-gray-500 text-sm">Total Pinjam</p>
+                <h2 class="text-2xl font-bold text-kombu">{{ $totalPinjam ?? 0 }}</h2>
+            </div>
+            <div class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-olivine">
+                <p class="text-gray-500 text-sm">Sedang Dipinjam</p>
+                <h2 class="text-2xl font-bold text-olivine">{{ $dipinjam ?? 0 }}</h2>
+            </div>
+            <div class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-mustard">
+                <p class="text-gray-500 text-sm">Buku Selesai</p>
+                <h2 class="text-2xl font-bold text-mustard">{{ $selesai ?? 0 }}</h2>
+            </div>
+            <div class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-red-500">
+                <p class="text-gray-500 text-sm">Total Denda</p>
+                <h2 class="text-2xl font-bold text-red-500">Rp {{ number_format($totalDenda ?? 0, 0, ',', '.') }}</h2>
+            </div>
+        </div>
 
-            <h1 class="text-4xl font-bold text-kombu">
-                Dashboard
-            </h1>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2 space-y-6">
+                <div class="bg-white p-5 rounded-xl shadow-sm border">
+                    <h3 class="text-lg font-bold text-kombu mb-4">Rekomendasi untuk Anda</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        @forelse($rekomendasi ?? [] as $book)
+                            <a href="{{ route('user.books.show', $book->id) }}"
+                                class="border rounded-xl p-3 hover:shadow-md transition">
+                                <img src="{{ $book->cover ? asset('storage/' . $book->cover) : asset('images/no-cover.png') }}"
+                                    class="w-full h-32 object-cover rounded-lg mb-2">
+                                <h4 class="font-bold text-sm text-gray-800 line-clamp-1">{{ $book->judul }}</h4>
+                                <p class="text-xs text-gray-500">{{ $book->penulis }}</p>
+                            </a>
+                        @empty
+                            <p class="text-sm text-gray-400 col-span-3">Belum ada rekomendasi buku saat ini.</p>
+                        @endforelse
+                    </div>
+                </div>
 
-            <p class="text-sm text-gray-500 mt-1">
-                Ringkasan aktivitas peminjaman dan rekomendasi buku untuk Anda
-            </p>
-
-            <!-- REALTIME CLOCK -->
-            <div
-                class="mt-3 bg-white inline-block px-3 sm:px-4 py-2 rounded-lg shadow border text-xs sm:text-sm text-gray-600">
-                <span id="realtimeClock"></span>
+                @if(isset($jatuhTempo) && $jatuhTempo->count() > 0)
+                    <div class="bg-red-50 p-5 rounded-xl shadow-sm border border-red-100">
+                        <h3 class="text-lg font-bold text-red-700 mb-3">⚠️ Segera Dikembalikan</h3>
+                        <div class="space-y-2">
+                            @foreach($jatuhTempo as $item)
+                                <div class="flex justify-between bg-white p-3 rounded-lg border border-red-100 text-sm">
+                                    <span class="font-medium text-gray-700">{{ $item->book->judul }}</span>
+                                    <span class="font-bold text-red-500">Tgl:
+                                        {{ \Carbon\Carbon::parse($item->tgl_jatuh_tempo)->format('d M Y') }}</span>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
             </div>
 
+            <div class="space-y-6">
+                <div class="bg-white p-5 rounded-xl shadow-sm border">
+                    <h3 class="text-lg font-bold text-kombu mb-4">Akses Cepat</h3>
+                    <div class="space-y-3">
+                        <a href="{{ route('user.books.index') }}"
+                            class="block w-full text-center bg-kombu text-white py-3 rounded-lg text-sm font-semibold hover:opacity-90 transition">Cari
+                            Buku</a>
+                        <a href="{{ route('user.my-books.index') }}"
+                            class="block w-full text-center bg-gray-100 text-gray-700 py-3 rounded-lg text-sm font-semibold hover:bg-gray-200 transition">Pinjaman
+                            Saya</a>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl shadow-sm border">
+                    <h3 class="text-lg font-bold text-kombu mb-4">Kategori Populer</h3>
+                    <div class="flex flex-wrap gap-2">
+                        @forelse(($kategoriPopuler ?? []) as $kat)
+                            <a href="{{ route('user.books.index', ['kategori' => $kat->id]) }}"
+                                class="bg-gray-100 text-gray-600 px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-kombu hover:text-white transition">
+                                {{ $kat->nama_kategori }}
+                            </a>
+                        @empty
+                            <p class="text-xs text-gray-400">Belum ada kategori.</p>
+                        @endforelse
+                    </div>
+                </div>
+            </div>
         </div>
 
         <script>
-            function updateClock() {
-
+            function updateClockUser() {
                 const now = new Date();
-
-                const format = localStorage.getItem('dateFormat') || 'full';
-
-                let optionsDate = {
-                    weekday: 'long',
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                };
-
-                let date = now.toLocaleDateString('id-ID', optionsDate);
-                let time = now.toLocaleTimeString('id-ID');
-
-                let output = '';
-
-                if (format === 'full') {
-                    output = `${date} • ${time}`;
-                }
-
-                if (format === 'short') {
-                    output = `${now.toLocaleDateString('id-ID')} • ${time}`;
-                }
-
-                if (format === 'time-only') {
-                    output = `${time}`;
-                }
-
-                document.getElementById('realtimeClock').innerHTML = output;
+                const dateStr = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                const timeStr = now.toLocaleTimeString('id-ID');
+                document.getElementById('realtimeClockUser').innerHTML = `${dateStr} • ${timeStr}`;
             }
-
-            updateClock();
-            setInterval(updateClock, 1000);
+            setInterval(updateClockUser, 1000);
+            updateClockUser();
         </script>
-        
-        <!-- STATISTICS -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 mb-8">
-
-            <!-- TOTAL PEMINJAMAN -->
-            <div class="bg-white rounded-xl shadow p-5 border-l-4 border-kombu">
-
-                <p class="text-gray-500 text-sm">
-                    Total Peminjaman
-                </p>
-
-                <h2 class="text-3xl font-bold text-kombu mt-2">
-                    {{ $totalPeminjaman ?? 0 }}
-                </h2>
-
-            </div>
-
-            <!-- SEDANG DIPINJAM -->
-            <div class="bg-white rounded-xl shadow p-5 border-l-4 border-olivine">
-
-                <p class="text-gray-500 text-sm">
-                    Sedang Dipinjam
-                </p>
-
-                <h2 class="text-3xl font-bold text-olivine mt-2">
-                    {{ $dipinjam ?? 0 }}
-                </h2>
-
-            </div>
-
-            <!-- RIWAYAT -->
-            <div class="bg-white rounded-xl shadow p-5 border-l-4 border-mustard">
-
-                <p class="text-gray-500 text-sm">
-                    Riwayat Selesai
-                </p>
-
-                <h2 class="text-3xl font-bold text-mustard mt-2">
-                    {{ $riwayat ?? 0 }}
-                </h2>
-
-            </div>
-
-            <!-- TOTAL DENDA -->
-            <div class="bg-white rounded-xl shadow p-5 border-l-4 border-red-500">
-
-                <p class="text-gray-500 text-sm">
-                    Total Denda
-                </p>
-
-                <h2 class="text-3xl font-bold text-red-500 mt-2">
-                    Rp {{ number_format($totalDenda ?? 0, 0, ',', '.') }}
-                </h2>
-
-            </div>
-
-            <!-- RATA-RATA DENDA -->
-            <div class="bg-white rounded-xl shadow p-5 border-l-4 border-red-800">
-
-                <p class="text-gray-500 text-sm">
-                    Rata-rata Denda
-                </p>
-
-                <h2 class="text-3xl font-bold text-red-800 mt-2">
-                    Rp {{ number_format($avgDenda ?? 0, 0, ',', '.') }}
-                </h2>
-
-            </div>
-
-        </div>
-
-        <!-- REKOMENDASI BUKU -->
-        <div class="bg-white rounded-xl shadow p-5 mb-8">
-
-            <div class="flex items-center justify-between mb-5">
-
-                <div>
-
-                    <h3 class="text-lg font-semibold text-kombu">
-                        Rekomendasi Buku
-                    </h3>
-
-                    <p class="text-sm text-gray-500">
-                        Buku terbaru yang tersedia di perpustakaan
-                    </p>
-
-                </div>
-
-                <a href="{{ route('user.books.index') }}" class="text-sm text-primary hover:underline">
-
-                    Lihat Semua
-
-                </a>
-
-            </div>
-
-
-            <!-- BOOK GRID -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-
-                @forelse(($rekomendasiBuku ?? collect()) as $book)
-
-                        <div class="bg-white border rounded-xl overflow-hidden
-                                                        hover:shadow-lg transition duration-300">
-
-                            <!-- COVER -->
-                            <img src="{{ $book->cover
-                    ? asset('storage/' . $book->cover)
-                    : asset('images/no-cover.png') }}" alt="{{ $book->judul ?? '-' }}"
-                                class="w-full h-60 object-cover">
-
-                            <!-- CONTENT -->
-                            <div class="p-4">
-
-                                <h4 class="font-semibold text-kombu text-lg line-clamp-1">
-                                    {{ $book->judul }}
-                                </h4>
-
-                                <p class="text-sm text-gray-500 mt-1">
-                                    {{ $book->penulis }}
-                                </p>
-
-                                <div class="flex items-center justify-between mt-3">
-
-                                    <span class="bg-kombu/10 text-kombu text-xs px-3 py-1 rounded-full">
-                                        {{ $book->kategori }}
-                                    </span>
-
-                                    <span class="text-xs text-gray-400">
-                                        Stok: {{ $book->stok }}
-                                    </span>
-
-                                </div>
-
-                                <!-- BUTTON -->
-                                <div class="mt-5">
-
-                                    <a href="{{ route('user.books.show', $boo->id) }}" class="w-full inline-flex justify-center items-center
-                                                                  bg-primary text-white px-4 py-2 rounded-lg
-                                                                  hover:bg-accent transition">
-
-                                        Detail Buku
-
-                                    </a>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                @empty
-
-                    <div class="col-span-full text-center py-10">
-                        <p class="text-gray-500">
-                            Tidak ada rekomendasi buku saat ini
-                        </p>
-                    </div>
-
-                @endforelse
-
-            </div>
-
-        </div>
-
-
-        <!-- RIWAYAT PEMINJAMAN -->
-        <div class="bg-white rounded-xl shadow overflow-hidden">
-
-            <!-- HEADER -->
-            <div class="bg-kombu text-white p-4">
-
-                <h3 class="font-semibold">
-                    Riwayat Peminjaman
-                </h3>
-
-            </div>
-
-
-            <!-- TABLE -->
-            <div class="overflow-x-auto">
-
-                <table class="w-full text-sm">
-
-                    <thead class="bg-gray-100">
-
-                        <tr>
-
-                            <th class="p-4 text-left">
-                                Judul Buku
-                            </th>
-
-                            <th class="p-4 text-center">
-                                Tanggal Pinjam
-                            </th>
-
-                            <th class="p-4 text-center">
-                                Tanggal Kembali
-                            </th>
-
-                            <th class="p-4 text-center">
-                                Status
-                            </th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                        @forelse(($riwayatPeminjaman ?? collect()) as $item)
-
-                            <tr class="border-b hover:bg-gray-50 transition">
-
-                                <!-- JUDUL -->
-                                <td class="p-4">
-
-                                    {{ $item->book->judul ?? '-' }}
-
-                                </td>
-
-
-                                <!-- TGL PINJAM -->
-                                <td class="p-4 text-center">
-
-                                    {{ $item->tgl_pinjam ?? '-' }}
-
-                                </td>
-
-
-                                <!-- TGL KEMBALI -->
-                                <td class="p-4 text-center">
-
-                                    {{ $item->tgl_kembali ?? '-' }}
-
-                                </td>
-
-
-                                <!-- STATUS -->
-                                <td class="p-4 text-center">
-
-                                    @php
-                                        $isOverdue = $item->status == 'terlambat';
-                                        $hasFine = $item->denda > 0;
-                                    @endphp
-
-                                    @if($item->status == 'dipinjam')
-
-                                        <span class="bg-mustard/20 text-mustard px-3 py-1 rounded-full text-xs font-medium">
-                                            Dipinjam
-                                        </span>
-
-                                    @elseif($item->status == 'dikembalikan')
-
-                                        <span class="bg-olivine/20 text-olivine px-3 py-1 rounded-full text-xs font-medium">
-                                            Selesai
-                                        </span>
-
-                                    @elseif($isOverdue)
-
-                                        <span class="bg-red-100 text-red-500 px-3 py-1 rounded-full text-xs font-medium">
-                                            Terlambat
-                                        </span>
-
-                                    @endif
-
-                                    @if($hasFine)
-
-                                        <div class="mt-1">
-                                            <span class="bg-red-900 text-white px-3 py-1 rounded-full text-xs font-medium">
-                                                Denda Rp {{ number_format($item->denda, 0, ',', '.') }}
-                                            </span>
-                                        </div>
-
-                                    @endif
-
-                                </td>
-
-                            </tr>
-
-                        @empty
-
-                            <tr>
-
-                                <td colspan="4">
-
-                                    <div class="flex flex-col items-center justify-center py-10">
-
-                                        <p class="text-gray-500 text-sm">
-                                            Belum ada riwayat peminjaman
-                                        </p>
-
-                                    </div>
-
-                                </td>
-
-                            </tr>
-
-                        @endforelse
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </div>
-
     </div>
-
 @endsection

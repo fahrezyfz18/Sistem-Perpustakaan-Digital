@@ -26,8 +26,8 @@
                 <!-- Email -->
                 <div>
                     <label class="text-sm font-semibold text-primary">Email</label>
-                    <input type="email" name="email"
-                        class="w-full mt-1 p-2.5 border rounded-lg bg-gray-50 focus:ring-primary focus:border-primary">
+                    <input type="email" name="email" placeholder="Masukkan email Anda"
+                        class="w-full mt-1 p-2.5 border rounded-lg bg-gray-50 focus:ring-primary focus:border-primary placeholder:text-gray-400">
                     @error('email')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
@@ -39,8 +39,8 @@
                     <label class="text-sm font-semibold text-primary">Password</label>
 
                     <div class="relative">
-                        <input :type="show ? 'text' : 'password'" name="password"
-                            class="w-full mt-1 p-2.5 border rounded-lg bg-gray-50 focus:ring-primary focus:border-primary pr-10">
+                        <input :type="show ? 'text' : 'password'" name="password" placeholder="Masukkan password Anda"
+                            class="w-full mt-1 p-2.5 border rounded-lg bg-gray-50 focus:ring-primary focus:border-primary pr-10 placeholder:text-gray-400">
 
                         <!-- show or hide password -->
                         <button type="button" @click="show = !show"

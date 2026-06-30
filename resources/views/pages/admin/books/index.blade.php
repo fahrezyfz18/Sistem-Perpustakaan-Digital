@@ -1,333 +1,103 @@
-@extends('layouts.admin')
-
-
+@extends('layouts.app')
 
 @section('content')
 
-
-
-    <x-page title="Kelola Data Buku" subtitle="Manajemen koleksi buku perpustakaan" :action="route('admin.buku.create')"
-        actionText="+ Tambah Buku">
-
-
+    <x-page 
+        title="Kelola Data Buku" 
+        subtitle="Manajemen koleksi buku perpustakaan" 
+        :action="route('admin.buku.create')"
+        actionText="Tambah Buku"
+    >
 
         @if(session('success'))
-
-            <div id="successAlert" class="mb-4 p-4 rounded-lg bg-green-100 border border-green-300 text-green-700">
-
+            <div id="successAlert" class="mb-4 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm font-medium shadow-sm transition-opacity duration-500">
                 {{ session('success') }}
-
             </div>
 
-
-
             <script>
-
                 setTimeout(() => {
-
                     const alert = document.getElementById('successAlert');
-
-
-
                     if (alert) {
-
-                        alert.style.transition = '0.5s';
-
                         alert.style.opacity = '0';
-
                         setTimeout(() => alert.remove(), 500);
-
                     }
-
                 }, 3000);
-
             </script>
-
         @endif
 
+        <x-search-filter 
+            :action="route('admin.buku.index')" 
+            placeholder="Cari judul atau penulis..."
+            :categories="$categories ?? []" 
+        />
 
-
-        <!-- SEARCH -->
-
-        <div class="mb-4">
-
-            <x-search-filter :action="route('admin.buku.index')" placeholder="Cari judul atau penulis..."
-                :categories="$categories ?? []" />
-
-        </div>
-
-
-
-        <!-- TABLE -->
-
-        <x-table :headers="[
-
-            'Cover',
-
-            'Judul',
-
-            'ISBN',
-
-            'Penulis',
-
-            'Penerbit',
-
-            'Kategori',
-
-            'Tahun',
-
-            'Stok',
-
-            'Aksi'
-
-        ]">
-
-
+        <x-table :headers="['Cover', 'Judul', 'ISBN', 'Penulis', 'Penerbit', 'Kategori', 'Tahun', 'Stok', 'Aksi']">
 
             @forelse($books as $book)
-
-
-
                 <x-table-row>
 
-
-
                     <x-table-cell>
-
                         @if($book->cover)
-
-                            <img src="{{ asset('storage/' . $book->cover) }}" class="w-14 h-20 object-cover rounded mx-auto">
-
+                            <img src="{{ asset('storage/' . $book->cover) }}" class="w-10 h-14 object-cover rounded-lg shadow-sm mx-auto border">
+                        @else
+                            <div class="w-10 h-14 bg-gray-100 rounded-lg border border-dashed flex items-center justify-center mx-auto text-[10px] text-gray-400">
+                                No Cover
+                            </div>
                         @endif
-
                     </x-table-cell>
 
-
-
-                    <x-table-cell>{{ $book->judul }}</x-table-cell>
-
+                    <x-table-cell>
+                        <div class="max-w-[180px] truncate font-semibold text-gray-900 mx-auto">
+                            {{ $book->judul }}
+                        </div>
+                    </x-table-cell>
+                    
                     <x-table-cell>{{ $book->isbn }}</x-table-cell>
-
                     <x-table-cell>{{ $book->penulis }}</x-table-cell>
-
                     <x-table-cell>{{ $book->penerbit }}</x-table-cell>
-
                     <x-table-cell>{{ $book->category?->nama ?? '-' }}</x-table-cell>
-
                     <x-table-cell>{{ $book->tahun }}</x-table-cell>
-
-                    <x-table-cell>{{ $book->stok }}</x-table-cell>
-
-
+                    <x-table-cell>
+                        <span class="font-bold {{ $book->stok < 2 ? 'text-red-600' : 'text-gray-700' }}">
+                            {{ $book->stok }}
+                        </span>
+                    </x-table-cell>
 
                     <x-table-cell>
-
-                        <div class="flex justify-center items-center gap-2">
-
-
-
-                            <!-- DETAIL -->
-
+                        <div class="flex justify-center items-center gap-1.5">
                             <a href="{{ route('admin.buku.show', $book->id) }}"
-                                class="inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-blue-100 text-blue-600 hover:bg-blue-200 transition text-sm">
-
-
-
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor">
-
-
-
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-
-
-
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5
-
-                                       c4.478 0 8.268 2.943 9.542 7
-
-                                       -1.274 4.057-5.064 7-9.542 7
-
-                                       -4.477 0-8.268-2.943-9.542-7z" />
-
-                                </svg>
-
-
-
-                                <span>Detail</span>
-
-
-
+                               class="px-2.5 py-1.5 rounded-xl bg-olivine/10 text-kombu hover:bg-olivine/20 transition text-xs font-bold border border-olivine/20">
+                                Detail
                             </a>
-
-
-
-                            <!-- EDIT -->
 
                             <a href="{{ route('admin.buku.edit', $book->id) }}"
-                                class="inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-yellow-100 text-yellow-700 hover:bg-yellow-200 transition text-sm">
-
-
-
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor">
-
-
-
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M16.862 4.487a2.1 2.1 0 113 2.97L7.5 19.82 3 21l1.18-4.5 12.682-12.013z" />
-
-
-
-                                </svg>
-
-
-
-                                <span>Edit</span>
-
-
-
+                               class="px-2.5 py-1.5 rounded-xl bg-amber-50 text-amber-700 hover:bg-amber-100 transition text-xs font-bold border border-amber-200/60">
+                                Edit
                             </a>
 
-
-
-                            <!-- DELETE -->
-
                             <form action="{{ route('admin.buku.destroy', $book->id) }}" method="POST"
-                                onsubmit="return confirm('Yakin hapus data ini?')">
-
-
-
+                                  onsubmit="return confirm('Yakin hapus data ini?')">
                                 @csrf
-
                                 @method('DELETE')
-
-
-
                                 <button type="submit"
-                                    class="inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-red-100 text-red-600 hover:bg-red-200 transition text-sm">
-
-
-
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
-                                        stroke="currentColor">
-
-
-
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862
-
-                                           a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6
-
-                                           M9 7V4a1 1 0 011-1h4a1 1 0 011 1v3
-
-                                           m-7 0h8" />
-
-
-
-                                    </svg>
-
-
-
-                                    <span>Hapus</span>
-
-
-
+                                        class="px-2.5 py-1.5 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 transition text-xs font-bold border border-red-200/60">
+                                    Hapus
                                 </button>
-
-
-
                             </form>
-
-                            </form>
-
-                            <script>
-                                document.addEventListener('DOMContentLoaded', function () {
-
-                                    const form = document.getElementById('search-form');
-
-                                    if (!form) return;
-
-                                    const searchInput = form.querySelector('input[name="search"]');
-                                    const categorySelect = form.querySelector('select[name="category"]');
-
-                                    let typingTimer;
-
-                                    // realtime search
-                                    if (searchInput) {
-
-                                        searchInput.addEventListener('input', function () {
-
-                                            clearTimeout(typingTimer);
-
-                                            typingTimer = setTimeout(function () {
-
-                                                form.submit();
-
-                                            }, 300);
-
-                                        });
-
-                                    }
-
-                                    // langsung filter ketika kategori berubah
-                                    if (categorySelect) {
-
-                                        categorySelect.addEventListener('change', function () {
-
-                                            form.submit();
-
-                                        });
-
-                                    }
-
-                                });
-                            </script>
-
-
                         </div>
-
                     </x-table-cell>
 
-
-
                 </x-table-row>
-
-
-
             @empty
-
-
-
-                <tr>
-
-                    <td colspan="9" class="text-center p-6 text-gray-500">
-
-                        Data buku tidak ditemukan
-
+                <x-table-row>
+                    <td colspan="9" class="px-6 py-12 text-center text-gray-400 font-medium bg-white">
+                        Koleksi data buku tidak ditemukan.
                     </td>
-
-                </tr>
-
-
-
+                </x-table-row>
             @endforelse
-
-
 
         </x-table>
 
-
-
-        </div>
-
-
-
-        </div>
-
-
-
     </x-page>
-
 
 @endsection

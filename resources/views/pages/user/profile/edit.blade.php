@@ -1,81 +1,44 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="min-h-screen bg-background p-4 sm:p-6">
+    <div class="max-w-3xl mx-auto space-y-6">
+        <h1 class="text-2xl font-bold text-kombu">Edit Profil</h1>
 
-    <div class="min-h-screen bg-background flex items-center justify-center p-6">
+        <form action="{{ route('user.profile.update') }}" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-2xl shadow-sm border space-y-4">
+            @csrf
+            @method('PATCH')
 
-        <div class="w-full max-w-lg bg-white rounded-2xl shadow-lg border border-gray-100">
-
-            <!-- HEADER -->
-            <div class="bg-kombu text-white p-5 rounded-t-2xl text-center">
-                <h1 class="text-xl font-semibold">Edit Profil</h1>
-                <p class="text-sm text-gray-200 mt-1">
-                    Perbarui informasi akun Anda
-                </p>
+            <div>
+                <label class="text-sm font-semibold text-gray-700">Foto Profil</label>
+                <input type="file" name="avatar" class="w-full mt-1 p-2 border rounded-xl bg-gray-50">
             </div>
 
-            <!-- FORM -->
-            <div class="p-6">
-
-                <form method="POST" action="{{ route('user.profile.update') }}" class="space-y-4">
-
-                    @csrf
-                    @method('PATCH')
-
-                    <!-- NAMA -->
-                    <div>
-                        <label class="text-sm text-gray-600">Nama</label>
-                        <input type="text" name="name" value="{{ old('name', $user->name) }}"
-                            class="w-full mt-1 border rounded-lg p-2 focus:ring-2 focus:ring-kombu outline-none">
-                    </div>
-
-                    <!-- EMAIL -->
-                    <div>
-                        <label class="text-sm text-gray-600">Email</label>
-                        <input type="email" name="email" value="{{ old('email', $user->email) }}"
-                            class="w-full mt-1 border rounded-lg p-2 focus:ring-2 focus:ring-kombu outline-none">
-                    </div>
-
-                    <hr class="my-4">
-
-                    <!-- PASSWORD LAMA -->
-                    <div>
-                        <label class="text-sm text-gray-600">Password Lama</label>
-                        <input type="password" name="old_password"
-                            class="w-full mt-1 border rounded-lg p-2 focus:ring-2 focus:ring-kombu outline-none"
-                            placeholder="Masukkan password lama">
-                    </div>
-
-                    <!-- PASSWORD BARU -->
-                    <div>
-                        <label class="text-sm text-gray-600">Password Baru</label>
-                        <input type="password" name="password"
-                            class="w-full mt-1 border rounded-lg p-2 focus:ring-2 focus:ring-kombu outline-none"
-                            placeholder="Password baru">
-                    </div>
-
-                    <!-- KONFIRMASI -->
-                    <div>
-                        <label class="text-sm text-gray-600">Konfirmasi Password</label>
-                        <input type="password" name="password_confirmation"
-                            class="w-full mt-1 border rounded-lg p-2 focus:ring-2 focus:ring-kombu outline-none"
-                            placeholder="Ulangi password">
-                    </div>
-
-                    <!-- BUTTON -->
-                    <button type="submit"
-                        class="w-full bg-kombu text-white py-2 rounded-lg hover:bg-accent transition font-semibold">
-
-                        Simpan Perubahan
-
-                    </button>
-
-                </form>
-
+            <div>
+                <label class="text-sm font-semibold text-gray-700">Nama Lengkap</label>
+                <input type="text" name="name" value="{{ old('name', $user->name) }}" class="w-full mt-1 p-3 rounded-xl border focus:ring-2 focus:ring-kombu outline-none">
             </div>
 
-        </div>
+            <div>
+                <label class="text-sm font-semibold text-gray-700">Email</label>
+                <input type="email" name="email" value="{{ old('email', $user->email) }}" class="w-full mt-1 p-3 rounded-xl border focus:ring-2 focus:ring-kombu outline-none">
+            </div>
 
+            <div>
+                <label class="text-sm font-semibold text-gray-700">No. HP</label>
+                <input type="text" name="no_hp" value="{{ old('no_hp', $user->no_hp) }}" class="w-full mt-1 p-3 rounded-xl border focus:ring-2 focus:ring-kombu outline-none">
+            </div>
+
+            <div>
+                <label class="text-sm font-semibold text-gray-700">Alamat</label>
+                <textarea name="alamat" rows="3" class="w-full mt-1 p-3 rounded-xl border focus:ring-2 focus:ring-kombu outline-none">{{ old('alamat', $user->alamat) }}</textarea>
+            </div>
+
+            <div class="pt-4 flex gap-3">
+                <button type="submit" class="bg-kombu text-white px-6 py-2 rounded-xl text-sm font-semibold hover:opacity-90">Simpan Perubahan</button>
+                <a href="{{ route('user.profile.show') }}" class="bg-gray-100 text-gray-700 px-6 py-2 rounded-xl text-sm font-semibold">Batal</a>
+            </div>
+        </form>
     </div>
-
+</div>
 @endsection

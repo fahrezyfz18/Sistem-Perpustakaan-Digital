@@ -1,111 +1,64 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('content')
 
-    <x-page title="Data Kategori" subtitle="Manajemen data kategori buku perpustakaan"
-        :action="route('admin.kategori.create')" actionText="+ Tambah Kategori">
+    <x-page 
+        title="Data Kategori" 
+        subtitle="Manajemen data kategori buku perpustakaan"
+        :action="route('admin.kategori.create')" 
+        actionText="Tambah Kategori"
+    >
 
-        <!-- SEARCH -->
-        <div class="mb-4">
-            <x-search-filter :action="route('admin.kategori.index')" placeholder="Cari kategori..." />
-        </div>
+        <x-search-filter 
+            :action="route('admin.kategori.index')" 
+            placeholder="Cari kategori..." 
+        />
 
-        <!-- TABLE -->
+        <x-table :headers="['Nama Kategori', 'Aksi']">
 
-        <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+            @forelse($categories as $category)
+                <x-table-row>
 
-            <div class="overflow-x-auto">
+                    <x-table-cell>
+                        <div class="font-semibold text-gray-900">
+                            {{ $category->nama }}
+                        </div>
+                    </x-table-cell>
 
-                <table class="w-full">
+                    <x-table-cell>
+                        <div class="flex justify-center gap-2">
+                            <a href="{{ route('admin.kategori.show', $category->id) }}" 
+                               class="px-3 py-1.5 rounded-xl bg-olivine/10 text-kombu hover:bg-olivine/20 transition text-xs font-bold border border-olivine/20">
+                                Detail
+                            </a>
 
-                    <thead class="bg-primary text-white">
-                        <tr>
-                            <th class="px-6 py-4 text-left font-semibold">
-                                Nama Kategori
-                            </th>
+                            <a href="{{ route('admin.kategori.edit', $category->id) }}" 
+                               class="px-3 py-1.5 rounded-xl bg-amber-50 text-amber-700 hover:bg-amber-100 transition text-xs font-bold border border-amber-200/60">
+                                Edit
+                            </a>
 
-                            <th class="px-6 py-4 text-center font-semibold">
-                                Aksi
-                            </th>
-                        </tr>
-                    </thead>
+                            <form method="POST" action="{{ route('admin.kategori.destroy', $category->id) }}"
+                                  onsubmit="return confirm('Yakin hapus data ini?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" 
+                                        class="px-3 py-1.5 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 transition text-xs font-bold border border-red-200/60">
+                                    Hapus
+                                </button>
+                            </form>
+                        </div>
+                    </x-table-cell>
 
-                    <tbody>
+                </x-table-row>
+            @empty
+                <x-table-row>
+                    <td colspan="2" class="px-6 py-12 text-center text-gray-400 font-medium bg-white">
+                        Belum ada data kategori buku yang terekam.
+                    </td>
+                </x-table-row>
+            @endforelse
 
-                        @forelse($categories as $category)
-
-                            <tr class="border-b border-gray-100 hover:bg-gray-50 transition">
-
-                                <td class="px-6 py-4 font-medium text-gray-800">
-                                    {{ $category->nama }}
-                                </td>
-
-                                <td class="px-6 py-4">
-
-                                    <div class="flex justify-center gap-2">
-
-                                        <a href="{{ route('admin.kategori.edit', $category->id) }}" class="px-4 py-2 rounded-lg
-                                          bg-yellow-100 text-yellow-700
-                                          hover:bg-yellow-200 transition
-                                          text-sm font-medium">
-                                            Edit
-                                        </a>
-
-                                        <a href="{{ route('admin.kategori.show', $category->id) }}" class="px-4 py-2 rounded-lg
-                                          bg-blue-100 text-blue-700
-                                          hover:bg-blue-200 transition
-                                          text-sm font-medium">
-                                            Detail
-                                        </a>
-
-                                        <form method="POST" action="{{ route('admin.kategori.destroy', $category->id) }}"
-                                            onsubmit="return confirm('Yakin hapus data ini?')">
-
-                                            @csrf
-                                            @method('DELETE')
-
-                                            <button type="submit" class="px-4 py-2 rounded-lg
-                                               bg-red-100 text-red-700
-                                               hover:bg-red-200 transition
-                                               text-sm font-medium">
-                                                Hapus
-                                            </button>
-
-                                        </form>
-
-                                    </div>
-
-                                </td>
-
-                            </tr>
-
-                        @empty
-
-                            <tr>
-                                <td colspan="2" class="py-12 text-center">
-
-                                    <div class="flex flex-col items-center gap-2">
-
-                                        <span class="text-5xl"></span>
-
-                                        <p class="text-gray-500">
-                                            Belum ada data kategori.
-                                        </p>
-
-                                    </div>
-
-                                </td>
-                            </tr>
-
-                        @endforelse
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </div>
+        </x-table>
 
     </x-page>
 

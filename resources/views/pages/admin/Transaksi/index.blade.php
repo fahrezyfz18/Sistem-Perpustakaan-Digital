@@ -1,167 +1,168 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('content')
 
-    <div class="min-h-screen bg-gray-100 p-6">
+    <x-page 
+        title="Transaksi Peminjaman dan Pengembalian" 
+        subtitle="Monitoring dan manajemen aktivitas sirkulasi buku perpustakaan"
+        :action="route('admin.transaksi.create')"
+        actionText="Sirkulasi Baru"
+    >
 
-        <div class="mb-6">
+        @if(session('success'))
+            <div class="mb-4 p-4 bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm rounded-xl font-medium shadow-sm">
+                {{ session('success') }}
+            </div>
+        @endif
 
-            <h1 class="text-4xl font-bold text-green-900">
-                Transaksi Peminjaman & Pengembalian
-            </h1>
+        <x-search-filter 
+            :action="route('admin.transaksi.index')"
+            placeholder="Cari Nama Anggota atau Judul Buku..."
+        />
 
-            <p class="text-gray-500 mt-2">
-                Monitoring aktivitas peminjaman dan pengembalian buku
-            </p>
+        <x-table :headers="['Nama Anggota', 'Judul Buku', 'Tanggal Pinjam', 'Jatuh Tempo', 'Tanggal Kembali', 'Status', 'Denda', 'Aksi']">
+            
+            @forelse($transaksi as $item)
+                <x-table-row>
+                    
+                    <x-table-cell>
+                        <div class="max-w-[160px] truncate font-semibold text-gray-900 mx-auto">
+                            {{ $item->user?->name ?? 'Anggota Terhapus' }}
+                        </div>
+                    </x-table-cell>
 
-        </div>
+                    <x-table-cell>
+                        <div class="max-w-[240px] truncate mx-auto">
+                            {{ $item->book?->judul ?? 'Buku Terhapus' }}
+                        </div>
+                    </x-table-cell>
 
-        <div class="bg-white rounded-2xl shadow-md p-6 border border-gray-200">
+                    <x-table-cell>
+                        {{ $item->tanggal_pinjam?->locale('id')->translatedFormat('d M Y') ?? '-' }}
+                    </x-table-cell>
 
-            <form method="GET" class="mb-6">
+                    <x-table-cell>
+                        {{ $item->tgl_jatuh_tempo?->locale('id')->translatedFormat('d M Y') ?? '-' }}
+                    </x-table-cell>
 
-                <div class="relative">
+                    <x-table-cell>
+                        @if($item->status == 'dikembalikan' && $item->tanggal_dikembalikan)
+                            <span class="font-semibold text-gray-700">
+                                {{ $item->tanggal_dikembalikan->locale('id')->translatedFormat('d M Y') }}
+                            </span>
+                        @else
+                            <span class="text-amber-700 text-xs bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-100">
+                                Masih Dipinjam
+                            </span>
+                        @endif
+                    </x-table-cell>
 
-                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                        <svg class="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 20 20">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                        </svg>
-                    </div>
+                    <x-table-cell>
+                        @if($item->status_label === 'Dikembalikan')
+                            <span class="bg-blue-50 text-blue-700 text-xs font-bold px-3 py-1.5 rounded-full border border-blue-100">
+                                {{ $item->status_label }}
+                            </span>
+                        @elseif($item->status_label === 'Terlambat')
+                            <span class="bg-red-50 text-red-700 text-xs font-bold px-3 py-1.5 rounded-full border border-red-100">
+                                {{ $item->status_label }}
+                            </span>
+                        @else
+                            <span class="bg-emerald-50 text-emerald-700 text-xs font-bold px-3 py-1.5 rounded-full border border-emerald-100">
+                                {{ $item->status_label }}
+                            </span>
+                        @endif
+                    </x-table-cell>
 
-                    <input type="search" name="search" value="{{ request('search') }}"
-                        class="block w-full p-4 ps-10 text-sm border border-gray-300 rounded-xl bg-gray-50 focus:ring-green-500 focus:border-green-500"
-                        placeholder="Cari Nama Anggota atau Buku...">
+                    <x-table-cell>
+                        @if($item->status_label === 'Terlambat')
+                            <span class="text-red-600 font-bold">
+                                Rp {{ number_format($item->denda_terlambat, 0, ',', '.') }}
+                            </span>
+                        @else
+                            <span class="text-gray-400 font-normal">-</span>
+                        @endif
+                    </x-table-cell>
 
+                    <x-table-cell>
+                        <a href="{{ route('admin.transaksi.show', $item->id) }}"
+                           class="text-kombu bg-olivine/20 hover:bg-olivine/40 font-semibold rounded-xl text-xs px-4 py-2 transition duration-200 inline-block border border-olivine/30">
+                            Detail
+                        </a>
+                    </x-table-cell>
+
+                </x-table-row>
+            @empty
+                <x-table-row>
+                    <td colspan="8" class="px-6 py-12 text-center text-gray-400 font-medium bg-white">
+                        Belum ada rekaman log data transaksi sirkulasi.
+                    </td>
+                </x-table-row>
+            @endforelse
+
+        </x-table>
+
+        @if ($transaksi->hasPages())
+            <div class="mt-6 flex justify-end">
+                <div class="pagination-custom-wrapper">
+                    {{ $transaksi->links('pagination::bootstrap-4') }}
                 </div>
-
-            </form>
-
-            <div class="overflow-x-auto rounded-xl border border-gray-200">
-
-                <table class="w-full text-sm text-left text-gray-500">
-
-                    <thead class="text-sm text-white uppercase bg-green-900">
-                        <tr>
-                            <th class="px-6 py-4">Nama</th>
-                            <th class="px-6 py-4">Buku</th>
-                            <th class="px-6 py-4">Tanggal Pinjam</th>
-                            <th class="px-6 py-4">Tanggal Dikembalikan</th>
-                            <th class="px-6 py-4">Jatuh Tempo</th>
-                            <th class="px-6 py-4">Status</th>
-                            <th class="px-6 py-4">Denda</th>
-                            <th class="px-6 py-4">Aksi</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-
-                        @forelse($transaksi as $item)
-
-                            <tr class="bg-white border-b hover:bg-gray-50 transition duration-200">
-
-                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                    {{ $item->user?->name ?? 'User tidak ditemukan' }}
-                                </td>
-
-                                <td class="px-6 py-4 text-gray-700">
-    {{ $item->book?->judul ?? 'Buku tidak ditemukan' }}
-</td>
-
-                                <td class="px-6 py-4 text-gray-700">
-                                    {{ $item->tanggal_pinjam?->locale('id')->translatedFormat('d F Y') ?? '-' }}
-                                </td>
-
-<td class="px-6 py-4 text-gray-700">
-    @if($item->status == 'dikembalikan' && $item->tanggal_dikembalikan)
-        {{ $item->tanggal_dikembalikan->locale('id')->translatedFormat('d F Y') }}
-    @else
-        <span class="text-orange-600 font-medium">
-            Belum dikembalikan
-        </span>
-    @endif
-</td>
-
-                                <td class="px-6 py-4 text-gray-700">
-                                    {{ $item->tgl_jatuh_tempo?->locale('id')->translatedFormat('d F Y') ?? '-' }}
-                                </td>
-
-                                <td class="px-6 py-4">
-
-                                    @if($item->status_label === 'Dikembalikan')
-
-                                        <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-4 py-2 rounded-full">
-                                            {{ $item->status_label }}
-                                        </span>
-
-                                    @elseif($item->status_label === 'Terlambat')
-
-                                        <span class="bg-red-100 text-red-800 text-xs font-semibold px-4 py-2 rounded-full">
-                                            {{ $item->status_label }}
-                                        </span>
-
-                                    @else
-
-                                        <span class="bg-green-100 text-green-800 text-xs font-semibold px-4 py-2 rounded-full">
-                                            {{ $item->status_label }}
-                                        </span>
-
-                                    @endif
-
-                                </td>
-
-<td class="px-6 py-4 font-semibold">
-
-    @if($item->status_label === 'Terlambat')
-
-        <span class="text-red-600">
-            Rp {{ number_format($item->denda_terlambat, 0, ',', '.') }}
-        </span>
-
-    @else
-
-        <span class="text-gray-400">
-            -
-        </span>
-
-    @endif
-
-</td>
-
-                                <td class="px-6 py-4">
-
-                                    <a href="{{ route('admin.transaksi.show', $item->id) }}"
-                                        class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 transition duration-200 inline-block">
-                                        Detail
-                                    </a>
-
-                                </td>
-
-                            </tr>
-
-                        @empty
-
-                            <tr>
-                                <td colspan="8" class="px-6 py-6 text-center text-gray-500">
-                                    Data transaksi tidak ditemukan.
-                                </td>
-                            </tr>
-
-                        @endforelse
-
-                    </tbody>
-
-                </table>
-
             </div>
 
-            <div class="mt-6">
-                {{ $transaksi->links() }}
-            </div>
+            <style>
+                /* Hilangkan teks pencatat info "Showing x to y" secara mutlak */
+                .pagination-custom-wrapper .small,
+                .pagination-custom-wrapper p,
+                .pagination-custom-wrapper .text-muted {
+                    display: none !important;
+                }
+                
+                /* Pengaturan struktur list tombol */
+                .pagination-custom-wrapper ul.pagination {
+                    display: flex !important;
+                    list-style: none !important;
+                    padding-left: 0 !important;
+                    gap: 6px !important;
+                    align-items: center !important;
+                }
 
-        </div>
+                /* Styling dasar seluruh box item tombol angka */
+                .pagination-custom-wrapper .page-item .page-link {
+                    display: block !important;
+                    padding: 8px 14px !important;
+                    font-size: 14px !important;
+                    font-weight: 600 !important;
+                    color: #4b5563 !important; /* gray-600 */
+                    background-color: #ffffff !important;
+                    border: 1px solid #e5e7eb !important; /* gray-200 */
+                    border-radius: 12px !important; /* rounded-xl */
+                    text-decoration: none !important;
+                    transition: all 0.2s ease !important;
+                }
 
-    </div>
+                /* Mengubah warna latar HITAM AKTIF menjadi HIJAU KOMBU */
+                .pagination-custom-wrapper .page-item.active .page-link {
+                    background-color: #354e3b !important; /* Warna Kombu */
+                    border-color: #354e3b !important;
+                    color: #ffffff !important;
+                }
+
+                /* Efek Hover warna Olivine Soft */
+                .pagination-custom-wrapper .page-item:not(.active) .page-link:hover {
+                    background-color: rgba(148, 163, 115, 0.15) !important;
+                    color: #354e3b !important;
+                    border-color: rgba(148, 163, 115, 0.4) !important;
+                }
+
+                /* Tombol disable / mati */
+                .pagination-custom-wrapper .page-item.disabled .page-link {
+                    color: #d1d5db !important; /* gray-300 */
+                    background-color: #f9fafb !important; /* gray-50 */
+                    border-color: #e5e7eb !important;
+                    cursor: not-allowed !important;
+                }
+            </style>
+        @endif
+
+    </x-page>
 
 @endsection

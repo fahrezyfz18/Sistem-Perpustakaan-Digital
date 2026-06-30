@@ -1,125 +1,95 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('content')
 
-    <div class="min-h-screen bg-background p-6 space-y-6">
+    <x-page title="Pengaturan Sistem" subtitle="Kelola konfigurasi dan aturan dasar aplikasi perpustakaan">
 
-        <!-- HEADER -->
-        <div>
-            <h1 class="text-4xl font-bold text-kombu">
-                Pengaturan Sistem
-            </h1>
-
-            <p class="text-sm text-gray-500 mt-1">
-                Kelola konfigurasi aplikasi perpustakaan
-            </p>
-        </div>
-
-        <!-- SUCCESS -->
         @if(session('success'))
-            <div class="bg-green-100 text-green-700 px-4 py-3 rounded-lg">
+            <div class="mb-4 p-4 bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm rounded-xl font-medium shadow-sm">
                 {{ session('success') }}
             </div>
         @endif
 
-        <!-- GRID SETTINGS -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-            <!-- UBAH PASSWORD -->
-            <div class="bg-white p-6 rounded-2xl shadow border border-kombu/10">
-
-                <div class="flex items-center gap-3 mb-5">
-                    <svg class="w-5 h-5 text-kombu" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                    </svg>
-
-                    <h2 class="font-semibold text-kombu text-lg">Ubah Password</h2>
-                </div>
-
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between">
                 <form method="POST" action="#">
                     @csrf
-
-                    <div class="space-y-4">
-
-                        <div>
-                            <label class="text-sm text-gray-600">Password Baru</label>
-                            <input type="password"
-                                class="w-full mt-1 rounded-lg border-gray-200 focus:border-kombu focus:ring-kombu"
-                                placeholder="Masukkan password baru">
+                    
+                    <div>
+                        <div class="flex items-center gap-3 mb-5 pb-3 border-b border-gray-50">
+                            <svg class="w-5 h-5 text-kombu" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                            <h2 class="font-bold text-gray-900 text-lg">Keamanan Akun</h2>
                         </div>
 
-                        <div>
-                            <label class="text-sm text-gray-600">Konfirmasi Password</label>
-                            <input type="password"
-                                class="w-full mt-1 rounded-lg border-gray-200 focus:border-kombu focus:ring-kombu"
-                                placeholder="Ulangi password">
-                        </div>
+                        <p class="text-xs text-gray-500 mb-6">
+                            Pastikan Anda mengingat password saat ini untuk melakukan pembaruan keamanan akun.
+                        </p>
 
+                        <div class="space-y-4">
+                            <div>
+                                <label class="text-xs font-bold text-gray-500 uppercase tracking-wider">Password Lama</label>
+                                <input type="password" name="current_password" class="w-full mt-1.5 border border-gray-200 focus:border-kombu focus:ring-2 focus:ring-kombu/20 outline-none rounded-xl py-2.5 px-4 text-sm text-gray-700 transition-all placeholder-gray-400" placeholder="Masukkan password saat ini">
+                            </div>
+
+                            <div>
+                                <label class="text-xs font-bold text-gray-500 uppercase tracking-wider">Password Baru</label>
+                                <input type="password" name="password" class="w-full mt-1.5 border border-gray-200 focus:border-kombu focus:ring-2 focus:ring-kombu/20 outline-none rounded-xl py-2.5 px-4 text-sm text-gray-700 transition-all placeholder-gray-400" placeholder="Masukkan password baru">
+                            </div>
+
+                            <div>
+                                <label class="text-xs font-bold text-gray-500 uppercase tracking-wider">Konfirmasi Password</label>
+                                <input type="password" name="password_confirmation" class="w-full mt-1.5 border border-gray-200 focus:border-kombu focus:ring-2 focus:ring-kombu/20 outline-none rounded-xl py-2.5 px-4 text-sm text-gray-700 transition-all placeholder-gray-400" placeholder="Ulangi password baru">
+                            </div>
+                        </div>
                     </div>
-
-                    <button type="submit" class="mt-5 bg-kombu text-white px-4 py-2 rounded-lg hover:bg-accent transition">
-                        Simpan Password
-                    </button>
-
+                    
+                    <div class="pt-6 mt-6 border-t border-gray-50">
+                        <button type="submit" class="bg-kombu hover:bg-opacity-90 text-white px-5 py-2.5 rounded-xl text-sm font-semibold shadow-sm transition-all w-full sm:w-auto">
+                            Simpan Password
+                        </button>
+                    </div>
                 </form>
             </div>
 
-
-            <!-- ATURAN PEMINJAMAN -->
-            <div class="bg-white p-6 rounded-2xl shadow border border-olivine/20">
-
-                <div class="flex items-center gap-3 mb-5">
-                    <svg class="w-5 h-5 text-olivine" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12h6m-6 4h6M5 8h14M5 16h14M5 20h14M5 4h14" />
-                    </svg>
-
-                    <h2 class="font-semibold text-olivine text-lg">
-                        Aturan Peminjaman
-                    </h2>
-                </div>
-
-                <!-- FORM SETTINGS -->
-                <form method="POST" action="{{ route('admin.settings.update') }}">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between">
+                <form method="POST" action="{{ route('admin.settings.update') }}" class="h-full flex flex-col justify-between m-0">
                     @csrf
+                    @method('PUT')
 
-                    <div class="space-y-4">
-
-                        <!-- BATAS HARI -->
-                        <div>
-                            <label class="text-sm text-gray-600">
-                                Batas Hari Pinjam
-                            </label>
-
-                            <input type="number" name="batas_hari"
-                                class="w-full mt-1 rounded-lg border-gray-200 focus:border-olivine focus:ring-olivine"
-                                value="{{ $setting->batas_hari ?? 7 }}">
+                    <div>
+                        <div class="flex items-center gap-3 mb-5 pb-3 border-b border-gray-50">
+                            <svg class="w-5 h-5 text-olivine" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6M5 8h14M5 16h14M5 20h14M5 4h14" />
+                            </svg>
+                            <h2 class="font-bold text-gray-900 text-lg">Sirkulasi Konfigurasi</h2>
                         </div>
 
-                        <!-- DENDA -->
-                        <div>
-                            <label class="text-sm text-gray-600">
-                                Denda per Hari (Rp)
-                            </label>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="text-xs font-bold text-gray-500 uppercase tracking-wider">Batas Hari Pinjam</label>
+                                <input type="number" name="batas_hari" class="w-full mt-1.5 border border-gray-200 focus:border-kombu focus:ring-2 focus:ring-kombu/20 outline-none rounded-xl py-2.5 px-4 text-sm text-gray-700 transition-all" value="{{ $setting->batas_hari ?? 7 }}">
+                            </div>
 
-                            <input type="number" name="denda_per_hari"
-                                class="w-full mt-1 rounded-lg border-gray-200 focus:border-olivine focus:ring-olivine"
-                                value="{{ $setting->denda_per_hari ?? 2000 }}">
+                            <div>
+                                <label class="text-xs font-bold text-gray-500 uppercase tracking-wider">Denda per Hari (Rp)</label>
+                                <input type="number" name="denda_per_hari" class="w-full mt-1.5 border border-gray-200 focus:border-kombu focus:ring-2 focus:ring-kombu/20 outline-none rounded-xl py-2.5 px-4 text-sm text-gray-700 transition-all" value="{{ $setting->denda_per_hari ?? 2000 }}">
+                            </div>
                         </div>
-
                     </div>
 
-                    <button type="submit"
-                        class="mt-5 bg-olivine text-white px-4 py-2 rounded-lg hover:bg-asparagus transition">
-                        Simpan Aturan
-                    </button>
-
+                    <div class="pt-6 mt-6 border-t border-gray-50">
+                        <button type="submit" class="bg-olivine hover:bg-opacity-90 text-white px-5 py-2.5 rounded-xl text-sm font-semibold shadow-sm transition-all w-full sm:w-auto">
+                            Simpan Aturan
+                        </button>
+                    </div>
                 </form>
             </div>
 
         </div>
 
-    </div>
+    </x-page>
 
 @endsection

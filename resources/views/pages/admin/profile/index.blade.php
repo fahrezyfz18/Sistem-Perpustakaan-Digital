@@ -1,29 +1,31 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('content')
 
-<div class="max-w-3xl mx-auto bg-white p-6 rounded-xl shadow">
+    <x-page title="Profil Admin" subtitle="Manajemen informasi data pribadi akun Anda">
 
-    <h1 class="text-2xl font-bold text-kombu mb-6">Profile Admin</h1>
+        <div class="max-w-3xl bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+            <div class="flex items-center gap-5 mb-6">
+                
+                <div class="w-16 h-16 bg-kombu text-white flex items-center justify-center rounded-full text-2xl font-bold shadow-sm">
+                    {{ strtoupper(substr($user->name, 0, 1)) }}
+                </div>
 
-    <div class="flex items-center gap-4 mb-6">
+                <div>
+                    <h2 class="font-bold text-xl text-gray-900">{{ $user->name }}</h2>
+                    <p class="text-sm text-gray-500 mt-0.5">{{ $user->email }}</p>
+                </div>
 
-        <div class="w-16 h-16 bg-kombu text-white flex items-center justify-center rounded-full text-xl">
-            {{ strtoupper(substr($user->name, 0, 1)) }}
+            </div>
+
+            <div class="border-t pt-5">
+                <a href="{{ route('admin.profile.edit') }}"
+                   class="inline-flex items-center justify-center bg-kombu hover:bg-opacity-90 text-white px-5 py-2.5 rounded-xl text-sm font-semibold shadow-sm transition-all">
+                    Edit Profil
+                </a>
+            </div>
         </div>
 
-        <div>
-            <h2 class="font-semibold text-lg">{{ $user->name }}</h2>
-            <p class="text-gray-500">{{ $user->email }}</p>
-        </div>
-
-    </div>
-
-    <a href="{{ route('admin.profile.edit') }}"
-       class="bg-kombu text-white px-4 py-2 rounded hover:bg-asparagus transition">
-        Edit Profile
-    </a>
-
-</div>
+    </x-page>
 
 @endsection

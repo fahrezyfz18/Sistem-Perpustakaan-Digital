@@ -1,94 +1,71 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('content')
 
-<x-page
-    title="Kelola Anggota"
-    subtitle="Manajemen data anggota perpustakaan"
-    :action="route('admin.anggota.create')"
-    actionText="+ Tambah Anggota">
+    <x-page
+        title="Kelola Anggota"
+        subtitle="Manajemen data anggota perpustakaan"
+        :action="route('admin.anggota.create')"
+        actionText="Tambah Anggota"
+    >
 
-    <div class="mb-4">
         <x-search-filter
             :action="route('admin.anggota.index')"
-            placeholder="Cari anggota..." />
-    </div>
+            placeholder="Cari anggota..." 
+        />
 
-    <div class="bg-white shadow rounded-lg overflow-hidden">
+        <x-table :headers="['Kode', 'Nama', 'Email', 'No HP', 'Aksi']">
 
-        <div class="overflow-x-auto">
-
-            <x-table
-                :headers="[
-        'Kode',
-        'Nama',
-        'Email',
-        'No HP',
-        'Aksi'
-    ]">
-
-                @forelse($anggotas as $item)
-
+            @forelse($anggotas as $item)
                 <x-table-row>
 
-                    <x-table-cell>{{ $item->kode_anggota }}</x-table-cell>
-
-                    <x-table-cell>{{ $item->nama }}</x-table-cell>
-
+                    <x-table-cell>
+                        <span class="font-mono text-xs font-bold bg-gray-100 px-2 py-1 rounded border text-gray-700">
+                            {{ $item->kode_anggota }}
+                        </span>
+                    </x-table-cell>
+                    
+                    <x-table-cell>
+                        <div class="font-semibold text-gray-900">{{ $item->nama }}</div>
+                    </x-table-cell>
+                    
                     <x-table-cell>{{ $item->email }}</x-table-cell>
-
                     <x-table-cell>{{ $item->no_hp }}</x-table-cell>
 
                     <x-table-cell>
-
                         <div class="flex gap-2 justify-center">
-
-                            <a href="{{ route('admin.anggota.edit', $item->id) }}"
-                                class="px-3 py-2 bg-yellow-100 text-yellow-700 rounded-lg text-sm">
-                                Edit
-                            </a>
-
                             <a href="{{ route('admin.anggota.show', $item->id) }}"
-                                class="px-3 py-2 bg-blue-100 text-blue-600 rounded-lg text-sm">
+                               class="px-3 py-1.5 rounded-xl bg-olivine/10 text-kombu hover:bg-olivine/20 transition text-xs font-bold border border-olivine/20">
                                 Detail
                             </a>
 
-                            <form method="POST"
-                                action="{{ route('admin.anggota.destroy', $item->id) }}"
-                                onsubmit="return confirm('Yakin hapus data ini?')">
+                            <a href="{{ route('admin.anggota.edit', $item->id) }}"
+                               class="px-3 py-1.5 rounded-xl bg-amber-50 text-amber-700 hover:bg-amber-100 transition text-xs font-bold border border-amber-200/60">
+                                Edit
+                            </a>
 
+                            <form method="POST" action="{{ route('admin.anggota.destroy', $item->id) }}"
+                                  onsubmit="return confirm('Yakin hapus data ini?')">
                                 @csrf
                                 @method('DELETE')
-
-                                <button
-                                    class="px-3 py-2 bg-red-100 text-red-600 rounded-lg text-sm">
+                                <button class="px-3 py-1.5 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 transition text-xs font-bold border border-red-200/60">
                                     Hapus
                                 </button>
-
                             </form>
-
                         </div>
-
                     </x-table-cell>
 
                 </x-table-row>
-
-                @empty
-
-                <tr>
-                    <td colspan="5" class="text-center p-6 text-gray-500">
-                        Data tidak ditemukan
+            @empty
+                <x-table-row>
+                    <td colspan="5" class="px-6 py-12 text-center text-gray-400 font-medium bg-white">
+                        Data registrasi anggota tidak ditemukan.
                     </td>
-                </tr>
+                </x-table-row>
+            @endforelse
 
-                @endforelse
+        </x-table>
 
-            </x-table>
-
-        </div>
-
-    </div>
-
-</x-page>
+    </x-page>
 
 @endsection

@@ -78,15 +78,6 @@ class BookController extends Controller
         ]);
 
         if ($request->hasFile('cover')) {
-
-            $path = $request->file('cover')->store('books', 'public');
-
-
-
-            $validated['cover'] = $path;
-        }
-
-        if ($request->hasFile('cover')) {
             $validated['cover'] = $request
                 ->file('cover')
                 ->store('books', 'public');

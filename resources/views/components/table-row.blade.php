@@ -1,5 +1,3 @@
-<tr class="border-b border-gray-100 hover:bg-gray-50 transition duration-200">
-
+<tr class="hover:bg-gray-50/80 transition-colors duration-150 ease-in-out">
     {{ $slot }}
-
 </tr>

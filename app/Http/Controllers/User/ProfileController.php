@@ -8,13 +8,14 @@ use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
-
-    public function index()
+    // Ubah method dari index() menjadi show()
+    public function show()
     {
         return view('pages.user.profile.index', [
             'user' => Auth::user()
         ]);
     }
+
     public function edit()
     {
         return view('pages.user.profile.edit', [
@@ -22,42 +23,46 @@ class ProfileController extends Controller
         ]);
     }
 
-
     public function update(Request $request)
     {
         $user = Auth::user();
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email,' . $user->id,
             'username' => 'nullable|string|max:255',
             'no_hp' => 'nullable|string|max:20',
             'alamat' => 'nullable|string',
-            'status' => 'nullable|string',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'username' => $request->username,
-            'no_hp' => $request->no_hp,
-            'alamat' => $request->alamat,
-            'status' => $request->status,
-        ]);
+        // Mengambil data teks
+        $data = $request->only(['name', 'email', 'username', 'no_hp', 'alamat']);
+
+        // Logika Upload Foto
+        if ($request->hasFile('avatar')) {
+            // Hapus file lama jika ada (opsional)
+            if ($user->avatar && file_exists(public_path('avatars/' . $user->avatar))) {
+                unlink(public_path('avatars/' . $user->avatar));
+            }
+
+            $file = $request->file('avatar');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('avatars'), $filename);
+            $data['avatar'] = $filename;
+        }
+
+        $user->update($data);
 
         return redirect()
             ->route('user.profile.show')
             ->with('success', 'Profil berhasil diperbarui');
     }
-
     public function destroy()
     {
         $user = Auth::user();
-
         Auth::logout();
-
         $user->delete();
-
         return redirect('/');
     }
 }

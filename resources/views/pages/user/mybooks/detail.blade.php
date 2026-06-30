@@ -2,26 +2,28 @@
 
 @section('content')
 
-    <div class="min-h-screen bg-background p-6">
+    <div class="min-h-screen bg-background py-8 px-6">
 
         <div class="max-w-6xl mx-auto">
 
             <!-- CARD -->
             <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-0">
+                <div class="grid grid-cols-1 lg:grid-cols-3">
 
-                    <!-- COVER -->
-                    <div class="bg-gray-100 flex items-center justify-center p-6">
+                    <!-- ===================================================== -->
+                    <!-- COVER BUKU -->
+                    <!-- ===================================================== -->
+                    <div class="bg-gray-50 flex justify-center items-center p-8">
 
                         @if($book->book && $book->book->cover)
 
-                            <img src="{{ asset('storage/' . $book->book->cover) }}"
-                                class="rounded-xl w-full max-w-xs object-cover shadow-md">
+                            <img src="{{ asset('storage/' . $book->book->cover) }}" alt="{{ $book->book->judul }}"
+                                class="w-full max-w-xs rounded-xl shadow-md object-cover">
 
                         @else
 
-                            <div class="h-96 w-full flex items-center justify-center text-gray-400">
+                            <div class="h-96 flex items-center justify-center text-gray-400">
 
                                 No Cover
 
@@ -32,21 +34,22 @@
                     </div>
 
 
+                    <!-- ===================================================== -->
                     <!-- DETAIL -->
-                    <div class="md:col-span-2 p-8">
+                    <!-- ===================================================== -->
+                    <div class="lg:col-span-2 p-8">
 
                         <!-- JUDUL -->
                         <h1 class="text-3xl font-bold text-kombu">
 
-                            {{ $book->book->judul ?? '-' }}
+                            {{ $book->book->judul }}
 
                         </h1>
-
 
                         <!-- PENULIS -->
                         <p class="text-gray-500 mt-2">
 
-                            {{ $book->book->penulis ?? '-' }}
+                            {{ $book->book->penulis }}
 
                         </p>
 
@@ -62,7 +65,7 @@
 
                                 </span>
 
-                            @elseif($book->status == 'dikembalikan')
+                            @else
 
                                 <span class="bg-olivine text-white text-xs px-4 py-2 rounded-full">
 
@@ -75,51 +78,85 @@
                         </div>
 
 
+                        <!-- ===================================================== -->
                         <!-- INFORMASI -->
-                        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- ===================================================== -->
+                        <div class="grid md:grid-cols-2 gap-8 mt-8">
 
                             <!-- INFORMASI BUKU -->
                             <div>
 
-                                <h3 class="font-semibold text-kombu mb-3">
+                                <h3 class="font-semibold text-kombu mb-4">
 
                                     Informasi Buku
 
                                 </h3>
 
-                                <div class="space-y-2 text-sm text-gray-600">
+                                <div class="space-y-3 text-sm">
 
-                                    <p>
-                                        <span class="font-medium">
-                                            ISBN:
+                                    <div class="flex justify-between">
+
+                                        <span class="text-gray-500">
+
+                                            ISBN
+
                                         </span>
 
-                                        {{ $book->book->isbn ?? '-' }}
-                                    </p>
+                                        <span>
 
-                                    <p>
-                                        <span class="font-medium">
-                                            Penerbit:
+                                            {{ $book->book->isbn }}
+
                                         </span>
 
-                                        {{ $book->book->penerbit ?? '-' }}
-                                    </p>
+                                    </div>
 
-                                    <p>
-                                        <span class="font-medium">
-                                            Kategori:
+                                    <div class="flex justify-between">
+
+                                        <span class="text-gray-500">
+
+                                            Penerbit
+
                                         </span>
 
-                                        {{ $book->book->kategori ?? '-' }}
-                                    </p>
+                                        <span>
 
-                                    <p>
-                                        <span class="font-medium">
-                                            Tahun:
+                                            {{ $book->book->penerbit }}
+
                                         </span>
 
-                                        {{ $book->book->tahun ?? '-' }}
-                                    </p>
+                                    </div>
+
+                                    <div class="flex justify-between">
+
+                                        <span class="text-gray-500">
+
+                                            Kategori
+
+                                        </span>
+
+                                        <span>
+
+                                            {{ $book->book->category->nama ?? '-' }}
+
+                                        </span>
+
+                                    </div>
+
+                                    <div class="flex justify-between">
+
+                                        <span class="text-gray-500">
+
+                                            Tahun
+
+                                        </span>
+
+                                        <span>
+
+                                            {{ $book->book->tahun }}
+
+                                        </span>
+
+                                    </div>
 
                                 </div>
 
@@ -129,70 +166,77 @@
                             <!-- INFORMASI PEMINJAMAN -->
                             <div>
 
-                                <h3 class="font-semibold text-kombu mb-3">
+                                <h3 class="font-semibold text-kombu mb-4">
 
                                     Informasi Peminjaman
 
                                 </h3>
 
-                                <div class="space-y-2 text-sm text-gray-600">
+                                <div class="space-y-3 text-sm">
 
-                                    <!-- TANGGAL PINJAM -->
-                                    <p>
+                                    <div class="flex justify-between">
 
-                                        <span class="font-medium">
+                                        <span class="text-gray-500">
 
-                                            Tanggal Pinjam:
-
-                                        </span>
-
-                                        {{ \Carbon\Carbon::parse($book->tanggal_pinjam)->format('d M Y') }}
-
-                                    </p>
-
-
-                                    <!-- DEADLINE -->
-                                    <p>
-
-                                        <span class="font-medium">
-
-                                            Deadline Pengembalian:
+                                            Tanggal Pinjam
 
                                         </span>
 
-                                        @if($book->deadline)
+                                        <span>
 
-                                            {{ \Carbon\Carbon::parse($book->deadline)->format('d M Y') }}
-
-                                        @else
-
-                                            -
-
-                                        @endif
-
-                                    </p>
-
-
-                                    <!-- TANGGAL DIKEMBALIKAN -->
-                                    <p>
-
-                                        <span class="font-medium">
-
-                                            Tanggal Dikembalikan:
+                                            {{ $book->tanggal_pinjam->format('d M Y') }}
 
                                         </span>
 
-                                        @if($book->tanggal_dikembalikan)
+                                    </div>
 
-                                            {{ \Carbon\Carbon::parse($book->tanggal_dikembalikan)->format('d M Y') }}
+                                    <div class="flex justify-between">
 
-                                        @else
+                                        <span class="text-gray-500">
 
-                                            Belum dikembalikan
+                                            Jatuh Tempo
 
-                                        @endif
+                                        </span>
 
-                                    </p>
+                                        <span>
+
+                                            {{ $book->tgl_jatuh_tempo?->format('d M Y') ?? '-' }}
+
+                                        </span>
+
+                                    </div>
+
+                                    <div class="flex justify-between">
+
+                                        <span class="text-gray-500">
+
+                                            Dikembalikan
+
+                                        </span>
+
+                                        <span>
+
+                                            {{ $book->tanggal_dikembalikan?->format('d M Y') ?? '-' }}
+
+                                        </span>
+
+                                    </div>
+
+                                    <div class="flex justify-between">
+
+                                        <span class="text-gray-500">
+
+                                            Denda
+
+                                        </span>
+
+                                        <span class="text-red-500 font-semibold">
+
+                                            Rp {{ number_format($book->denda, 0, ',', '.') }}
+
+                                        </span>
+
+                                    </div>
 
                                 </div>
 
@@ -201,7 +245,9 @@
                         </div>
 
 
+                        <!-- ===================================================== -->
                         <!-- DESKRIPSI -->
+                        <!-- ===================================================== -->
                         <div class="mt-8">
 
                             <h3 class="font-semibold text-kombu mb-3">
@@ -210,7 +256,7 @@
 
                             </h3>
 
-                            <p class="text-sm leading-relaxed text-gray-600">
+                            <p class="text-gray-600 leading-relaxed">
 
                                 {{ $book->book->deskripsi ?? 'Tidak ada deskripsi.' }}
 
@@ -219,23 +265,22 @@
                         </div>
 
 
-                        <!-- ACTION -->
-                        <div class="mt-8 flex gap-4">
+                        <!-- ===================================================== -->
+                        <!-- BUTTON -->
+                        <!-- ===================================================== -->
+                        <div class="flex gap-4 mt-10">
 
-                            <!-- KEMBALI -->
                             <a href="{{ route('user.my-books.index') }}"
-                                class="px-5 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition">
+                                class="px-5 py-3 border border-gray-300 rounded-xl hover:bg-gray-100 transition">
 
                                 Kembali
 
                             </a>
 
-
-                            <!-- KEMBALIKAN -->
                             @if($book->status == 'dipinjam')
 
                                 <a href="{{ route('user.my-books.return.form', $book->id) }}"
-                                    class="px-5 py-2 bg-secondary text-white rounded-lg hover:bg-camel transition">
+                                    class="px-5 py-3 bg-secondary text-white rounded-xl hover:bg-camel transition">
 
                                     Kembalikan Buku
 

@@ -2,106 +2,174 @@
 
 @section('content')
 
-    <div class="min-h-screen bg-background flex items-center justify-center p-6">
+    <div class="min-h-screen bg-background py-8 px-6">
 
-        <div class="w-full max-w-5xl bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
+        <div class="max-w-5xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
 
             <!-- HEADER -->
             <div class="bg-primary text-white p-6">
-                <h1 class="text-2xl font-semibold text-center">
-                    Form Pengembalian Buku
+                <h1 class="text-2xl font-bold">
+                    Konfirmasi Pengembalian Buku
                 </h1>
-                <p class="text-center text-sm text-gray-200 mt-1">
-                    Pastikan buku dikembalikan dalam kondisi baik
+
+                <p class="text-sm text-gray-100 mt-1">
+                    Pastikan data pengembalian sudah benar.
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3">
+            <div class="grid grid-cols-1 lg:grid-cols-3">
 
                 <!-- COVER -->
-                <div class="bg-gray-100 p-6 flex items-center justify-center">
+                <div class="bg-gray-50 p-6 flex justify-center items-center">
 
                     @if($book->book && $book->book->cover)
 
-                        <img src="{{ asset('storage/' . $book->book->cover) }}"
-                            class="rounded-xl w-full max-w-xs object-cover shadow-md">
+                        <img src="{{ asset('storage/' . $book->book->cover) }}" alt="{{ $book->book->judul }}"
+                            class="rounded-xl shadow-md w-full max-w-xs object-cover">
 
                     @else
 
                         <div class="h-96 flex items-center justify-center text-gray-400">
+
                             No Cover
+
                         </div>
 
                     @endif
 
                 </div>
 
-                <!-- FORM AREA -->
-                <div class="md:col-span-2 p-8">
+                <!-- CONTENT -->
+                <div class="lg:col-span-2 p-8">
 
-                    <!-- INFO BOOK (tetap, hanya dirapikan spacing) -->
-                    <div class="space-y-2 text-sm text-gray-600 mb-6">
+                    @php
 
-                        <p><span class="font-semibold text-kombu">Judul:</span> {{ $book->book->judul ?? '-' }}</p>
-                        <p><span class="font-semibold text-kombu">Penulis:</span> {{ $book->book->penulis ?? '-' }}</p>
-                        <p><span class="font-semibold text-kombu">Tanggal Pinjam:</span>
-                            {{ \Carbon\Carbon::parse($book->tanggal_pinjam)->format('d M Y') }}</p>
-                        <p><span class="font-semibold text-kombu">Deadline:</span>
-                            {{ \Carbon\Carbon::parse($book->tgl_jatuh_tempo)->format('d M Y') }}</p>
+                        $hariTerlambat = 0;
+
+                        if (
+                            $book->tgl_jatuh_tempo &&
+                            now()->startOfDay()->gt($book->tgl_jatuh_tempo->startOfDay())
+                        ) {
+
+                            $hariTerlambat = $book->tgl_jatuh_tempo
+                                ->startOfDay()
+                                ->diffInDays(now()->startOfDay());
+
+                        }
+
+                        $denda = $hariTerlambat * 2000;
+
+                    @endphp
+
+                    <!-- INFORMASI BUKU -->
+                    <div class="space-y-3">
+
+                        <div>
+                            <span class="text-gray-500 text-sm">
+                                Judul Buku
+                            </span>
+
+                            <p class="font-semibold text-kombu">
+
+                                {{ $book->book->judul }}
+
+                            </p>
+                        </div>
+
+                        <div>
+                            <span class="text-gray-500 text-sm">
+                                Penulis
+                            </span>
+
+                            <p class="font-semibold text-kombu">
+
+                                {{ $book->book->penulis }}
+
+                            </p>
+                        </div>
+
+                        <div>
+                            <span class="text-gray-500 text-sm">
+                                Tanggal Pinjam
+                            </span>
+
+                            <p class="font-medium">
+
+                                {{ $book->tanggal_pinjam?->format('d M Y') ?? '-' }}
+
+                            </p>
+                        </div>
+
+                        <div>
+                            <span class="text-gray-500 text-sm">
+                                Jatuh Tempo
+                            </span>
+
+                            <p class="font-medium">
+
+                               {{ $book->tgl_jatuh_tempo?->format('d M Y') ?? '-' }}
+
+                            </p>
+                        </div>
 
                     </div>
 
-                    <!-- ERROR (disamakan dengan admin style) -->
-                    @if ($errors->any())
-                        <div class="bg-red-100 text-red-700 p-4 rounded-lg mb-6">
-                            <ul class="list-disc pl-5 text-sm space-y-1">
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
+                    <!-- DENDA -->
+                    <div class="mt-8 rounded-xl border border-gray-200 bg-gray-50 p-5">
 
-                    <!-- FORM -->
-                    <form action="{{ route('user.my-books.return', $book->id) }}" method="POST" class="space-y-5">
+                        <div class="flex justify-between">
+
+                            <span>
+
+                                Hari Terlambat
+
+                            </span>
+
+                            <span class="font-semibold">
+
+                                {{ $hariTerlambat }} Hari
+
+                            </span>
+
+                        </div>
+
+                        <div class="flex justify-between mt-3">
+
+                            <span>
+
+                                Denda
+
+                            </span>
+
+                            <span class="font-bold text-red-500">
+
+                                Rp {{ number_format($denda, 0, ',', '.') }}
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <!-- BUTTON -->
+                    <form action="{{ route('user.my-books.return', $book->id) }}" method="POST" class="mt-8">
 
                         @csrf
 
-                        <!-- KONDISI -->
-                        <div>
-                            <label class="text-sm text-gray-600">Kondisi Buku</label>
-
-                            <select name="kondisi"
-                                class="w-full mt-1 border rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none">
-
-                                <option value="baik">Baik</option>
-                                <option value="rusak_ringan">Rusak Ringan</option>
-                                <option value="rusak_berat">Rusak Berat</option>
-
-                            </select>
-                        </div>
-
-                        <!-- CATATAN -->
-                        <div>
-                            <label class="text-sm text-gray-600">Catatan Pengembalian</label>
-
-                            <textarea name="catatan" rows="4" placeholder="Tambahkan catatan..."
-                                class="w-full mt-1 border rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none"></textarea>
-                        </div>
-
-                        <!-- BUTTON -->
-                        <div class="flex gap-4 pt-2">
+                        <div class="flex gap-4">
 
                             <a href="{{ route('user.my-books.detail', $book->id) }}"
-                                class="flex-1 text-center border border-gray-300 py-3 rounded-lg hover:bg-gray-100 transition">
+                                class="flex-1 text-center border border-gray-300 py-3 rounded-xl hover:bg-gray-100 transition">
 
                                 Batal
+
                             </a>
 
                             <button type="submit"
-                                class="flex-1 bg-secondary text-white py-3 rounded-lg hover:bg-camel transition font-semibold">
+                                class="flex-1 bg-secondary text-white py-3 rounded-xl hover:bg-camel transition">
 
-                                Konfirmasi
+                                Konfirmasi Pengembalian
+
                             </button>
 
                         </div>

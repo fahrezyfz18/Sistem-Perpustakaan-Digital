@@ -24,12 +24,20 @@ class SettingController extends Controller
 
         $setting = Setting::first();
 
+    if ($setting) {
         $setting->update([
             'batas_hari' => $request->batas_hari,
             'denda_per_hari' => $request->denda_per_hari,
         ]);
-
-        return redirect()->back()
-            ->with('success', 'Pengaturan berhasil disimpan');
+    } else {
+        // Jika tabel kosong, buat data baru
+        Setting::create([
+            'batas_hari' => $request->batas_hari,
+            'denda_per_hari' => $request->denda_per_hari,
+        ]);
     }
+
+    return redirect()->back()
+        ->with('success', 'Pengaturan berhasil diperbarui!');
+}
 }
